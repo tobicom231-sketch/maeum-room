@@ -463,7 +463,7 @@ function home(){
       <p class="small">본관 열 개의 방은 그대로 두고, 관계별 장면을 늘린 별관을 따로 엽니다.</p>
       <ul><li>연애관: 연락 텀, 기념일, 전 연인의 소식</li><li>직장관: 회의 침묵, 상사의 짧은 답장, 단톡 공지</li><li>가족관: 명절 한마디, 부모님의 걱정 전화</li><li>청소년관: 읽씹의 방, 단톡방의 방</li></ul>
     </div>`;
-  const startRoom = () => { const d=S.done; S=fresh(); S.done=d; exit.spoken=false; pickStory(); go("enter",1); };
+  const startRoom = () => { const d=S.done; S=fresh(); S.done=d; exit.spoken=false; first.spoken=false; scenes.last=null; pickStory(); go("enter",1); };
   $("#goRoom").onclick = startRoom;
   V().querySelectorAll("[data-open]").forEach(b => b.onclick = startRoom);
 }
@@ -555,11 +555,12 @@ document.querySelectorAll(".hot").forEach(g=>{
 });
 
 function first(){
+  if(!first.spoken){ first.spoken=true; say(`메시지는 읽혔지만, 답은 오지 않습니다. 당신은 어떤 생각이 드나요?`); }
   hint("가장 먼저 떠오른 생각을 고르세요.");
   V().innerHTML = `
     <p class="eyebrow">첫 반응</p>
     <h2>이 침묵은 무엇을 뜻하는 것 같나요?</h2>
-    <button class="say" type="button" data-say="이 침묵은 무엇을 뜻하는 것 같나요? ${FIRST.map(o=>o.t).join(". ")}.">읽어 주기</button>
+    <button class="say" type="button" data-say="${esc(VV().sent.replace(/<br>/g," "))}. 메시지는 읽혔지만, 답은 오지 않습니다. 당신은 어떤 생각이 드나요?">읽어 주기</button>
     <div class="stack" id="opts">${FIRST.map((o,i)=>`<button class="opt" type="button" aria-pressed="${S.first===i}" data-i="${i}"><span class="n">${i+1}</span>${o.t}</button>`).join("")}</div>
     <p class="eyebrow">지금 올라오는 감정 (여러 개 가능)</p>
     <div class="chips" id="feel">${FEEL.map((f,i)=>`<button class="chip" type="button" aria-pressed="${S.feel.includes(i)}" data-i="${i}">${f.t}</button>`).join("")}</div>
@@ -612,16 +613,18 @@ function fbText(l){
   return `“${esc(l.t)}”는 <b>${l.a}</b>입니다. ${l.a==="추측"?"확인된 적 없는, 내가 채운 뜻입니다.":l.a==="정보"?"누가 봐도 확인되는 사실입니다.":"상대에 대한 말이 아니라 내 마음의 상태입니다."}`;
 }
 
+function sceneLine(sc){ return `${sc.who}. ${sc.s.replace(/["“”]/g,"")} 당신은 어떤 생각이 드나요?`; }
 function scenes(){
   const all=S.picks.every(p=>p.length>=3);
   const i=S.sceneI, sc=SC(i), p=S.picks[i];
+  if(scenes.last!==S.sc[i]+"-"+S.v+"-"+i){ scenes.last=S.sc[i]+"-"+S.v+"-"+i; if(!p.length) say(sceneLine(sc)); }
   hint(`문에 자물쇠 네 개. ${S.picks.filter(x=>x.length>=3).length} / 4 풀림`);
   V().innerHTML = `
     <p class="eyebrow">미션 2 · 네 개의 침묵</p>
     <p class="small">장면마다 가능한 이유를 <b>세 개</b> 놓으면 자물쇠 하나가 풀립니다. 하나만 맞히는 게임이 아닙니다.</p>
     <div class="locks" id="lockBtns">${S.sc.map((n,j)=>`<button class="lock ${S.picks[j].length>=3?"on":""} ${j===i?"cur":""}" type="button" data-j="${j}"><b>${LETTER[j]}</b>${SCENE_POOL[n].who}</button>`).join("")}</div>
     <div class="scene"><p class="who">장면 ${LETTER[i]} · ${sc.who}</p><p>${sc.s}</p></div>
-    <button class="say" type="button" data-say="${esc(sc.who+". "+sc.s+" "+sc.o.map(o=>o[0]).join(". "))}.">읽어 주기</button>
+    <button class="say" type="button" data-say="${esc(sceneLine(sc))}">읽어 주기</button>
     <div class="stack" id="opts">${sc.o.map((o,j)=>{const k=p.indexOf(j);return `<button class="opt" type="button" aria-pressed="${k>-1}" data-j="${j}"><span class="n">${k>-1?k+1:""}</span>${o[0]}</button>`;}).join("")}</div>
     <p class="small count">${p.length} / 3 ${p.length?"· 처음 고른 이유가 1번으로 남습니다.":""}</p>
     ${all?`<button class="btn" type="button" id="next">자물쇠 네 개가 모두 풀렸다</button>`:
