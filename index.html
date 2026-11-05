@@ -138,6 +138,9 @@ p{margin:0}
 .habit .eyebrow{color:#8a6a2a}
 .habit .small{color:#6b5a3a}
 .habit-name{font-family:var(--display);font-size:21px;font-weight:800}
+.kakao{display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-radius:12px;border:1px solid var(--gold);background:var(--gold-soft);font-size:14px}
+.kakao .btn{text-decoration:none}
+.kakao[hidden]{display:none}
 .copyok{font-size:13px;color:var(--screen);text-align:center;min-height:18px}
 
 /* 지도 */
@@ -171,6 +174,11 @@ footer{font-size:12px;color:var(--dim);line-height:1.6}
   <div class="top">
     <button class="back" id="homeBtn" type="button">← 본관 지도</button>
     <span class="topr"><span id="where"><b>마음의 방탈출</b></span><button class="snd" id="sndBtn" type="button" aria-pressed="false">소리 꺼짐</button></span>
+  </div>
+
+  <div class="kakao" id="kakao" hidden>
+    <p>카카오톡 안에서는 <b>읽어 주기</b>가 되지 않습니다. 소리까지 들으려면 다른 브라우저로 열어 주세요.</p>
+    <a class="btn" id="kakaoOpen" href="#">크롬·삼성 인터넷으로 열기</a>
   </div>
 
   <div class="stage lightsoff" id="stage">
@@ -765,7 +773,7 @@ function hush(){ try{ window.speechSynthesis && speechSynthesis.cancel(); }catch
 function say(text, force){
   if(!SND.on && !force) return;
   try{
-    if(!("speechSynthesis" in window)){ hint("이 기기에서는 읽어 주기를 쓸 수 없습니다."); return; }
+    if(!("speechSynthesis" in window)){ hint(IN_KAKAO ? "카카오톡 안에서는 읽어 주기가 안 됩니다. 위의 ‘크롬·삼성 인터넷으로 열기’를 눌러 주세요." : "이 브라우저에서는 읽어 주기를 쓸 수 없습니다. 크롬이나 삼성 인터넷으로 열어 보세요."); return; }
     speechSynthesis.cancel();
     const u=new SpeechSynthesisUtterance(text); u.lang="ko-KR"; u.rate=.9; u.pitch=.95;
     const v=speechSynthesis.getVoices().find(v=>/^ko/i.test(v.lang)); if(v) u.voice=v;
@@ -775,6 +783,11 @@ function say(text, force){
 function setSound(on){
   SND.on=on; const b=$("#sndBtn"); b.setAttribute("aria-pressed", on); b.textContent = on ? "소리 켜짐" : "소리 꺼짐";
   ambient(on && S.view!=="home"); if(!on) hush();
+}
+const IN_KAKAO = /KAKAOTALK/i.test(navigator.userAgent);
+if(IN_KAKAO){
+  const k=$("#kakao"); k.hidden=false;
+  $("#kakaoOpen").href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(location.href);
 }
 $("#sndBtn").onclick=()=>{ SND.asked=true; setSound(!SND.on); };
 document.addEventListener("click", e=>{ const b=e.target.closest("[data-say]"); if(!b) return; ac(); say(b.dataset.say, true); });
