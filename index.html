@@ -6,7 +6,7 @@
 <title>마음의 방탈출</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;700;800&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 <style>
 :root{
   /* 밤의 방: 짙은 청록 벽, 스탠드 불빛 같은 금빛 버튼, 휴대폰만 푸른빛 */
@@ -50,8 +50,8 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--gold)
 .tagbg{fill:rgba(10,14,16,.82);stroke:rgba(255,255,255,.25)}
 .hint{margin:0 10px 10px;min-height:40px;display:flex;gap:8px;align-items:center;padding:9px 12px;border-radius:10px;background:rgba(8,12,14,.82);border:1px solid var(--line);font-size:13px;font-weight:600}
 .hint::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold);flex:none;box-shadow:0 0 8px var(--gold)}
-#room{transition:filter 1.2s}
-.lightsoff #room{filter:brightness(.38) saturate(.6)}
+
+
 .phone-g.glow rect.body{filter:drop-shadow(0 0 6px #8fd0b5)}
 .phone-g.buzz{animation:buzz .45s linear 4;transform-box:fill-box;transform-origin:center}
 @keyframes buzz{25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
@@ -162,11 +162,218 @@ p{margin:0}
 .prog .bar{height:3px;border-radius:2px;background:rgba(255,255,255,.14);overflow:hidden}
 .prog .bar i{display:block;height:100%;background:var(--gold);transition:width .6s}
 footer{font-size:12px;color:var(--dim);line-height:1.6}
+
+
+/* v8 추가 */
+.nums{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.num{padding:11px 0;border-radius:10px;border:1px solid var(--line);background:var(--panel);font-family:var(--display);font-size:18px;font-weight:800}
+.num[aria-pressed="true"]{border-color:var(--gold);background:var(--gold);color:var(--gold-ink)}
+.card.sel{outline:3px solid var(--gold);background:#f8ecc4}
+.card.sel::after{content:"골랐음";position:absolute;right:8px;bottom:6px;font-size:11px;color:#8a6a2a;font-weight:700}
+details.fold summary{cursor:pointer;font-size:12px;color:var(--gold);font-weight:700;letter-spacing:.16em;padding:6px 0}
+details.fold[open] summary{margin-bottom:8px}
+/* v7 추가 */
+.typing{align-self:flex-start;display:flex;gap:4px;padding:10px 14px;border-radius:15px;background:#232b30;border-bottom-left-radius:4px}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--dim);animation:dot 1.1s infinite}
+.typing i:nth-child(2){animation-delay:.18s}.typing i:nth-child(3){animation-delay:.36s}
+@keyframes dot{40%{opacity:.25;transform:translateY(-3px)}}
+.tstat{font-size:12px;color:var(--screen);text-align:center;min-height:18px}
+.whisper{position:relative;padding:16px 18px;border-radius:14px;background:#0b0f11;border:1px solid #3b2f45;font-family:var(--display);font-size:19px;font-weight:800;line-height:1.55;color:#d9c6ec;box-shadow:0 0 30px -12px #9b6fc7}
+.whisper small{display:block;font-family:var(--body);font-size:11px;letter-spacing:.14em;color:#9b84b3;margin-bottom:4px;font-weight:700}
+.reply{font-size:14px;color:var(--dim);font-style:italic;min-height:22px}
+.meterS{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--dim)}
+.meterS b{color:#d9c6ec;font-variant-numeric:tabular-nums}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.card{position:relative;text-align:left;padding:12px 12px 12px 14px;border-radius:12px;background:#efe6cf;color:#3a3122;font-size:13px;line-height:1.5;border:0;min-height:76px;box-shadow:0 6px 14px -10px #000}
+.card b{display:block;font-size:11px;letter-spacing:.08em;color:#8a6a2a;margin-bottom:2px}
+.card .dg{position:absolute;right:8px;top:6px;font-family:var(--display);font-size:18px;font-weight:800;color:#b5893a}
+.card.in{background:#d9efe4;color:#1f3b2e}
+.card.in::after{content:"꽂음";position:absolute;right:8px;bottom:6px;font-size:11px;color:#2f6b52;font-weight:700}
+.card.no{background:#e7d9e9;color:#4a3550}
+.card.no::after{content:"내가 붙인 뜻";position:absolute;right:8px;bottom:6px;font-size:11px;color:#7a4f87;font-weight:700}
+.card.unk{background:var(--panel);color:var(--dim);border:1px dashed var(--line);box-shadow:none}
+.keypad{display:flex;justify-content:center;gap:8px}
+.keypad span{width:46px;height:56px;border-radius:10px;border:1px solid var(--line);background:#0e1316;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:26px;font-weight:800;color:var(--gold)}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+textarea.line{width:100%;min-height:76px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:#0e1316;color:var(--ink);font:inherit;font-size:15px;resize:vertical}
+textarea.line:focus{outline:1px solid var(--gold)}
+input[type=range]{width:100%;accent-color:var(--gold)}
+.scale{display:flex;justify-content:space-between;font-size:11px;color:var(--dim)}
+.big{font-family:var(--display);font-size:40px;font-weight:800;color:var(--gold);text-align:center;font-variant-numeric:tabular-nums}
+.vs{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;text-align:center}
+.vs .small{display:block}
+.mine{padding:12px 14px;border-radius:12px;border:1px solid rgba(242,210,124,.35);background:var(--gold-soft);font-size:15px}
+.mine b{display:block;font-size:11px;color:var(--gold);letter-spacing:.1em;margin-bottom:2px}
+.tcard{perspective:900px}
+.tcard .in{position:relative;transition:transform .7s;transform-style:preserve-3d;min-height:330px}
+.tcard.flip .in{transform:rotateY(180deg)}
+.tcard .f,.tcard .b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;padding:22px 20px;display:flex;flex-direction:column;gap:10px}
+.tcard .f{background:linear-gradient(160deg,#f6e7bd,#e7c977);color:#2d230d;box-shadow:0 18px 36px -20px #000}
+.tcard .b{background:#141b1f;border:1px solid rgba(242,210,124,.4);transform:rotateY(180deg)}
+.tcard .emo{font-size:44px;line-height:1}
+.tcard .nm{font-family:var(--display);font-size:28px;font-weight:800}
+.tcard .one{font-family:var(--display);font-size:17px;font-weight:800;line-height:1.6}
+.tcard .f .small{color:#5a4a20}
+#shadowG{transition:transform .8s cubic-bezier(.3,1.4,.5,1),opacity .8s;transform-box:fill-box;transform-origin:center bottom}
 @media (prefers-reduced-motion:reduce){
   .narr span{animation:none;opacity:1;transform:none}
   .phone-g.buzz,.pulse{animation:none}
   #room,#doorPanel,#doorLight,#moon,#sky{transition:none}
 }
+
+/* ===== v9 디자인: 휴대폰 불빛으로 보는 밤 =====
+   남색 밤 #0f1428 / 달빛 종이 #ebe5d6 / 문틈 호박빛 #f2b65c / 화면 민트 #8fd8c8 / 그림자 보라 #b79ae0 / 메모지 #efe3c0
+   제목 Hahmlet, 본문 IBM Plex Sans KR, 손글씨(메모·속삭임) Nanum Pen Script */
+:root{--bg-top:#0f1428;--bg-bot:#1a2242;--panel:rgba(190,205,255,.06);--line:rgba(190,205,255,.17);--ink:#ebe5d6;--dim:#9ea7c6;
+  --gold:#f2b65c;--gold-ink:#2b1c05;--gold-soft:rgba(242,182,92,.13);--screen:#8fd8c8;--violet:#b79ae0;--paper:#efe3c0;--paper-ink:#262a4d;
+  --display:"Hahmlet","Nanum Myeongjo",serif;--hand:"Nanum Pen Script","Hahmlet",cursive}
+body{background:radial-gradient(130% 55% at 12% 0%,#283365 0%,rgba(40,51,101,0) 62%),linear-gradient(180deg,#0f1428,#161d3a) fixed;background-color:#0f1428;font-size:16.5px}
+.app{gap:16px}
+.stage{border-radius:20px;background:#0a0e20;border-color:var(--line);box-shadow:0 24px 50px -30px #000}
+.hint{background:rgba(8,10,26,.86);font-weight:500;border-color:rgba(190,205,255,.12)}
+.eyebrow{letter-spacing:0;font-size:13.5px;font-weight:600;color:var(--dim)}
+h1{font-family:var(--display);font-weight:800;font-size:36px;line-height:1.22;letter-spacing:-.03em}
+h2{font-family:var(--display);font-weight:700;font-size:24px;line-height:1.4;letter-spacing:-.02em}
+.quote{font-size:26px}
+.narr{font-size:18px}
+.btn{background:var(--gold);border-radius:14px;box-shadow:0 0 0 1px rgba(255,236,190,.5) inset,0 14px 34px -16px var(--gold);letter-spacing:-.01em}
+.btn.ghost{background:transparent;box-shadow:none;border:1px solid var(--line)}
+.snd[aria-pressed="true"]{background:var(--gold);border-color:var(--gold)}
+.opt{background:transparent;border-radius:14px;padding:14px 16px}
+.opt[aria-pressed="true"]{background:var(--gold-soft);border-color:var(--gold)}
+.opt:disabled{opacity:.45}.opt:disabled[aria-pressed="true"]{opacity:1}
+.chip{background:transparent}
+.callout{background:var(--panel);font-weight:500}
+/* 휴대폰: 이 방의 주인공 */
+.chat{position:relative;border-radius:30px;border:7px solid #05070f;background:#0a0f21;padding:0 14px 18px;gap:8px;font-size:15px;
+  box-shadow:0 0 0 1px #343d6b,0 0 70px -14px rgba(143,216,200,.45)}
+.chat::before{content:attr(data-t);display:block;text-align:center;font-size:11.5px;color:var(--dim);padding:9px 0 2px;font-variant-numeric:tabular-nums}
+.chat .who{font-size:14px;font-weight:600;color:var(--ink);padding:4px 0 10px;border-bottom:1px solid #1d2546;margin-bottom:6px}
+.bub{border-radius:18px;padding:9px 13px}
+.bub.me{background:#2b5d55;border-bottom-right-radius:5px}
+.bub.them{background:#222a4a;border-bottom-left-radius:5px}
+.typing{background:#222a4a;border-radius:18px;border-bottom-left-radius:5px;padding:12px 15px}
+.typing i{background:var(--screen)}
+.tstat{font-size:13px}
+/* 고르는 문장은 말풍선 모양: 상대가 지운 말(왼쪽, 점선) / 내가 보낼 말(오른쪽) */
+#gt.stack{align-items:flex-start}
+#gt .opt{width:auto;max-width:90%;background:#1b2240;border:1.5px dashed rgba(190,205,255,.3);border-radius:18px 18px 18px 5px;color:var(--dim)}
+#gt .opt[aria-pressed="true"]{border-style:solid;border-color:var(--screen);color:var(--ink);background:#222a4a}
+#ln.stack{align-items:flex-end}
+#ln .opt{width:auto;max-width:90%;background:rgba(43,93,85,.35);border:1.5px solid transparent;border-radius:18px 18px 5px 18px}
+#ln .opt[aria-pressed="true"]{background:#2b5d55;border-color:var(--gold)}
+/* 그림자의 말은 손글씨 */
+.whisper{font-family:var(--hand);font-weight:400;font-size:29px;line-height:1.25;color:var(--violet);background:#090b18;border-color:#3d3360;border-radius:4px 18px 18px 18px;box-shadow:0 0 40px -14px var(--violet)}
+.whisper small{font-size:12px;letter-spacing:0;color:#8f7fb5}
+.whisper[style]{font-family:var(--display);font-size:19px;font-weight:700;line-height:1.55;border-radius:14px;background:var(--panel)}
+.reply{font-family:var(--hand);font-style:normal;font-size:22px;color:var(--violet);min-height:28px}
+/* 단서는 메모지 */
+.cards{gap:12px 10px;padding:4px 2px}
+.card{background:var(--paper);color:var(--paper-ink);border-radius:3px;font-family:var(--hand);font-size:21px;line-height:1.22;padding:10px 26px 14px 12px;min-height:92px;box-shadow:0 10px 18px -12px #000;transition:transform .2s}
+.cards>:nth-child(odd){transform:rotate(-1deg)}.cards>:nth-child(even){transform:rotate(.8deg)}
+.card b{font-family:var(--body);font-size:11.5px;letter-spacing:0;color:#7c6a3a;font-weight:600;margin-bottom:4px}
+.card .dg{font-family:var(--display);font-size:20px;color:#a5742a;right:9px;top:5px}
+.card.sel{outline:3px solid var(--gold);outline-offset:2px;background:#fbf0cd;transform:translateY(-3px) rotate(0)!important}
+.card.sel::after,.card.no::after{font-family:var(--body)}
+.card.no{background:#ddd0e6;color:#43345a}
+.card.unk{background:transparent;border:1px dashed var(--line);box-shadow:none;font-family:var(--body);font-size:13px;color:var(--dim);border-radius:3px}
+.card:disabled{cursor:default}
+.keypad span{width:50px;height:60px;border-radius:9px;border:1px solid #3d4672;background:linear-gradient(180deg,#232a4c,#0e1228 55%,#1a2040);font-size:28px;box-shadow:inset 0 2px 6px #000}
+.fb{background:var(--panel);border-radius:0 10px 10px 0}
+.num{border-radius:50%;aspect-ratio:1;padding:0;background:transparent;font-size:17px}
+.big{font-size:44px}
+.mine{border:0;border-left:3px solid var(--gold);border-radius:0 12px 12px 0;background:var(--panel)}
+.mine b{letter-spacing:0;font-size:12px;font-weight:600}
+/* 결과 카드: 수집용 카드 한 장 */
+.tcard .in{min-height:350px}
+.tcard .f{background:var(--paper);color:var(--paper-ink);border-radius:14px;padding:28px 26px;box-shadow:inset 0 0 0 8px var(--paper),inset 0 0 0 9px var(--paper-ink),0 24px 44px -22px #000}
+.tcard .f .small{color:#6a6486}
+.tcard .emo{font-size:46px}
+.tcard .nm{font-size:36px;letter-spacing:-.03em}
+.tcard .one{font-size:18px;font-weight:700}
+.tcard .b{border-radius:14px;background:#0a0e20;border-color:rgba(242,182,92,.45)}
+.habit,.note{background:var(--paper);color:var(--paper-ink);border-radius:4px}
+.habit .eyebrow{color:#7c6a3a}.habit .small{color:#5d5876}
+.chain li+li::before{background:#141a35}
+.room{background:transparent}
+.sortcard{background:var(--paper)}
+details.fold summary{letter-spacing:0;font-size:13.5px;font-weight:600;color:var(--dim)}
+@media (prefers-reduced-motion:reduce){.card{transition:none}}
+
+/* ===== v10 입체 방: CSS 3D 상자 + 시점 이동 ===== */
+#scene{position:relative;overflow:hidden;height:calc(240px*var(--s,1));background:#04060f;transition:filter 1.2s;touch-action:pan-y}
+.lightsoff #scene{filter:brightness(.6) saturate(.7)}
+.cam{width:360px;height:240px;transform-origin:0 0;transform:scale(var(--s,1));perspective:640px;perspective-origin:50% 44%}
+.room3d{position:absolute;inset:0;transform-style:preserve-3d;
+  transform:translate3d(var(--cx,0px),var(--cy,0px),var(--cz,0px)) rotateX(calc(var(--bx,0deg) + var(--rx,0deg))) rotateY(calc(var(--by,0deg) + var(--ry,0deg)));
+  transition:transform 1.3s cubic-bezier(.3,.1,.2,1)}
+.room3d.drag{transition:transform .12s linear}
+.room3d *{transform-style:preserve-3d}
+.room3d,.room3d *{pointer-events:none}
+.room3d .hot,.room3d .hot *{pointer-events:auto}
+.face{position:absolute;backface-visibility:hidden}
+.face.back{width:360px;height:240px;transform:translateZ(-200px);background:linear-gradient(180deg,#303b72,#222a55);box-shadow:inset 0 -5px 0 #141936}
+.face.left{left:0;top:0;width:200px;height:240px;transform-origin:0 50%;transform:rotateY(90deg);background:linear-gradient(270deg,#28315f,#161b3a);box-shadow:inset 0 -5px 0 #0a0d1d}
+.face.right{right:0;top:0;width:200px;height:240px;transform-origin:100% 50%;transform:rotateY(-90deg);background:linear-gradient(90deg,#28315f,#161b3a);box-shadow:inset 0 -5px 0 #0a0d1d}
+.face.ceil{left:0;top:0;width:360px;height:200px;transform-origin:50% 0;transform:rotateX(-90deg);background:linear-gradient(0deg,#12162f,#1c2348)}
+.face.floor{left:0;bottom:0;width:360px;height:200px;transform-origin:50% 100%;transform:rotateX(90deg);
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.22) 0 1px,transparent 1px 45px),linear-gradient(0deg,#4a3f5c,#2d2948)}
+.face,.desk-top,.desk-front,.desk-side{transition:filter 1.4s}
+.morning .face.back,.morning .face.left,.morning .face.right{filter:brightness(1.45) saturate(.9)}
+.morning .face.floor{filter:brightness(1.3)}
+.lampglow{position:absolute;left:-20px;top:40px;width:190px;height:170px;background:radial-gradient(closest-side,rgba(255,217,120,.5),rgba(255,217,120,0));pointer-events:none}
+.doorspill{position:absolute;left:262px;top:0;width:84px;height:150px;background:linear-gradient(180deg,rgba(255,236,170,.75),rgba(255,236,170,0));opacity:0;transition:opacity 1.4s;pointer-events:none}
+.dooropen .doorspill{opacity:1}
+.o3{position:absolute;display:block;overflow:visible}
+.desk-top{position:absolute;left:28px;top:80px;width:200px;height:70px;transform-origin:50% 100%;transform:translateZ(-118px) rotateX(90deg);background:linear-gradient(0deg,#b9824a,#8f6034);border-radius:2px}
+.desk-top .pool{position:absolute;left:-6px;top:0;width:110px;height:70px;background:radial-gradient(closest-side,rgba(255,225,150,.55),rgba(255,225,150,0));pointer-events:none}
+.desk-front{position:absolute;left:28px;top:150px;width:200px;height:90px;transform:translateZ(-118px);border-top:9px solid #8a5a30;border-left:8px solid #6e4625;border-right:8px solid #6e4625;box-sizing:border-box}
+.desk-side{position:absolute;left:228px;top:150px;width:70px;height:9px;transform-origin:0 50%;transform:translateZ(-118px) rotateY(90deg);background:#70482a}
+.o-phone{filter:drop-shadow(0 0 7px rgba(143,216,200,.9))}
+.phone-g.glow rect.body{filter:none}
+/* 장면마다 시점이 움직인다 */
+#stage[data-view="home"] .room3d{--bx:3deg;transition:transform 3.2s ease-in-out}
+#stage[data-view="enter"] .room3d{--cz:40px}
+#stage[data-view="dark"] .room3d,#stage[data-view="write"] .room3d,#stage[data-view="reveal"] .room3d{--cx:62px;--cy:-8px;--cz:150px;--by:5deg}
+#stage[data-view="first"] .room3d{--cx:90px;--cz:90px;--by:12deg}
+#stage[data-view="whisper"] .room3d{--cx:120px;--cy:-34px;--cz:170px;--by:20deg}
+#stage[data-view="search"] .room3d{--bx:3deg}
+#stage[data-view="mine"] .room3d{--cx:-74px;--cy:-30px;--cz:140px;--by:-4deg}
+#stage[data-view="exit"] .room3d{--cx:-52px;--cy:-20px;--cz:100px;--by:-3deg}
+.btn{color:#1a1002;font-weight:700;background:#f0a93a;box-shadow:0 0 0 1px rgba(255,230,170,.55) inset,0 14px 34px -16px #f0a93a}
+.btn.ghost{color:var(--ink);background:transparent;box-shadow:none}
+.btn:disabled{opacity:.4}
+@media (prefers-reduced-motion:reduce){.room3d,#scene,.face{transition:none}}
+
+/* ===== 여러 방: 문 카드, 다이얼, 방 3 색 ===== */
+.doorcard{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;align-items:baseline;text-align:left;width:100%;padding:18px 18px 16px;border-radius:14px;border:1px solid rgba(242,182,92,.45);background:linear-gradient(180deg,rgba(242,182,92,.14),rgba(242,182,92,.04))}
+.doorcard .dn{font-size:13px;color:var(--gold);font-weight:600}
+.doorcard .dm{font-family:var(--display);font-size:23px;font-weight:800;letter-spacing:-.02em}
+.doorcard .dh{grid-column:1/-1;font-size:14.5px;color:var(--ink);opacity:.9;margin-top:4px}
+.doorcard .ds{grid-column:1/-1;font-size:13px;color:var(--gold);font-weight:600;margin-top:8px}
+.wheels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wheel{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;text-align:center;padding:12px 6px;min-height:96px;border-radius:10px;border:1px solid #3d4672;background:linear-gradient(180deg,#232a4c,#0e1228 55%,#1a2040);box-shadow:inset 0 2px 6px #000}
+.wheel small{font-size:11.5px;color:var(--dim);line-height:1.3}
+.wheel b{font-family:var(--display);font-size:18px;font-weight:800;color:var(--gold);line-height:1.25}
+.wheel i{font-style:normal;font-size:10.5px;color:var(--dim);opacity:.8}
+.wheel.ok{border-color:var(--screen)}.wheel.ok b{color:var(--screen)}
+div.wheel i{display:none}
+#clk3{transform-box:view-box;transform-origin:37px 37px}
+#clk3.rew{animation:rew 2.2s linear infinite}
+@keyframes rew{to{transform:rotate(-360deg)}}
+#stage[data-room="3"] .face.back{background:linear-gradient(180deg,#4b2f58,#35203f);box-shadow:inset 0 -5px 0 #1e1226}
+#stage[data-room="3"] .face.left{background:linear-gradient(270deg,#412850,#22142b)}
+#stage[data-room="3"] .face.right{background:linear-gradient(90deg,#412850,#22142b)}
+#stage[data-room="3"] .face.ceil{background:linear-gradient(0deg,#1a0f22,#2a1934)}
+#stage[data-room="3"] .face.floor{background:repeating-linear-gradient(90deg,rgba(0,0,0,.22) 0 1px,transparent 1px 45px),linear-gradient(0deg,#55424f,#33273a)}
+#stage[data-view="m_enter"] .room3d{--cz:40px}
+#stage[data-view="m_moment"] .room3d,#stage[data-view="m_first"] .room3d,#stage[data-view="m_act"] .room3d,#stage[data-view="m_next"] .room3d{--cx:62px;--cy:-8px;--cz:150px;--by:5deg}
+#stage[data-view="m_clock"] .room3d{--cx:66px;--cy:44px;--cz:150px;--by:4deg}
+#stage[data-view="m_search"] .room3d{--bx:3deg}
+#stage[data-view="m_mirror"] .room3d{--cx:-74px;--cy:-30px;--cz:140px;--by:-4deg}
+#stage[data-view="m_exit"] .room3d{--cx:-52px;--cy:-20px;--cz:100px;--by:-3deg}
+@media (prefers-reduced-motion:reduce){#clk3.rew{animation:none}}
 </style>
 </head>
 <body>
@@ -182,102 +389,106 @@ footer{font-size:12px;color:var(--dim);line-height:1.6}
   </div>
 
   <div class="stage lightsoff" id="stage">
-    <svg viewBox="0 0 360 250" role="img" aria-label="밤의 방. 창문, 스탠드, 책상 위 휴대전화와 쪽지, 서랍, 액자, 잠긴 출구가 있다.">
-      <defs>
-        <radialGradient id="lampGlow" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#ffd978" stop-opacity=".55"/><stop offset="1" stop-color="#ffd978" stop-opacity="0"/></radialGradient>
-        <radialGradient id="exitGlow" cx="50%" cy="60%" r="70%"><stop offset="0" stop-color="#fff2c4"/><stop offset="1" stop-color="#f2d27c" stop-opacity=".2"/></radialGradient>
-        <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22302f"/><stop offset="1" stop-color="#1a2524"/></linearGradient>
-        <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9824a"/><stop offset="1" stop-color="#8a5a30"/></linearGradient>
-      </defs>
-      <g id="room">
-        <rect width="360" height="250" fill="url(#wall)"/>
-        <polygon points="0,200 360,200 360,250 0,250" fill="#3a3a2c"/>
-        <line x1="0" y1="200" x2="360" y2="200" stroke="#55523b" stroke-width="2"/>
-        <ellipse cx="72" cy="128" rx="80" ry="70" fill="url(#lampGlow)"/>
+    <div id="scene"><div class="cam"><div class="room3d" id="room3d">
+      <div class="face back">
+        <div class="lampglow"></div>
+        <svg class="o3" style="left:26px;top:20px;width:104px;height:79px" viewBox="20 14 100 76" aria-hidden="false">
+          <g class="hot" data-obj="window" role="button" tabindex="0" aria-label="창문">
+            <rect x="22" y="16" width="96" height="72" rx="2" fill="#232b4e" stroke="#4b5484" stroke-width="2"/>
+            <rect id="sky" x="26" y="20" width="88" height="64" fill="#080c1f"/>
+            <circle id="moon" cx="98" cy="34" r="8" fill="#e9eaa9"/>
+            <line x1="70" y1="20" x2="70" y2="84" stroke="#4b5484" stroke-width="2"/>
+            <line x1="26" y1="52" x2="114" y2="52" stroke="#4b5484" stroke-width="2"/>
+            <rect class="hl" x="20" y="14" width="100" height="76" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+          </g></svg>
+        <svg class="o3" style="left:150px;top:26px;width:80px;height:55px" viewBox="146 18 76 52">
+          <g class="hot" data-obj="frame" role="button" tabindex="0" aria-label="액자">
+            <rect x="150" y="22" width="68" height="44" fill="#2a2418" stroke="#9a7b45" stroke-width="3"/>
+            <text x="184" y="40" text-anchor="middle" font-family="Hahmlet,serif" font-size="9" font-weight="800" fill="#d8c69a" letter-spacing="2">생각의</text>
+            <text x="184" y="54" text-anchor="middle" font-family="Hahmlet,serif" font-size="9" font-weight="800" fill="#d8c69a" letter-spacing="2">감옥</text>
+            <rect class="hl" x="146" y="18" width="76" height="52" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+          </g></svg>
+        <svg class="o3" style="left:258px;top:92px;width:92px;height:148px" viewBox="255 67 84 136">
+          <defs><radialGradient id="exitGlow" cx="50%" cy="60%" r="70%"><stop offset="0" stop-color="#fff2c4"/><stop offset="1" stop-color="#f2d27c" stop-opacity=".2"/></radialGradient></defs>
+          <g class="hot" data-obj="door" role="button" tabindex="0" aria-label="출구 문">
+            <rect x="258" y="70" width="78" height="133" fill="#3a2414"/>
+            <rect id="doorLight" x="261" y="73" width="72" height="130" fill="url(#exitGlow)"/>
+            <g id="doorPanel">
+              <rect x="261" y="73" width="72" height="130" fill="#6b4126" stroke="#8c5a35" stroke-width="1.5"/>
+              <rect x="269" y="82" width="56" height="48" fill="none" stroke="#83532f" stroke-width="1.5"/>
+              <rect x="269" y="140" width="56" height="52" fill="none" stroke="#83532f" stroke-width="1.5"/>
+              <circle cx="322" cy="138" r="4" fill="#f2d27c"/>
+              <g id="locks">
+                <circle cx="279" cy="104" r="5" fill="#2a1a0e" stroke="#a37a45"/>
+                <circle cx="292" cy="104" r="5" fill="#2a1a0e" stroke="#a37a45"/>
+                <circle cx="305" cy="104" r="5" fill="#2a1a0e" stroke="#a37a45"/>
+                <circle cx="318" cy="104" r="5" fill="#2a1a0e" stroke="#a37a45"/>
+              </g>
+            </g>
+            <rect class="hl" x="256" y="68" width="82" height="134" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+          </g></svg>
+      </div>
+      <div class="face left"></div>
+      <div class="face right"></div>
+      <div class="face ceil"></div>
+      <div class="face floor"><div class="doorspill"></div></div>
 
-        <!-- 창문 -->
-        <g class="hot" data-obj="window" role="button" tabindex="0" aria-label="창문">
-          <rect x="22" y="16" width="96" height="72" rx="2" fill="#2d3c3a" stroke="#4d5d55" stroke-width="2"/>
-          <rect id="sky" x="26" y="20" width="88" height="64" fill="#13201f"/>
-          <circle id="moon" cx="98" cy="34" r="8" fill="#e9eaa9"/>
-          <line x1="70" y1="20" x2="70" y2="84" stroke="#4d5d55" stroke-width="2"/>
-          <line x1="26" y1="52" x2="114" y2="52" stroke="#4d5d55" stroke-width="2"/>
-          <rect class="hl" x="20" y="14" width="100" height="76" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
-        </g>
+      <!-- 그림자: 왼쪽 구석 -->
+      <svg class="o3" style="left:4px;top:118px;width:52px;height:122px;transform:translateZ(-168px)" viewBox="0 110 36 92">
+        <g id="shadowG" opacity="0">
+          <path d="M2,200 C0,150 9,122 17,114 C25,122 34,150 32,200 Z" fill="#05060d" opacity=".96"/>
+          <circle cx="13" cy="132" r="2" fill="#c9a6ee"/><circle cx="21" cy="132" r="2" fill="#c9a6ee"/>
+        </g></svg>
+      <!-- 화분 -->
+      <svg class="o3" style="left:226px;top:196px;width:26px;height:44px;transform:translateZ(-186px)" viewBox="234 164 22 38">
+        <rect x="236" y="186" width="16" height="14" rx="2" fill="#4b5a3a"/>
+        <circle cx="240" cy="180" r="6" fill="#4f7a52"/><circle cx="249" cy="178" r="6" fill="#5d8a5c"/><circle cx="244" cy="171" r="6" fill="#6a9a66"/></svg>
 
-        <!-- 액자 -->
-        <g class="hot" data-obj="frame" role="button" tabindex="0" aria-label="액자">
-          <rect x="150" y="22" width="68" height="44" fill="#2a2418" stroke="#9a7b45" stroke-width="3"/>
-          <text x="184" y="40" text-anchor="middle" font-family="Nanum Myeongjo,serif" font-size="9" font-weight="800" fill="#d8c69a" letter-spacing="2">생각의</text>
-          <text x="184" y="54" text-anchor="middle" font-family="Nanum Myeongjo,serif" font-size="9" font-weight="800" fill="#d8c69a" letter-spacing="2">감옥</text>
-          <rect class="hl" x="146" y="18" width="76" height="52" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
-        </g>
-
-        <!-- 스탠드 -->
+      <!-- 책상: 윗면, 앞면, 옆면 -->
+      <div class="desk-top"><div class="pool"></div>
+        
+      </div>
+      <div class="desk-front">
+        <svg class="o3" style="left:16px;top:10px;width:112px;height:40px" viewBox="47 149 106 38">
+          <g class="hot" data-obj="drawer" role="button" tabindex="0" aria-label="서랍">
+            <rect x="50" y="152" width="100" height="32" rx="3" fill="#9c6a3a" stroke="#c99a5e" stroke-width="1.5"/>
+            <rect x="90" y="166" width="20" height="4" rx="2" fill="#f1e2c2"/>
+            <rect class="hl" x="47" y="149" width="106" height="38" rx="4" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+          </g></svg>
+      </div>
+      <div class="desk-side"></div>
+      <svg class="o3" style="left:152px;top:116px;width:50px;height:38px;transform-origin:50% 100%;transform:translateZ(-126px) rotateX(48deg)" viewBox="154 111 48 38">
+          <g class="hot" data-obj="memo" role="button" tabindex="0" aria-label="쪽지">
+            <rect x="160" y="120" width="36" height="22" fill="#f3dfa0" transform="rotate(-8 178 131)"/>
+            <line x1="167" y1="128" x2="188" y2="125" stroke="#b49a5a" stroke-width="1.2"/>
+            <line x1="168" y1="133" x2="186" y2="130" stroke="#b49a5a" stroke-width="1.2"/>
+            <rect class="hl" x="156" y="113" width="44" height="34" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+          </g></svg>
+      <!-- 스탠드 -->
+      <svg class="o3" style="left:40px;top:82px;width:46px;height:68px;transform:translateZ(-160px)" viewBox="44 80 42 62">
         <g class="hot" data-obj="lamp" role="button" tabindex="0" aria-label="스탠드">
           <polygon points="48,104 82,104 74,84 56,84" fill="#f0cd5e"/>
           <rect x="63" y="104" width="4" height="34" fill="#c9a24a"/>
           <rect x="55" y="136" width="20" height="4" rx="1" fill="#c9a24a"/>
           <rect class="hl" x="44" y="80" width="42" height="62" rx="4" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
-        </g>
-
-        <!-- 책상 -->
-        <rect x="26" y="140" width="210" height="10" rx="2" fill="url(#wood)"/>
-        <rect x="34" y="150" width="7" height="50" fill="#6e4625"/>
-        <rect x="222" y="150" width="7" height="50" fill="#6e4625"/>
-
-        <!-- 서랍 -->
-        <g class="hot" data-obj="drawer" role="button" tabindex="0" aria-label="서랍">
-          <rect x="50" y="152" width="100" height="32" rx="3" fill="#9c6a3a" stroke="#c99a5e" stroke-width="1.5"/>
-          <rect x="90" y="166" width="20" height="4" rx="2" fill="#f1e2c2"/>
-          <rect class="hl" x="47" y="149" width="106" height="38" rx="4" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
-        </g>
-
-        <!-- 휴대전화 -->
+        </g></svg>
+      <!-- 휴대전화 -->
+      <svg class="o3 o-phone" style="left:104px;top:96px;width:42px;height:56px;transform:translateZ(-128px)" viewBox="106 98 36 48">
         <g class="hot phone-g glow" id="phoneG" data-obj="phone" role="button" tabindex="0" aria-label="휴대전화">
           <rect class="body" x="112" y="104" width="24" height="36" rx="4" fill="#7fbfa7" stroke="#22302b" stroke-width="2"/>
           <rect x="116" y="110" width="16" height="22" rx="1" fill="#a9e4cc"/>
           <circle cx="120" cy="121" r="1.4" fill="#22302b"/><circle cx="124" cy="121" r="1.4" fill="#22302b"/><circle cx="128" cy="121" r="1.4" fill="#22302b"/>
           <circle id="phoneDot" class="pulse" cx="134" cy="106" r="3" fill="#f2d27c"/>
           <rect class="hl" x="108" y="100" width="32" height="44" rx="5" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
-        </g>
-        <rect class="tagbg" x="104" y="156" width="40" height="13" rx="3"/>
-        <text class="tag" x="124" y="165.5" text-anchor="middle">휴대전화</text>
-
-        <!-- 쪽지 -->
-        <g class="hot" data-obj="memo" role="button" tabindex="0" aria-label="쪽지">
-          <rect x="160" y="120" width="36" height="22" fill="#f3dfa0" transform="rotate(-8 178 131)"/>
-          <line x1="167" y1="128" x2="188" y2="125" stroke="#b49a5a" stroke-width="1.2"/>
-          <line x1="168" y1="133" x2="186" y2="130" stroke="#b49a5a" stroke-width="1.2"/>
-          <rect class="hl" x="156" y="113" width="44" height="34" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
-        </g>
-
-        <!-- 문 -->
-        <g class="hot" data-obj="door" role="button" tabindex="0" aria-label="출구 문">
-          <rect x="258" y="70" width="78" height="130" fill="#3a2414"/>
-          <rect id="doorLight" x="261" y="73" width="72" height="127" fill="url(#exitGlow)"/>
-          <g id="doorPanel">
-            <rect x="261" y="73" width="72" height="127" fill="#6b4126" stroke="#8c5a35" stroke-width="1.5"/>
-            <rect x="269" y="82" width="56" height="48" fill="none" stroke="#83532f" stroke-width="1.5"/>
-            <rect x="269" y="140" width="56" height="50" fill="none" stroke="#83532f" stroke-width="1.5"/>
-            <circle cx="322" cy="138" r="4" fill="#f2d27c"/>
-            <g id="locks">
-              <circle cx="279" cy="104" r="5" fill="#2a1a0e" stroke="#a37a45"/>
-              <circle cx="292" cy="104" r="5" fill="#2a1a0e" stroke="#a37a45"/>
-              <circle cx="305" cy="104" r="5" fill="#2a1a0e" stroke="#a37a45"/>
-              <circle cx="318" cy="104" r="5" fill="#2a1a0e" stroke="#a37a45"/>
-            </g>
-          </g>
-          <rect class="hl" x="255" y="67" width="84" height="136" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
-        </g>
-        <rect class="tagbg" x="281" y="205" width="32" height="13" rx="3"/>
-        <text class="tag" x="297" y="214.5" text-anchor="middle">출구</text>
-
-        <!-- 화분 -->
-        <rect x="236" y="186" width="16" height="14" rx="2" fill="#4b5a3a"/>
-        <circle cx="240" cy="180" r="6" fill="#4f7a52"/><circle cx="249" cy="178" r="6" fill="#5d8a5c"/><circle cx="244" cy="171" r="6" fill="#6a9a66"/>
-      </g>
-    </svg>
+        </g></svg>
+      <!-- 쓰레기통 -->
+      <svg class="o3" style="left:232px;top:190px;width:44px;height:50px;transform:translateZ(-62px)" viewBox="172 162 36 42">
+        <g class="hot" data-obj="trash" role="button" tabindex="0" aria-label="쓰레기통">
+          <polygon points="176,174 204,174 200,202 180,202" fill="#4a556a" stroke="#6b789a" stroke-width="1.5"/>
+          <circle cx="186" cy="172" r="5" fill="#efe6cf"/><circle cx="195" cy="173" r="4" fill="#e3d6b6"/>
+          <rect class="hl" x="173" y="164" width="34" height="39" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+        </g></svg>
+    </div></div></div>
     <div class="hint" id="hint">방이 어둡습니다.</div>
   </div>
 
@@ -288,12 +499,12 @@ footer{font-size:12px;color:var(--dim);line-height:1.6}
 </div>
 
 <script>
-/* ---------- 내용 (원 설계: 「생각의 감옥: 해석의 출구」 방 2 침묵의 방) ---------- */
+/* ---------- 마음의 방탈출 · 방 2 침묵의 방 v8 ---------- */
 const ROOMS = ["첫인상의 복도","침묵의 방","실수의 방","비교의 거울방","버려짐의 방","통제의 방","재앙의 방","책임의 방","내면비평가의 방","해석의 출구"];
 const OPEN_ROOM = 1;
-const STEP_NAMES = ["입구","방 탐색","첫 반응","미션 1 · 나누기","미션 2 · 네 개의 침묵","반전","탈출"];
+const STEP_NAMES = ["입구","입력 중…","속삭이는 목소리","단서와 자물쇠","보낼 한 줄","다음 날 아침","당신의 침묵","탈출"];
+const NSTEP = STEP_NAMES.length;
 
-/* 첫 생각: 강의 자료의 세 갈래(분노·불안·우울) + 유보. 화면에는 갈래를 숨기고 섞어서 보여 준다 */
 const FIRST = [
   {t:"내가 또 뭘 잘못했나", g:"불안", anx:2, mind:1},
   {t:"바빠서 못 봤을 것이다", g:"유보", mind:1},
@@ -305,102 +516,174 @@ const FIRST = [
   {t:"역시 나한테는 늘 이런 일이 생긴다", g:"우울", anx:1, mind:1}
 ];
 const FEEL = [{t:"화남",rej:1},{t:"억울함",rej:1},{t:"불안",anx:2},{t:"초조함",anx:2},{t:"서운함",rej:1},{t:"허전함",anx:1},{t:"우울함",rej:1},{t:"담담함"}];
-const BODY = ["가슴이 답답하다","심장이 빨리 뛴다","어깨가 굳는다","잠이 안 올 것 같다","별 느낌 없다"];
-const ACT = [{t:"휴대폰을 계속 확인한다",anx:1},{t:"보낸 메시지를 지우고 싶다",anx:1},{t:"다른 사람에게 털어놓는다"},{t:"다시 연락한다"},{t:"다른 일을 한다"}];
-const SORT_BASE = [
-  {t:"읽음 표시가 있다", a:"정보"},
-  {t:"나를 싫어한다", a:"추측"},
-  {t:"불안하다", a:"감정"},
-  {t:"답장이 없다", a:"정보"},
-  {t:"화가 났다", a:"추측"},
-  {t:"초조하다", a:"감정"},
-  {t:"보낸 지 세 시간이 지났다", a:"정보"},
-  {t:"실망했을 것이다", a:"추측"},
-  {t:"지금은 바쁠 수 있다", a:"추측", note:"좋게 보는 생각도 추측입니다. 중요한 건 어느 쪽이든 하나로 못 박지 않는 것."},
-  {t:"서운하다", a:"감정"},
-  {t:"관계가 끝났다", a:"추측"}
+
+/* 고르는 문장들: 겉으로는 표시가 없지만, 어느 쪽에 손이 가는지가 결과에 들어간다 */
+const DELETED = [
+  {t:"미안, 지금 좀 바빠서…"},
+  {t:"그 얘기는 좀 그렇다", anx:1},
+  {t:"나 사실 좀 서운했어", anx:1},
+  {t:"뭐라고 답해야 할지 모르겠다"},
+  {t:"ㅋㅋ 괜찮아"},
+  {t:"너 진짜 왜 그래?", rej:2}
 ];
-const SORTS = () => [...SORT_BASE, {t:VV().clue, a:"정보", clue:"서랍 속에서 본 사실입니다. 이미 손에 쥔 정보였을지도 모릅니다."}];
-const SCENE_POOL = [
-  {k:"A", who:"친한 친구", s:"고민 끝에 긴 메시지를 보냈다. 읽음 표시가 떴고, 답은 없다.",
-   o:[["나를 귀찮아한다","rej"],["내 말에 상처받았다","self"],["답을 고민하고 있다","neu"],["바빠서 나중에 보려 했다","neu"],["읽고 깜빡했다","neu"],["할 말이 정리되지 않았다","neu"]]},
-  {k:"B", who:"연인", s:"\"나중에 연락할게\" 하고 하루가 지났다.",
-   o:[["마음이 식었다","rej"],["나에게 화가 났다","self"],["일이 몰렸다","neu"],["피곤해서 쉬고 있다","neu"],["연락할 때를 놓쳤다","neu"],["만나서 말하려 한다","neu"]]},
-  {k:"C", who:"직장 동료", s:"회의 자료를 보냈다. 확인만 하고 아무 말이 없다.",
-   o:[["자료가 마음에 안 든다","self"],["나를 무시한다","rej"],["문제가 없어서 할 말이 없다","neu"],["회의 때 말하려 한다","neu"],["다른 일로 바쁘다","neu"],["원래 답을 잘 안 하는 사람이다","neu"]]},
-  {k:"D", who:"가족 단톡방", s:"사진과 함께 소식을 올렸다. 아무도 반응하지 않는다.",
-   o:[["내 얘기엔 관심이 없다","rej"],["다들 나한테 서운한 게 있다","self"],["각자 바쁜 시간이다","neu"],["읽고 속으로 반가워했다","neu"],["딱히 할 말이 없었다","neu"],["나중에 몰아서 보려 한다","neu"]]},
-  {who:"친구들 단톡방", s:"모임 날짜를 제안했다. 다들 읽었는데 아무도 답이 없다.",
-   o:[["나랑 만나기 싫은가 보다","rej"],["내 제안이 별로였나","self"],["일정을 확인하고 있다","neu"],["누가 먼저 답하길 기다린다","neu"],["지금은 다들 바쁘다","neu"],["날짜가 애매해서 고민 중이다","neu"]]},
-  {who:"선배", s:"공들인 보고서에 \"확인했어요\" 한 줄만 왔다.",
-   o:[["마음에 안 든다는 뜻이다","self"],["나를 대충 대한다","rej"],["문제가 없다는 뜻이다","neu"],["바빠서 짧게 쓴 것이다","neu"],["원래 말이 짧은 사람이다","neu"],["나중에 따로 말하려 한다","neu"]]},
-  {who:"오랜 친구", s:"생일 축하 메시지를 길게 보냈는데 하트 하나만 눌렀다.",
-   o:[["예전만큼 나를 안 좋아한다","rej"],["내가 뭘 서운하게 했나","self"],["축하가 많아 일일이 못 쓴다","neu"],["하트가 그 친구의 고마움 표현이다","neu"],["나중에 길게 쓰려 한다","neu"],["원래 표현이 적은 사람이다","neu"]]},
-  {who:"썸 타는 사람", s:"어제는 답이 빨랐는데, 오늘은 몇 시간째 답이 없다.",
-   o:[["관심이 식었다","rej"],["내가 너무 들이댔나","self"],["오늘 일이 많다","neu"],["휴대폰을 두고 나갔다","neu"],["천천히 알아가고 싶어 한다","neu"],["답할 말을 고르고 있다","neu"]]}
+const LINES = [
+  {t:"바빠? 편할 때 답 줘"},
+  {t:"내가 뭐 잘못했어?", anx:2},
+  {t:"읽었으면 답 좀 해 줘", rej:1},
+  {t:"괜찮아, 천천히 해"},
+  {t:"나만 신경 쓰는 것 같네", rej:2}
 ];
-const SC = i => SCENE_POOL[S.sc[i]];
-const LETTER = "ABCD";
-/* 주인공 이야기: 다시 하면 안 본 이야기가 먼저 나온다. 반전도 이야기마다 다르다 */
+const READS = [
+  {t:"바쁜가 보다"},
+  {t:"나한테 서운한 게 있나?", anx:1},
+  {t:"나한테 관심이 없나 보다", rej:2},
+  {t:"내가 귀찮게 했나", anx:2},
+  {t:"그럴 수 있지, 기다리자"},
+  {t:"무슨 일 있는 거 아냐?", anx:1}
+];
+const tagOf = (arr,t) => arr.find(x=>x.t===t) || {};
+
+/* 속삭이는 목소리: 첫 생각의 갈래에 맞춰 속삭인다. 대꾸는 판마다 다르다 */
+const WHISPER = {
+  "분노":["봐, 읽고 씹었잖아.","너를 우습게 보는 거야.","너도 똑같이 갚아 줘. 답하지 마."],
+  "불안":["뭔가 잘못됐어. 분명해.","이러다 멀어질 거야. 넌 알잖아.","지금 당장 뭐라도 보내. 늦기 전에."],
+  "우울":["역시 너는 중요하지 않아.","너한테는 늘 이런 일이 생기지.","기대한 네가 잘못이야."],
+  "유보":["바쁘다고? 그건 네 착각일걸.","진짜 이유는 따로 있어. 너만 몰라.","확인해 봤자 상처만 받을 거야."]
+};
+const COMEBACK = [
+  [ {t:"…그런가.", back:"그렇지? 내 말이 맞다니까.", d:1, k:"동의"},
+    {t:"증거 있어?", back:"…증거? 읽음 표시면 충분하지 않아?", d:-1, k:"증거 묻기"},
+    {t:"몰라. 생각하기 싫어.", back:"피해도 난 여기 있어.", d:0, k:"피하기"},
+    {t:"그럴 수도 있지만, 아닐 수도 있어.", back:"흥. 그럴 수도… 있겠지.", d:-1, k:"다른 가능성"} ],
+  [ {t:"지난번엔 네 말이 틀렸잖아.", back:"…그건 그때고.", d:-1, k:"반례"},
+    {t:"조용히 좀 해.", back:"누른다고 내가 사라지나?", d:0, k:"누르기"},
+    {t:"나도 사실 그렇게 생각했어.", back:"거봐. 우린 생각이 같아.", d:1, k:"동의"},
+    {t:"친구가 이런 일을 겪었다면 난 뭐라고 했을까.", back:"…괜찮을 거라고 했겠지. 쳇.", d:-1, k:"친구에게 하듯"} ],
+  [ {t:"휴대폰이나 다시 볼래.", back:"그래, 계속 들여다봐. 밤은 기니까.", d:0, k:"확인하기"},
+    {t:"그래서, 최악이면 어떻게 되는데?", back:"최악이라… 그래도 넌 내일 아침을 맞겠지.", d:-1, k:"최악 따져 보기"},
+    {t:"아침까지 기다려 보고 정할게.", back:"…재미없게 구네.", d:-1, k:"결론 미루기"},
+    {t:"…네 말이 맞는 것 같아.", back:"이제야 말이 통하네.", d:1, k:"동의"} ]
+];
+
+/* 주인공 이야기 */
 const VARIANTS = [
   {who:"민지", rel:"친구", prev:"ㅋㅋ 알겠어 내일 얘기하자", sent:"어제 얘기한 거, 괜찮아?<br>내가 좀 심하게 말한 것 같아서", read:"9:14 PM",
    times:["밤 9:14 읽음","밤 10:02","밤 10:47","밤 11:30","밤 11:58"], last:"밤 11시 58분",
-   drawerHint:"서랍 안에 달력이 있습니다. 오늘 날짜에 적힌 메모: 민지 야간 근무.", drawerNote:"<b>서랍 속 달력</b>11월 4일 · 민지 야간 근무 (22시~07시)",
-   memoHint:"쪽지에는 어제 내가 한 말이 적혀 있습니다. “그건 네가 너무 예민한 거 아냐?”", memoNote:"<b>쪽지</b>어제 내가 한 말: “그건 네가 너무 예민한 거 아냐?”<br>그래서 오늘 사과 겸 메시지를 보냈다.",
-   clue:"민지는 오늘 야간 근무다", clueChip:"민지 야간 근무", memoChip:"어제 내가 한 말",
-   replyT:"8:41 AM", reply:["미안!! 어제 야간 근무라 폰을 아예 못 봤어 😭","얘기한 거 완전 괜찮아. 오늘 저녁에 통화할래?"],
-   lesson:"이번에는 바빴습니다. 다음번엔 정말 서운한 일이 있었을 수도 있습니다. 어느 쪽이든 차이를 만드는 건, 확인하기 전까지 결론을 미뤄 두는 힘입니다."},
+   drawer:"달력 · 11월 4일 칸: 민지 야간 근무 (22시~07시)", memo:"어제 내가 한 말: “그건 네가 너무 예민한 거 아냐?”",
+   trash:"“민지는 이제 나한테 질렸다.”",
+   replyT:"8:41 AM",
+   R:{base:["미안!! 어제 야간 근무라 폰을 아예 못 봤어 😭","얘기한 거 완전 괜찮아. 오늘 저녁에 통화할래?"],
+      ask:["미안!! 어제 야간 근무라 폰을 아예 못 봤어 😭","한 번 더 물어봐 줘서 고마워. 나 진짜 괜찮아. 오늘 저녁에 통화할래?"],
+      long:["미안!! 어제 야간 근무라 폰을 아예 못 봤어 😭","긴 메시지 이제 다 읽었어… 그렇게까지 마음 졸인 줄 몰랐네. 나 정말 괜찮았어. 오늘 통화하자"],
+      cut:["미안!! 어제 야간 근무라 폰을 아예 못 봤어 😭","얘기한 거 완전 괜찮아. 오늘 저녁에 통화할래?","(오후 2:10) 어… 혹시 나한테 화났어? 답이 없네"]},
+   lesson:"이번에는 그냥 바빴습니다. 다음번엔 정말 서운한 일이 있을 수도 있습니다. 차이를 만드는 건, 확인하기 전까지 결론을 미뤄 두는 힘입니다."},
   {who:"준호", rel:"연인", prev:"그 얘기는 나중에 하자", sent:"주말에 얘기한 거, 다시 생각해 봤어?<br>나는 우리 얘기 제대로 하고 싶어", read:"10:32 PM",
    times:["밤 10:32 읽음","밤 11:15","밤 11:50","새벽 12:30","새벽 1:04"], last:"새벽 1시 4분",
-   drawerHint:"서랍 안에 다이어리가 있습니다. 내일 날짜에 적힌 메모: 준호 아침 발표.", drawerNote:"<b>서랍 속 다이어리</b>11월 5일 · 준호 아침 9시 발표 (밤새 준비한다고 함)",
-   memoHint:"쪽지에는 주말에 다툰 뒤 써 둔 메모가 있습니다. “내가 먼저 말 걸자.”", memoNote:"<b>쪽지</b>주말에 다툰 뒤 써 둔 메모: “내가 먼저 말 걸자.”<br>그래서 오늘 밤 먼저 메시지를 보냈다.",
-   clue:"준호는 내일 아침 발표가 있다", clueChip:"준호 내일 발표", memoChip:"주말의 다툼",
-   replyT:"7:12 AM", reply:["미안, 발표 준비하느라 정신이 없었어","그리고 솔직히 그 얘기는 바로 답하기가 어려웠어. 오늘 저녁에 만나서 천천히 얘기하자"],
-   lesson:"준호는 바빴고, 동시에 정말 답하기 어려웠습니다. 침묵에는 이유가 하나만 있지 않습니다. 확인해 보기 전까지는 어느 쪽인지 알 수 없었습니다."},
+   drawer:"다이어리 · 11월 5일 칸: 준호 아침 9시 발표 (밤새 준비)", memo:"주말에 다툰 뒤 내가 써 둔 메모: “내가 먼저 말 걸자.”",
+   trash:"“준호는 이 관계를 끝내고 싶어 한다.”",
+   replyT:"7:12 AM",
+   R:{base:["미안, 발표 준비하느라 정신이 없었어","솔직히 그 얘기는 바로 답하기가 어려웠어. 오늘 저녁에 만나서 천천히 얘기하자"],
+      ask:["미안, 발표 준비하느라 정신이 없었어","편할 때 답하라고 해 줘서 고마웠어. 바로 답하기 어려운 얘기였거든. 오늘 저녁에 천천히 얘기하자"],
+      long:["미안, 발표 준비하느라 정신이 없었어","네 메시지 읽고 마음이 무거웠어. 피하려던 건 아니야. 나도 무서웠나 봐. 오늘 저녁에 만나자"],
+      cut:["미안, 발표 준비하느라 정신이 없었어","솔직히 그 얘기는 바로 답하기가 어려웠어. 오늘 저녁에 만나서 천천히 얘기하자","(오후 3:40) 하루 종일 연락이 없네… 내가 답 늦어서 많이 서운했지"]},
+   lesson:"준호는 바빴고, 동시에 정말 답하기 어려웠습니다. 침묵의 이유는 하나만이 아닙니다. 확인하기 전에는 어느 쪽인지 알 수 없었습니다."},
   {who:"김 팀장님", rel:"직장 상사", prev:"수정해서 오늘 중으로 다시 보내 주세요", sent:"팀장님, 수정한 보고서 보내드렸습니다.<br>확인 부탁드립니다.", read:"4:12 PM",
    times:["오후 4:12 읽음","오후 5:05","오후 5:48","오후 6:30","저녁 7:10"], last:"저녁 7시 10분",
-   drawerHint:"서랍 안에 팀 일정표가 있습니다. 오늘 오후 칸: 팀장 본부장 보고.", drawerNote:"<b>팀 공유 일정표</b>11월 4일 16:30~18:30 · 팀장 본부장 보고",
-   memoHint:"쪽지에는 오전 회의 때 받아 적은 지적이 있습니다. “3쪽 수치 다시.”", memoNote:"<b>쪽지</b>오전 회의 메모: “3쪽 수치 다시 확인.”<br>고친 보고서를 오후에 보냈다.",
-   clue:"팀장님은 오후에 본부장 보고가 있었다", clueChip:"팀장 본부장 보고", memoChip:"오전 회의 지적",
-   replyT:"8:52 AM", reply:["어제는 보고 들어가느라 못 봤어요","수정본 좋네요. 3쪽 표만 한 번 더 봐 주세요"],
+   drawer:"팀 일정표 · 11월 4일 16:30~18:30: 팀장 본부장 보고", memo:"오전 회의 때 받아 적은 말: “3쪽 수치 다시 확인.”",
+   trash:"“팀장님은 내 보고서가 한심하다고 생각한다.”",
+   replyT:"8:52 AM",
+   R:{base:["어제는 보고 들어가느라 못 봤어요","수정본 좋네요. 3쪽 표만 한 번 더 봐 주세요"],
+      ask:["어제는 보고 들어가느라 못 봤어요. 다시 알려 줘서 고마워요","수정본 좋네요. 3쪽 표만 한 번 더 봐 주세요"],
+      long:["어제는 보고 들어가느라 못 봤어요","걱정을 많이 했나 보네요. 수정본 좋습니다. 3쪽 표만 한 번 더 봐 주세요"],
+      cut:["어제는 보고 들어가느라 못 봤어요","수정본 좋네요. 3쪽 표만 한 번 더 봐 주세요","(오전 11:20) 답이 없어서요. 3쪽 표, 점심 전에 같이 봐요"]},
    lesson:"팀장님은 회의 중이었고, 고칠 곳도 하나 남아 있었습니다. 침묵은 칭찬도 비난도 아니었습니다. 확인하기 전까지는 그냥 비어 있는 시간이었습니다."},
   {who:"엄마", rel:"가족", prev:"그래 알았다. 밥은 먹었냐", sent:"엄마, 이번 명절엔 못 내려갈 것 같아요.<br>일이 너무 몰려서요", read:"8:05 PM",
    times:["저녁 8:05 읽음","밤 8:50","밤 9:40","밤 10:25","밤 11:00"], last:"밤 11시",
-   drawerHint:"서랍 안에 가족 달력이 있습니다. 오늘 저녁 칸: 엄마 동창 모임.", drawerNote:"<b>가족 달력</b>11월 4일 저녁 · 엄마 동창 모임",
-   memoHint:"쪽지에는 지난번 통화 메모가 있습니다. “엄마가 한숨을 쉬었다.”", memoNote:"<b>쪽지</b>지난 통화 메모: “올해는 꼭 오라며 엄마가 한숨을 쉬었다.”",
-   clue:"엄마는 오늘 저녁 동창 모임이 있다", clueChip:"엄마 동창 모임", memoChip:"지난 통화의 한숨",
-   replyT:"7:30 AM", reply:["모임 다녀와서 이제 봤다","서운하긴 한데 바쁜 거 안다. 밥 잘 챙겨 먹어라"],
-   lesson:"엄마는 정말 서운했습니다. 하지만 당신을 밀어낸 건 아니었습니다. 서운함과 거절은 다릅니다. 확인하기 전에는 그 둘을 구분할 수 없습니다."}
+   drawer:"가족 달력 · 11월 4일 저녁 칸: 엄마 동창 모임", memo:"지난 통화 때 적어 둔 것: “올해는 꼭 오라며 엄마가 한숨을 쉬었다.”",
+   trash:"“엄마는 나한테 실망해서 말도 하기 싫은 거다.”",
+   replyT:"7:30 AM",
+   R:{base:["모임 다녀와서 이제 봤다","서운하긴 한데 바쁜 거 안다. 밥 잘 챙겨 먹어라"],
+      ask:["모임 다녀와서 이제 봤다. 또 물어봐 줘서 고맙다","서운하긴 한데 바쁜 거 안다. 밥 잘 챙겨 먹어라"],
+      long:["모임 다녀와서 이제 봤다","엄마가 화나서 답 안 한 줄 알았구나. 그런 거 아니다. 서운한 거랑 미운 건 다르다. 밥 잘 챙겨 먹어라"],
+      cut:["모임 다녀와서 이제 봤다","서운하긴 한데 바쁜 거 안다. 밥 잘 챙겨 먹어라","(저녁 6:05) 하루 종일 답이 없네. 니 목소리 듣고 싶다. 전화 한 통 해라"]},
+   lesson:"엄마는 정말 서운했습니다. 하지만 당신을 밀어낸 건 아니었습니다. 서운함과 거절은 다릅니다. 확인하기 전에는 그 둘을 구분할 수 없습니다."},
+  {who:"서연", rel:"친구", prev:"그래… 알겠어", sent:"토요일에 못 가서 미안.<br>다음엔 꼭 갈게, 진짜로", read:"9:40 PM",
+   times:["밤 9:40 읽음","밤 10:20","밤 11:05","밤 11:45","새벽 12:20"], last:"새벽 12시 20분",
+   drawer:"달력 · 지난 토요일 칸: 서연 생일 모임 (못 감)", memo:"내가 써 둔 메모: “약속 취소, 올해 세 번째.”",
+   trash:"“서연이는 나랑 이제 끝내려는 거다.”",
+   replyT:"9:05 AM",
+   R:{base:["어제는 바로 답하기 싫었어. 솔직히 좀 서운했거든","이번이 세 번째잖아. 그래도 미안하다고 해 줘서 고마워. 다음 주에 얼굴 보고 얘기하자"],
+      ask:["어제는 바로 답하기 싫었어. 솔직히 좀 서운했거든","그래도 다시 물어봐 줘서 마음이 좀 풀렸어. 다음 주에 얼굴 보고 얘기하자"],
+      long:["어제는 바로 답하기 싫었어. 솔직히 좀 서운했거든","긴 메시지 다 읽었어. 너도 마음 졸였구나. 우리 다음 주에 만나서 제대로 얘기하자"],
+      cut:["어제는 바로 답하기 싫었어. 솔직히 좀 서운했거든","이번이 세 번째잖아. 그래도 미안하다고 해 줘서 고마워. 다음 주에 얼굴 보고 얘기하자","(오후 4:30) …답이 없네. 내가 서운하다고 해서 그래?"]},
+   lesson:"이번에는 걱정이 맞았습니다. 서연은 정말 서운했습니다. 하지만 ‘서운하다’와 ‘끝났다’는 달랐습니다. 밤새 상상한 최악은 오지 않았습니다."}
 ];
+const ACTIONS = [
+  {t:"조금 더 기다린다", r:"base", send:false},
+  {t:"고른 한 줄을 가볍게 보낸다", r:"ask", send:true},
+  {t:"고른 한 줄에 서운한 마음을 길게 붙여 보낸다", r:"long", send:true, rej:1, anx:2},
+  {t:"나도 연락을 끊는다", r:"cut", send:false, rej:2},
+  {t:"휴대폰을 엎어 두고 다른 일을 한다", r:"base", send:false}
+];
+/* 역할 반전 */
+const RELS = ["가족","친구","직장 사람","연인이나 썸","떠오르는 사람이 없다"];
+const MINE = [
+  {who:"동생", t:"요즘 많이 바빠? 시간 될 때 연락 줘", ago:"사흘 전"},
+  {who:"대학 동기", t:"오랜만이야! 다음 달에 서울 가는데 얼굴 볼래?", ago:"나흘 전"},
+  {who:"이모", t:"잘 지내지? 엄마가 너 걱정하더라", ago:"일주일 전"}
+];
+const WHY = ["바빠서","무슨 말을 할지 몰라서","나중에 제대로 하려고","마음이 복잡해서","솔직히 귀찮아서","읽은 줄도 몰랐다"];
+const OBJ_TEXT = {
+  door:"문에 번호 자물쇠가 걸려 있습니다. “확인된 것만 이 문을 연다.”",
+  phone:"휴대전화가 희미하게 빛납니다.",
+  frame:"액자에 작은 글씨가 있습니다. “이곳의 문은 열쇠로 열리지 않습니다.”",
+  lamp:"스탠드 불빛이 책상만 밝힙니다.", window:"창밖은 조용합니다.", trash:"쓰레기통에 구겨진 종이가 있습니다.",
+  drawer:"서랍이 살짝 열려 있습니다.", memo:"책상 위에 쪽지가 있습니다."
+};
+/* 단서 카드 7장: 확인된 사실 4장 + 밤이 붙인 뜻 3장. 겉모습은 똑같다 */
+function CARDS(){
+  const v=VV();
+  return [
+    {o:"phone", n:"휴대전화", k:"휴대전화 화면", t:`읽음 표시가 떴다 · ${v.read}`, a:"f"},
+    {o:"drawer", n:"서랍", k:"서랍 속", t:v.drawer, a:"f"},
+    {o:"memo", n:"쪽지", k:"책상 위 쪽지", t:v.memo, a:"f"},
+    {o:"window", n:"창문", k:"창밖 시계탑", t:`${v.last}. 아직 답이 없다`, a:"f"},
+    {o:"trash", n:"쓰레기통", k:"쓰레기통 속 메모", t:v.trash, a:"g"},
+    {o:"frame", n:"액자", k:"액자 뒤 메모", t:"“지난번에도 이랬다. 이번에도 똑같을 것이다.”", a:"g"},
+    {o:"lamp", n:"스탠드", k:"스탠드 밑 메모", t:"“읽고도 답이 없는 건 무시한다는 뜻이다.”", a:"g"}
+  ].map((c,i)=>({...c, i, dg:S.dg[i]}));
+}
+const TYPES = {
+  light:{emo:"🕯️", nm:"등대형", one:"어둠 속에서도 결론을 미뤄 둘 줄 아는 사람", s:"빈 시간을 빈 채로 둘 수 있습니다. 생각보다 드문 힘입니다.", w:"다만 내 서운함까지 꺼 두지는 않았는지, 가끔 살펴보세요."},
+  det:{emo:"🔍", nm:"탐정형", one:"추측보다 증거를 먼저 모으는 사람", s:"속삭임에 넘어가지 않고, 사실 카드만 골라 문을 열었습니다.", w:"증거가 없을 때 생기는 불편함을 견디는 연습도 함께 하면 좋습니다."},
+  nov:{emo:"✍️", nm:"소설가형", one:"빈칸이 보이면 이야기를 지어 넣는 사람", s:"상상력이 풍부하고 상대의 마음에 관심이 많습니다.", w:"지어낸 이야기가 사실처럼 느껴질 때, ‘이건 초고다’라고 한 번 불러 보세요."},
+  rad:{emo:"📡", nm:"레이더형", one:"거절의 신호를 누구보다 빨리 잡는 사람", s:"관계의 작은 변화를 민감하게 알아챕니다.", w:"레이더가 잡은 것이 신호인지 잡음인지는 확인해야 알 수 있습니다."},
+  alm:{emo:"🔔", nm:"경보기형", one:"관계가 흔들릴까 봐 먼저 울리는 사람", s:"소중한 관계를 지키려는 마음이 큽니다.", w:"경보가 울려도 불이 난 건 아닐 수 있습니다. 한 번 숨 쉬고 확인해 보세요."}
+};
+
+/* ---------- 상태 ---------- */
+const ROOMDEF={}; const RM=()=>ROOMDEF[S.room||1];
+let SCENE2="";
+function mount(n){ $("#room3d").innerHTML = n===1 ? SCENE2 : ROOMDEF[n].scene; $("#stage").dataset.room=n; }
+function goHome(){ S=fresh(); mount(1); go("home",0); }
+let S = fresh();
+function fresh(){return {room:1, view:"home", step:0, v:0, mine:0, clock:0, typed:0, typingNow:false,
+  guessType:"", first:null, feel:[], before:null, wi:0, wlog:[], wback:null, shadow:3,
+  found:[], sel:[], tries:0, wrongN:0, opened:false, dg:[1,2,3,4,5,6,7], order:[0,1,2,3,4,5,6], lastFb:"",
+  line:"", act:null, after:null, mineRel:null, mineRead:"", why:[], flip:false};}
 const VV = () => VARIANTS[S.v||0];
 function store(k,v){ try{ if(v===undefined) return JSON.parse(localStorage.getItem(k)||"null"); localStorage.setItem(k,JSON.stringify(v)); }catch(e){ return null; } }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function pickStory(){
   const seen = store("maeum.silence.seen") || [];
   let pool = VARIANTS.map((_,i)=>i).filter(i=>!seen.includes(i));
   if(!pool.length){ pool = VARIANTS.map((_,i)=>i).filter(i=>i!==seen[seen.length-1]); store("maeum.silence.seen", []); }
   S.v = pool[Math.floor(Math.random()*pool.length)];
-  const idx = SCENE_POOL.map((_,i)=>i); for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; }
-  S.sc = idx.slice(0,4);
+  S.mine = Math.floor(Math.random()*MINE.length);
+  S.dg = shuffle([1,2,3,4,5,6,7,8,9]).slice(0,7);
+  S.order = shuffle([0,1,2,3,4,5,6]);
 }
 function markSeen(){ const seen=store("maeum.silence.seen")||[]; if(!seen.includes(S.v)){ seen.push(S.v); store("maeum.silence.seen", seen); } }
-const REWIND = [
-  {t:"조금 더 기다린다", c:"확인되지 않은 시간을 그대로 두는 선택입니다. 불안이 있어도 결론을 미뤄 둘 수 있었습니다."},
-  {t:"가볍게 한 번 더 묻는다", c:"추측 대신 확인을 고른 선택입니다. \"바빠? 편할 때 답 줘\"처럼 짧을수록 상대도 답하기 쉽습니다."},
-  {t:"서운한 마음을 길게 보낸다", rej:1, anx:2, c:"마음은 진짜였지만, 이유는 아직 확인되지 않았습니다. 서운함을 말하는 건 답을 들은 뒤에도 늦지 않습니다."},
-  {t:"나도 연락을 끊는다", rej:2, c:"상처받기 전에 먼저 거리를 두는 방식입니다. 침묵을 거절로 읽을 때 자주 나오는 방어입니다."},
-  {t:"다른 일에 집중한다", c:"생각이 커지기 전에 주의를 옮기는 선택입니다. 기다림을 견디는 좋은 방법 중 하나입니다."}
-];
-const OBJ_TEXT = {
-  frame:"액자에 작은 글씨가 있습니다. “이곳의 문은 열쇠로 열리지 않습니다.”",
-  lamp:"스탠드 불빛이 책상만 밝힙니다. 나머지는 어둠 속에 있습니다.",
-  window:"창밖은 조용합니다. 시간만 흐르고 있습니다.",
-  door:"문에 자물쇠 네 개가 걸려 있습니다. 아직은 열리지 않습니다.",
-  phone:"휴대전화가 희미하게 빛납니다."
-};
-
-/* ---------- 상태 ---------- */
-let S = fresh();
-function fresh(){return {view:"home", step:0, seen:[], phoneOpen:false, clock:0, first:null, feel:[], body:null, act:null, sortI:0, sortLog:[], sceneI:0, picks:[[],[],[],[]], v:0, sc:[0,1,2,3], guess:null, rewind:null, take:null, done:false};}
 
 /* ---------- 도우미 ---------- */
 const $ = s => document.querySelector(s);
@@ -408,79 +691,89 @@ const V = () => $("#view");
 const esc = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
 const hint = t => { $("#hint").textContent = t; };
-function go(view, step){ S.view=view; if(step!==undefined) S.step=step; render(); }
+const wait = ms => new Promise(r=>setTimeout(r, reduce?Math.min(ms,60):ms));
+function go(view, step){ S.view=view; if(step!==undefined) S.step=step; render(); window.scrollTo({top:0,behavior:reduce?"auto":"smooth"}); }
+const jo=(w,a,b)=>{const c=String(w).charCodeAt(String(w).length-1); return w+((c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28)?a:b);};
+const grp = () => S.first===null ? "유보" : FIRST[S.first].g;
+const keepY = fn => { const y=window.scrollY; fn(); window.scrollTo(0,y); };
+const mineWho = () => (S.mineRel===null || S.mineRel===RELS.length-1) ? MINE[S.mine].who : "그 사람";
+const nums = (id,val) => `<div class="nums" id="${id}">${Array.from({length:11},(_,n)=>`<button class="num" type="button" data-n="${n}" aria-pressed="${val===n}">${n}</button>`).join("")}</div><div class="scale"><span>0 · 아무렇지 않다</span><span>10 · 아무것도 손에 안 잡힌다</span></div>`;
 
-/* 무대 상태를 지금 단계에 맞춘다 */
-function syncStage(){
+function syncStage(){ (S.view==="home"||(S.room||1)===1 ? sync2 : RM().sync)(); }
+function sync2(){
   const st=$("#stage");
-  st.classList.toggle("lightsoff", S.view==="home"||S.view==="enter");
-  st.classList.toggle("dooropen", S.view==="exit" || (S.view==="rewind" && S.rewind!==null));
+  st.classList.toggle("lightsoff", S.view==="enter");
+  st.classList.toggle("dooropen", S.view==="exit");
+  st.dataset.view=S.view; st.classList.toggle("morning", ["reveal","mine","exit"].includes(S.view));
   const night=[[98,34],[86,40],[70,48],[52,58],[38,70]];
-  const morning = ["reveal","rewind","exit"].includes(S.view) && !(S.view==="rewind");
+  const morning = ["reveal","mine","exit"].includes(S.view);
   const [cx,cy] = morning ? [40,30] : night[Math.min(S.clock,4)];
   $("#moon").setAttribute("cx",cx); $("#moon").setAttribute("cy",cy);
   $("#moon").setAttribute("fill", morning ? "#ffd27a" : "#e9eaa9");
-  $("#sky").setAttribute("fill", morning ? "#5f8fa3" : "#13201f");
-  const done=S.picks.map(p=>p.length>=3);
-  [...$("#locks").children].forEach((c,i)=>{ c.setAttribute("fill", done[i]?"#f2d27c":"#2a1a0e"); });
-  $("#phoneDot").style.display = (S.view==="dark"&&!S.phoneOpen)||S.view==="reveal" ? "" : "none";
+  $("#sky").setAttribute("fill", morning ? "#6f9fc0" : "#080c1f");
+  const lit = S.opened ? 4 : S.sel.length;
+  [...$("#locks").children].forEach((c,i)=>{ c.setAttribute("fill", i<lit?"#f2d27c":"#2a1a0e"); });
+  $("#phoneDot").style.display = (S.view==="dark"&&S.clock===0)||S.view==="reveal" ? "" : "none";
+  const sh=$("#shadowG"), showSh=["whisper","search","first"].includes(S.view);
+  const sc=Math.max(.5, Math.min(1.9, .55+S.shadow*.22));
+  sh.style.opacity = showSh ? (S.view==="first"?.35:1) : 0;
+  sh.style.transform = `scale(${sc})`;
 }
 function prog(){
   const on=S.view!=="home";
   $("#prog").style.visibility = on?"visible":"hidden";
-  $("#progT").textContent = on ? `${String(S.step).padStart(2,"0")} / 07 · ${STEP_NAMES[S.step-1]||""}` : "";
-  $("#progB").style.width = on ? `${S.step/7*100}%` : "0";
+  const st=on?RM().steps:[];
+  $("#progT").textContent = on ? `${String(S.step).padStart(2,"0")} / ${String(st.length).padStart(2,"0")} · ${st[S.step-1]||""}` : "";
+  $("#progB").style.width = on ? `${S.step/st.length*100}%` : "0";
 }
-
-/* ---------- 화면 ---------- */
 function render(){
   $("#homeBtn").style.visibility = S.view==="home" ? "hidden" : "visible";
-  $("#where").innerHTML = S.view==="home" ? "<b>마음의 방탈출</b>" : "방 2 · <b>침묵의 방</b>";
+  $("#where").innerHTML = S.view==="home" ? "<b>마음의 방탈출</b>" : `방 ${RM().no} · <b>${RM().name}</b>`;
   if(S.view==="home"){ ambient(false); hush(); } else if(SND.on) ambient(true);
-  ({home, enter, dark, first, sort, scenes, reveal, rewind, exit})[S.view]();
+  (S.view==="home" ? home : RM().views[S.view])();
   syncStage(); prog();
 }
 
+/* ---------- 본관 ---------- */
 function home(){
-  hint("이곳의 문은 열쇠로 열리지 않습니다.");
+  hint("마우스나 손가락을 움직이면 방을 둘러볼 수 있습니다.");
+  const l2=store("maeum.silence.log")||[], l3=store("maeum.mistake.log")||[];
+  const got=[...new Set([...l2,...l3].map(l=>l.type))];
+  const open=[
+    {i:1, no:2, nm:"침묵의 방", hook:"읽음 표시는 떴는데 답이 없습니다. 방 구석에서 누군가 속삭입니다.", n:VARIANTS.length, done:l2.length, habit:"독심술"},
+    {i:3, no:3, nm:"실수의 방", hook:"보내기를 누르고 1초 뒤에 알았습니다. 벽시계가 그 순간으로 자꾸 되감깁니다.", n:ROOMDEF[3].VAR3.length, done:l3.length, habit:"돋보기"}
+  ];
   V().innerHTML = `
-    <p class="eyebrow">생각의 감옥 · 해석의 출구</p>
     <h1>마음의 방탈출</h1>
-    <p class="lede">당신이 장면을 어떻게 읽는지, 무엇을 사실로 보고 무엇을 해석으로 만드는지 알아차릴 때 문이 열립니다.</p>
-    <div class="callout">정답을 맞히는 곳이 아닙니다.<br>천천히 하셔도 되고, 멈춰도 됩니다.</div>
-    <button class="btn" type="button" id="goRoom">방 2 · 침묵의 방에 들어가기</button>
-    <p class="small">침묵의 방에는 이야기 ${VARIANTS.length}가지가 있습니다. 다시 들어가면 아직 안 본 이야기가 먼저 나옵니다. 지금까지 본 이야기: <span class="count">${(store("maeum.silence.seen")||[]).length}</span> / ${VARIANTS.length}</p>
-    <div class="stack">
-      <p class="eyebrow">본관 · 열 개의 방</p>
-      <div class="map">${ROOMS.map((r,i)=>{
-        const open=i===OPEN_ROOM, done=open&&S.done;
-        return `<button class="room ${open?"open":""} ${done?"done":""}" type="button" ${open?'data-open="1"':"disabled"}>
-          <span class="no">방 ${i+1}</span><span class="nm">${r}</span>
-          <span class="st">${done?"탈출함 · 다시 하기":open?"입장 가능":"준비 중"}</span></button>`;}).join("")}</div>
-    </div>
-    <div class="annex">
-      <p class="eyebrow">별관 · 웹에서만 여는 방 (준비 중)</p>
-      <p class="small">본관 열 개의 방은 그대로 두고, 관계별 장면을 늘린 별관을 따로 엽니다.</p>
-      <ul><li>연애관: 연락 텀, 기념일, 전 연인의 소식</li><li>직장관: 회의 침묵, 상사의 짧은 답장, 단톡 공지</li><li>가족관: 명절 한마디, 부모님의 걱정 전화</li><li>청소년관: 읽씹의 방, 단톡방의 방</li></ul>
-    </div>`;
-  const startRoom = () => { const d=S.done; S=fresh(); S.done=d; exit.spoken=false; first.spoken=false; scenes.last=null; pickStory(); go("enter",1); };
-  $("#goRoom").onclick = startRoom;
-  V().querySelectorAll("[data-open]").forEach(b => b.onclick = startRoom);
+    <p class="lede">방마다 누구나 겪어 본 순간이 하나씩 갇혀 있습니다. 단서를 모으고 자물쇠를 풀어 빠져나오세요.</p>
+    <div class="callout">방 하나에 5분쯤 걸립니다. 글을 쓸 필요 없이 누르기만 하면 됩니다.<br>방을 나올 때마다 당신만의 카드 한 장이 나옵니다.</div>
+    <div class="stack" id="doors">${open.map(r=>`<button class="doorcard" type="button" data-r="${r.i}">
+      <span class="dn">방 ${r.no}</span><span class="dm">${r.nm}</span><span class="dh">${r.hook}</span>
+      <span class="ds">${r.done?`탈출함 · 다시 들어가기`:`들어가기`} · 이야기 ${r.n}가지</span></button>`).join("")}</div>
+    ${got.length?`<p class="small">모은 카드: ${got.join(", ")}</p>`:""}
+    <details class="fold">
+      <summary>본관 지도 · 열 개의 방 중 두 곳이 열려 있습니다</summary>
+      <div class="map">${ROOMS.map((r,i)=>{ const o=open.find(x=>x.no===i+1);
+        return `<button class="room ${o?"open":""}" type="button" ${o?`data-r="${o.i}"`:"disabled"}><span class="no">방 ${i+1}</span><span class="nm">${r}</span><span class="st">${o?"입장 가능":"준비 중"}</span></button>`;}).join("")}</div>
+    </details>
+    ${l2.length+l3.length?`<button class="btn ghost" type="button" id="del">내 기록 지우기</button>`:""}`;
+  V().querySelectorAll("[data-r]").forEach(b => b.onclick = () => ROOMDEF[+b.dataset.r].start());
+  const d=$("#del"); if(d){ let armed=false; d.onclick=()=>{ if(!armed){ armed=true; d.textContent="한 번 더 누르면 이 기기의 기록이 모두 지워집니다"; return; } try{ ["maeum.silence.log","maeum.silence.seen","maeum.mistake.log","maeum.mistake.seen"].forEach(k=>localStorage.removeItem(k)); }catch(e){} home(); }; }
 }
 
-const ENTER_LINES = ["당신은 중요한 메시지를 보냈습니다.","상대는 메시지를 읽었습니다.","하지만 답은 오지 않습니다.","시간이 흐릅니다.","침묵은 길어지고, 당신 안의 생각은 점점 또렷해집니다."];
+/* ---------- 1. 입구 ---------- */
+const ENTER_LINES = ["당신은 중요한 메시지를 보냈습니다.","상대는 메시지를 읽었습니다.","하지만 답은 오지 않습니다.","그리고 방 어딘가에서, 누군가 속삭이기 시작합니다."];
 function enter(){
   hint("방이 어둡습니다.");
   if(!SND.asked){
     V().innerHTML = `
       <p class="eyebrow">방 2 · 입구</p>
       <p class="quote">침묵은 사실일까, 해석일까.</p>
-      <p class="lede">이 방에는 소리와 나레이션이 있습니다. 이어폰을 끼고 들으면 더 깊이 들어갈 수 있습니다.</p>
+      <p class="lede">이 방에는 소리와 나레이션이 있습니다. 이어폰을 끼면 더 깊이 들어갈 수 있습니다.</p>
       <div class="choose">
-        <button class="btn" type="button" id="sOn">소리와 함께 들어가기</button>
-        <button class="btn ghost" type="button" id="sOff">조용히 들어가기</button>
-      </div>
-      <p class="small">소리는 위쪽 버튼으로 언제든 켜고 끌 수 있습니다.</p>`;
+        <button class="btn" type="button" id="sOn">소리와 함께</button>
+        <button class="btn ghost" type="button" id="sOff">조용히</button>
+      </div>`;
     $("#sOn").onclick = () => { SND.asked=true; setSound(true); enter(); };
     $("#sOff").onclick = () => { SND.asked=true; setSound(false); enter(); };
     return;
@@ -489,253 +782,346 @@ function enter(){
     <p class="eyebrow">방 2 · 입구</p>
     <p class="quote">침묵은 사실일까, 해석일까.</p>
     <div class="narr">${ENTER_LINES.map((l,i)=>`<span style="animation-delay:${.3+i*.8}s">${l}</span>`).join("")}</div>
-    <div class="callout">제한 시간은 없습니다. 잠시 쉬어도 괜찮습니다.</div>
-    <button class="btn" type="button" id="next">불을 켜고 방으로 들어간다</button>`;
+    <button class="btn" type="button" id="next">불을 켜고 들어간다</button>`;
   say("침묵은 사실일까, 해석일까. " + ENTER_LINES.join(" "));
   $("#next").onclick = () => { hush(); go("dark",2); };
 }
 
-function dark(){
-  const seen=S.seen;
-  if(!S.phoneOpen) hint("빛나는 휴대전화를 터치해 보세요.");
-  const clues=[]; if(seen.includes("drawer")) clues.push(VV().clueChip); if(seen.includes("memo")) clues.push(VV().memoChip);
-  V().innerHTML = `
-    <p class="eyebrow">방 탐색</p>
-    <h2>${S.phoneOpen?"아직 답이 없습니다.":"조용한 방에 들어왔습니다."}</h2>
-    <p class="lede">${S.phoneOpen?"방 안의 다른 물건도 살펴볼 수 있습니다. 서랍, 쪽지, 창문, 액자, 문.":"책상 위 휴대전화가 빛납니다. 물건을 터치해 이야기를 시작하세요."}</p>
-    ${S.phoneOpen?chatHTML(false)+`<p class="small count" id="clk">${clockText()}</p>`:""}
-    <div id="objnote"></div>
-    ${clues.length?`<div class="clues">${clues.map(c=>`<span class="clue">단서 · ${c}</span>`).join("")}</div>`:""}
-    ${S.phoneOpen?`<button class="btn" type="button" id="next" ${S.clock<4?"disabled":""}>무슨 생각이 드는지 고르기</button>`:`<button class="btn" type="button" id="peek">휴대전화 살펴보기</button>`}`;
-  if(!S.phoneOpen) $("#peek").onclick=()=>openPhone();
-  else $("#next").onclick=()=>go("first",3);
+/* ---------- 2. 입력 중… ---------- */
+function chatHTML(opt={}){
+  const v=VV();
+  let h=`<div class="chat" data-t="${opt.reply?v.replyT:v.times[Math.min(S.clock,4)].replace(" 읽음","")}"><div class="who">${v.who}</div>
+    <div class="bub them">${v.prev}</div>
+    <div class="bub me">${v.sent}</div>
+    <div class="meta read">읽음 ${v.read}</div>`;
+  if(opt.typing) h+=`<div class="typing" aria-label="입력 중"><i></i><i></i><i></i></div>`;
+  if(opt.mySent) h+=`<div class="bub me">${esc(opt.mySent)}</div>`;
+  if(opt.reply){ h+=opt.reply.map(t=>`<div class="bub them">${esc(t)}</div>`).join("")+`<div class="meta">${v.replyT}</div>`; }
+  return h+`</div>`;
 }
 function clockText(){ const t=VV().times; const k=Math.min(S.clock,4); return k===0 ? t[0] : `${t[k]} · 아직 답이 없습니다`; }
-function openPhone(){
-  S.phoneOpen=true; if(!S.seen.includes("phone")) S.seen.push("phone");
-  hint("시간이 흐릅니다. 다른 물건도 터치해 볼 수 있습니다.");
-  dark(); syncStage();
-  ticks(3);
-  const tick=()=>{ if(S.view!=="dark"||S.clock>=4) return; S.clock++; ticks(2); $("#clk")&&( $("#clk").textContent=clockText() ); syncStage(); if(S.clock>=4){ const n=$("#next"); if(n) n.disabled=false; } else setTimeout(tick, reduce?0:1000); };
-  setTimeout(tick, reduce?0:900);
-}
-function chatHTML(reply){
-  return `<div class="chat">
-    <div class="who">${VV().who}</div>
-    <div class="bub them">${VV().prev}</div>
-    <div class="bub me">${VV().sent}</div>
-    <div class="meta read">읽음 ${VV().read}</div>
-    ${reply? VV().reply.map(t=>`<div class="bub them">${t}</div>`).join("")+`<div class="meta">${VV().replyT}</div>`:""}
-  </div>`;
-}
-
-/* 물건 터치 */
-function touch(obj){
-  if(S.view==="home"||S.view==="enter"){ hint("먼저 방에 들어가야 합니다."); return; }
-  if(S.view==="dark"){
-    if(obj==="phone"){ if(!S.phoneOpen) openPhone(); else hint(`읽음 ${VV().read}. 화면은 그대로입니다.`); return; }
-    if(obj==="lamp"){ hint(OBJ_TEXT.lamp); return; }
-    if(!S.seen.includes(obj)) S.seen.push(obj);
-    hint(obj==="drawer"?VV().drawerHint:obj==="memo"?VV().memoHint:OBJ_TEXT[obj]);
-    if(obj==="drawer"||obj==="memo"){
-      dark();
-      $("#objnote").innerHTML = obj==="drawer"
-        ? `<div class="note">${VV().drawerNote}</div>`
-        : `<div class="note">${VV().memoNote}</div>`;
-    }
-    return;
+function dark(){
+  const v=VV(), started=S.clock>0, ready=S.typed>=2 && !S.typingNow;
+  hint(started? (S.typingNow?`${v.who} 님이 입력 중…`:"화면을 지켜보세요.") : "빛나는 휴대전화를 눌러 보세요.");
+  V().innerHTML = `
+    <p class="eyebrow">입력 중…</p>
+    <h2>${started?"화면에서 눈을 뗄 수가 없습니다.":"책상 위 휴대전화가 빛납니다."}</h2>
+    ${started?chatHTML({typing:S.typingNow})+`<p class="tstat" id="tstat">${S.typingNow?`${v.who} 님이 입력 중…`:(S.typed?`입력 중 표시가 사라졌습니다 · ${clockText()}`:clockText())}</p>`:`<button class="btn" type="button" id="peek">휴대전화 보기</button>`}
+    ${ready?`
+      <div class="whisper" style="border-color:var(--line);box-shadow:none;color:var(--ink)"><small>질문</small>${esc(jo(v.who,"은","는"))} 방금 무엇을 쓰다가 지웠을까요?</div>
+      <div class="stack" id="gt">${DELETED.map((d,i)=>`<button class="opt" type="button" data-i="${i}" aria-pressed="${S.guessType===d.t}">“${d.t}”</button>`).join("")}</div>
+      <button class="btn" type="button" id="next" ${!S.guessType?"disabled":""}>다음</button>`:""}`;
+  if(!started){ $("#peek").onclick=runPhone; return; }
+  if(ready){
+    $("#gt").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.guessType=DELETED[+b.dataset.i].t; keepY(dark); };
+    $("#next").onclick=()=>go("first",2);
   }
-  if(obj==="door"){ hint(S.view==="exit"?"문이 열려 있습니다.":`자물쇠 ${S.picks.filter(p=>p.length>=3).length} / 4 풀림`); return; }
-  if(obj==="phone"&&S.view==="reveal"){ hint("답장이 왔습니다."); return; }
-  hint(OBJ_TEXT[obj]);
 }
-document.querySelectorAll(".hot").forEach(g=>{
-  g.addEventListener("click",()=>touch(g.dataset.obj));
-  g.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); touch(g.dataset.obj);} });
-});
-
+async function runPhone(){
+  S.clock=1; dark(); syncStage(); ticks(2);
+  const step = async (typeMs) => {
+    await wait(1500); if(S.view!=="dark") return false;
+    S.typingNow=true; dark(); typeSnd(); await wait(typeMs); if(S.view!=="dark") return false;
+    S.typingNow=false; S.typed++; S.clock++; dark(); syncStage(); ticks(1); return true;
+  };
+  if(!await step(2400)) return;
+  if(!await step(1200)) return;
+  await wait(800); if(S.view!=="dark") return; S.clock=4; syncStage(); dark();
+  say(`입력 중 표시가 사라졌습니다. ${jo(VV().who,"은","는")} 무엇을 쓰다 지웠을까요?`);
+}
 function first(){
-  if(!first.spoken){ first.spoken=true; say(`메시지는 읽혔지만, 답은 오지 않습니다. 당신은 어떤 생각이 드나요?`); }
   hint("가장 먼저 떠오른 생각을 고르세요.");
   V().innerHTML = `
-    <p class="eyebrow">첫 반응</p>
-    <h2>이 침묵은 무엇을 뜻하는 것 같나요?</h2>
-    <button class="say" type="button" data-say="${esc(VV().sent.replace(/<br>/g," "))}. 메시지는 읽혔지만, 답은 오지 않습니다. 당신은 어떤 생각이 드나요?">읽어 주기</button>
+    <p class="eyebrow">입력 중… · 첫 생각</p>
+    <h2>이 침묵, 무슨 뜻 같나요?</h2>
     <div class="stack" id="opts">${FIRST.map((o,i)=>`<button class="opt" type="button" aria-pressed="${S.first===i}" data-i="${i}"><span class="n">${i+1}</span>${o.t}</button>`).join("")}</div>
     <p class="eyebrow">지금 올라오는 감정 (여러 개 가능)</p>
     <div class="chips" id="feel">${FEEL.map((f,i)=>`<button class="chip" type="button" aria-pressed="${S.feel.includes(i)}" data-i="${i}">${f.t}</button>`).join("")}</div>
-    <p class="eyebrow">몸은 지금 어떤가요?</p>
-    <div class="chips" id="body">${BODY.map((t,i)=>`<button class="chip" type="button" aria-pressed="${S.body===i}" data-i="${i}">${t}</button>`).join("")}</div>
-    <p class="eyebrow">무엇을 하고 싶어지나요?</p>
-    <div class="chips" id="act">${ACT.map((a,i)=>`<button class="chip" type="button" aria-pressed="${S.act===i}" data-i="${i}">${a.t}</button>`).join("")}</div>
-    <button class="btn" type="button" id="next" ${S.first===null||!S.feel.length||S.body===null||S.act===null?"disabled":""}>벽에 문장이 떠오른다</button>`;
-  const keep = fn => e => { const b=e.target.closest("[data-i]"); if(!b) return; const y=window.scrollY; fn(+b.dataset.i); first(); window.scrollTo(0,y); };
-  $("#opts").onclick = keep(i => { S.first=i; });
-  $("#feel").onclick = keep(i => { S.feel = S.feel.includes(i)? S.feel.filter(x=>x!==i) : [...S.feel,i]; });
-  $("#body").onclick = keep(i => { S.body=i; });
-  $("#act").onclick = keep(i => { S.act=i; });
-  $("#next").onclick = () => go("sort",4);
+    <p class="eyebrow">마음이 얼마나 흔들리나요?</p>
+    ${nums("before",S.before)}
+    <button class="btn" type="button" id="next" ${S.first===null||!S.feel.length||S.before===null?"disabled":""}>방 구석에서 무언가 움직인다</button>`;
+  const pick = fn => e => { const b=e.target.closest("button"); if(!b) return; keepY(()=>{ fn(b); first(); }); };
+  $("#opts").onclick = pick(b => { S.first=+b.dataset.i; });
+  $("#feel").onclick = pick(b => { const i=+b.dataset.i; S.feel = S.feel.includes(i)? S.feel.filter(x=>x!==i) : [...S.feel,i]; });
+  $("#before").onclick = pick(b => { S.before=+b.dataset.n; });
+  $("#next").onclick = () => { S.wi=0; S.wback=null; go("whisper",3); setTimeout(()=>say(WHISPER[grp()][0]),300); };
 }
 
-function sort(){
-  const i=S.sortI, last=S.sortLog[S.sortLog.length-1];
-  const SORT=SORTS();
-  if(i>=SORT.length){
-    hint("벽의 문장이 모두 제자리를 찾았습니다.");
-    const right=S.sortLog.filter(l=>l.ok).length;
-    const guessAsFact=S.sortLog.filter(l=>l.a==="추측"&&l.pick==="정보").length;
+/* ---------- 3. 속삭이는 목소리 ---------- */
+const wPick = k => S.wlog.map((j,r)=>COMEBACK[r][j]).filter(c=>k==="up"?c.d>0:k==="down"?c.d<0:c.d===0).length;
+function whisper(){
+  const lines=WHISPER[grp()], i=S.wi;
+  if(i>=lines.length){
+    const beat=wPick("down"), agree=wPick("up");
+    hint("그림자가 방 구석에 웅크립니다.");
     V().innerHTML = `
-      <p class="eyebrow">미션 1 완료</p>
-      <h2>열두 문장 중 <span class="count">${right}</span>개를 제자리에 놓았습니다.</h2>
-      <p class="lede">${guessAsFact?`추측 <span class="count">${guessAsFact}</span>개를 정보 칸에 놓았습니다. 머릿속에서는 추측이 사실처럼 느껴질 때가 많습니다.`:"추측을 사실로 착각한 문장이 하나도 없었습니다."}</p>
-      <div class="callout">이 방에서 확실한 정보는 네 가지뿐이었습니다. 읽었다, 답이 없다, 세 시간이 지났다, ${VV().clue}. 나머지는 그 빈칸을 채운 생각과 마음입니다.</div>
-      <button class="btn" type="button" id="next">문의 자물쇠를 살펴본다</button>`;
-    $("#next").onclick=()=>go("scenes",5); return;
+      <p class="eyebrow">속삭이는 목소리</p>
+      <h2>${beat===3?"그림자가 작아졌습니다.":agree>=2?"그림자가 방을 반쯤 덮었습니다.":"그림자는 아직 방 구석에 있습니다."}</h2>
+      <p class="lede">${beat===3?"세 번 모두 맞받아쳤습니다. 속삭임은 아직 들리지만, 더는 크게 들리지 않습니다.":agree>=2?"속삭임에 고개를 끄덕였습니다. 밤에는 누구나 그럴 때가 있습니다.":"맞받아친 말도 있고, 피하거나 끄덕인 말도 있습니다."}</p>
+      <p class="small">이제 방을 뒤져 단서를 찾을 차례입니다. 문에는 네 자리 번호 자물쇠가 걸려 있습니다.</p>
+      <button class="btn" type="button" id="next">방을 뒤진다</button>`;
+    $("#next").onclick=()=>go("search",4);
+    return;
   }
-  hint("벽에 문장이 하나씩 떠오릅니다.");
-  const c=SORT[i];
+  const opts=COMEBACK[i];
+  hint("그림자가 속삭입니다. 뭐라고 대꾸하겠습니까?");
   V().innerHTML = `
-    <p class="eyebrow">미션 1 · 정보, 추측, 감정 <span class="count" style="float:right;color:var(--dim)">${i+1} / ${SORT.length}</span></p>
-    <div class="sortcard">${c.t}</div>
-    <div class="bins" id="bins">
-      <button class="bin" type="button" data-a="정보">정보<small>확인된 것</small></button>
-      <button class="bin" type="button" data-a="추측">추측<small>내가 채운 뜻</small></button>
-      <button class="bin" type="button" data-a="감정">감정<small>내 안의 느낌</small></button>
-    </div>
-    <div class="fb ${last?(last.ok?"ok":"miss"):""}">${last?fbText(last):"알맞은 칸을 고르세요."}</div>`;
-  $("#bins").onclick = e => { const b=e.target.closest("[data-a]"); if(!b) return;
-    S.sortLog.push({t:c.t,a:c.a,pick:b.dataset.a,ok:b.dataset.a===c.a,note:c.note,clue:c.clue}); S.sortI++; sort(); };
-}
-function fbText(l){
-  if(l.note) return `“${esc(l.t)}” → <b>${l.a}</b>. ${l.note}`;
-  if(l.clue && S.seen.includes("drawer")) return `“${esc(l.t)}” → <b>${l.a}</b>. ${l.clue}`;
-  if(l.ok) return `“${esc(l.t)}” → <b>${l.a}</b>. 맞습니다.`;
-  return `“${esc(l.t)}”는 <b>${l.a}</b>입니다. ${l.a==="추측"?"확인된 적 없는, 내가 채운 뜻입니다.":l.a==="정보"?"누가 봐도 확인되는 사실입니다.":"상대에 대한 말이 아니라 내 마음의 상태입니다."}`;
+    <p class="eyebrow">속삭이는 목소리 · ${i+1} / ${lines.length}</p>
+    <div class="whisper"><small>방 구석의 그림자</small>“${lines[i]}”</div>
+    <div class="stack" id="opts">${opts.map((c,j)=>`<button class="opt" type="button" data-j="${j}" ${S.wback!==null?"disabled":""} aria-pressed="${S.wback===j}">${c.t}</button>`).join("")}</div>
+    <p class="reply" id="rep">${S.wback!==null?"그림자: “"+esc(opts[S.wback].back)+"”":""}</p>
+    ${S.wback!==null?`<button class="btn ghost" type="button" id="wn">${i+1<lines.length?"그림자가 다시 입을 연다":"그림자가 입을 다문다"}</button>`:""}`;
+  if(S.wback!==null){ $("#wn").onclick=()=>{ S.wi++; S.wback=null; whisper(); syncStage(); const nx=lines[S.wi]; if(nx) say(nx); window.scrollTo(0,0); }; return; }
+  $("#opts").onclick=e=>{ const b=e.target.closest("[data-j]"); if(!b) return; const j=+b.dataset.j, c=opts[j];
+    S.wback=j; S.wlog.push(j); S.shadow=Math.max(0,Math.min(6,S.shadow+c.d));
+    whisper(); syncStage(); c.d<0?chime():lowBuzz(); say(c.back); };
 }
 
-function sceneLine(sc){ return `${sc.who}. ${sc.s.replace(/["“”]/g,"")} 당신은 어떤 생각이 드나요?`; }
-function scenes(){
-  const all=S.picks.every(p=>p.length>=3);
-  const i=S.sceneI, sc=SC(i), p=S.picks[i];
-  if(scenes.last!==S.sc[i]+"-"+S.v+"-"+i){ scenes.last=S.sc[i]+"-"+S.v+"-"+i; if(!p.length) say(sceneLine(sc)); }
-  hint(`문에 자물쇠 네 개. ${S.picks.filter(x=>x.length>=3).length} / 4 풀림`);
+/* ---------- 4. 단서와 자물쇠 ---------- */
+function search(){
+  const C=CARDS(), allFound=C.every(c=>S.found.includes(c.o));
+  const shown=S.order.map(i=>C[i]);
+  if(S.opened){
+    const code=shown.filter(c=>c.a==="f").map(c=>c.dg).join("");
+    hint("딸깍. 자물쇠가 풀립니다.");
+    V().innerHTML = `
+      <p class="eyebrow">단서와 자물쇠</p>
+      <h2>${S.tries?`${S.tries+1}번 만에 자물쇠가 풀렸습니다.`:"한 번에 자물쇠가 풀렸습니다."}</h2>
+      <div class="keypad">${[...code].map(d=>`<span>${d}</span>`).join("")}</div>
+      <p class="lede">문을 연 건 누가 봐도 똑같이 확인되는 네 가지뿐이었습니다. 읽었다, 답이 없다, 그리고 서랍과 쪽지에 적힌 일.</p>
+      <div class="cards">${shown.filter(c=>c.a==="g").map(c=>`<div class="card no"><b>${c.k}</b>${esc(c.t)}</div>`).join("")}</div>
+      <p class="small">남은 세 장은 사실처럼 적혀 있었지만, 확인된 적 없는 문장입니다. 밤이 붙인 뜻입니다.${S.wrongN?` 당신은 그중 일부를 번호에 넣어 봤습니다. 밤에는 추측이 사실처럼 보입니다.`:""}</p>
+      <button class="btn" type="button" id="next">휴대전화를 다시 든다</button>`;
+    $("#next").onclick=()=>go("write",5);
+    return;
+  }
+  const sel=shown.filter(c=>S.sel.includes(c.i));
+  hint(allFound?"문에 새겨진 글: “확인된 것만 이 문을 연다.”":"방 안의 물건을 눌러 단서를 찾으세요.");
   V().innerHTML = `
-    <p class="eyebrow">미션 2 · 네 개의 침묵</p>
-    <p class="small">장면마다 가능한 이유를 <b>세 개</b> 놓으면 자물쇠 하나가 풀립니다. 하나만 맞히는 게임이 아닙니다.</p>
-    <div class="locks" id="lockBtns">${S.sc.map((n,j)=>`<button class="lock ${S.picks[j].length>=3?"on":""} ${j===i?"cur":""}" type="button" data-j="${j}"><b>${LETTER[j]}</b>${SCENE_POOL[n].who}</button>`).join("")}</div>
-    <div class="scene"><p class="who">장면 ${LETTER[i]} · ${sc.who}</p><p>${sc.s}</p></div>
-    <button class="say" type="button" data-say="${esc(sceneLine(sc))}">읽어 주기</button>
-    <div class="stack" id="opts">${sc.o.map((o,j)=>{const k=p.indexOf(j);return `<button class="opt" type="button" aria-pressed="${k>-1}" data-j="${j}"><span class="n">${k>-1?k+1:""}</span>${o[0]}</button>`;}).join("")}</div>
-    <p class="small count">${p.length} / 3 ${p.length?"· 처음 고른 이유가 1번으로 남습니다.":""}</p>
-    ${all?`<button class="btn" type="button" id="next">자물쇠 네 개가 모두 풀렸다</button>`:
-      `<button class="btn ghost" type="button" id="nxt" ${p.length<3?"disabled":""}>다음 장면</button>`}`;
-  $("#lockBtns").onclick=e=>{const b=e.target.closest("[data-j]"); if(!b) return; S.sceneI=+b.dataset.j; scenes();};
-  $("#opts").onclick=e=>{const b=e.target.closest("[data-j]"); if(!b) return; const j=+b.dataset.j;
-    if(p.includes(j)) S.picks[i]=p.filter(x=>x!==j); else if(p.length<3){ p.push(j); if(p.length===3) chime(); } scenes(); syncStage();};
-  if(all) $("#next").onclick=()=>{ go("reveal",6); const g=$("#phoneG"); g.classList.remove("buzz"); void g.getBBox(); g.classList.add("buzz"); buzz(); setTimeout(()=>say("다음 날 아침, 휴대전화가 울립니다. "+VV().reply.join(" ")), 1600); };
-  else $("#nxt").onclick=()=>{ const n=S.picks.findIndex(x=>x.length<3); S.sceneI = n>-1?n:i; scenes(); };
+    <p class="eyebrow">단서와 자물쇠 · ${allFound?`시도 ${S.tries+1}번째`:`찾은 단서 <span class="count">${S.found.length}</span> / ${C.length}`}</p>
+    <h2>${allFound?"확인된 사실 네 장을 고르세요.":"방을 뒤지세요."}</h2>
+    <p class="small">${allFound?"카드마다 숫자가 하나씩 있습니다. 고른 네 장의 숫자가 비밀번호가 됩니다. 일곱 장 중 세 장은 사실이 아닙니다.":"위 그림의 물건을 누르거나, 아래 이름을 누르세요."}</p>
+    ${allFound?"":`<div class="chips" id="objs">${C.map(c=>`<button class="chip" type="button" data-o="${c.o}" aria-pressed="${S.found.includes(c.o)}">${c.n}</button>`).join("")}</div>`}
+    <div class="cards" id="cards">${shown.map(c=>{
+      if(!S.found.includes(c.o)) return `<div class="card unk"><b>?</b>아직 찾지 못함</div>`;
+      const mark = S.tries>=4 && c.a==="g";
+      return `<button class="card ${S.sel.includes(c.i)?"sel":""} ${mark?"no":""}" type="button" data-i="${c.i}" ${(!allFound||mark)?"disabled":""}><b>${c.k}</b>${esc(c.t)}<span class="dg">${c.dg}</span></button>`;}).join("")}</div>
+    ${allFound?`<div class="keypad" id="kp">${[0,1,2,3].map(n=>`<span>${sel[n]?sel[n].dg:"·"}</span>`).join("")}</div>
+      <button class="btn" type="button" id="tryBtn" ${S.sel.length!==4?"disabled":""}>이 번호로 문을 연다</button>`:""}
+    <div class="fb ${S.tries?"miss":""}" id="fb">${S.lastFb||(allFound?"네 장을 고르면 번호가 만들어집니다.":"물건마다 단서가 하나씩 숨어 있습니다.")}</div>`;
+  const ob=$("#objs"); if(ob) ob.onclick=e=>{ const b=e.target.closest("[data-o]"); if(b) find(b.dataset.o); };
+  if(allFound){
+    $("#cards").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b||b.disabled) return; const i=+b.dataset.i;
+      if(S.sel.includes(i)) S.sel=S.sel.filter(x=>x!==i); else if(S.sel.length<4){ S.sel.push(i); ticks(1); } else { S.lastFb="네 장까지만 고를 수 있습니다. 바꾸려면 고른 카드를 다시 눌러 빼세요."; }
+      keepY(search); syncStage(); };
+    $("#tryBtn").onclick=tryOpen;
+  }
+}
+function find(o){
+  const C=CARDS(), c=C.find(x=>x.o===o);
+  if(!c){ hint(OBJ_TEXT[o]||""); return; }
+  if(C.every(x=>S.found.includes(x.o))) return;
+  if(!S.found.includes(o)){ S.found.push(o); chime(); }
+  S.lastFb=`<b>${c.k}</b> · ${esc(c.t)}`;
+  if(C.every(x=>S.found.includes(x.o))) S.lastFb="단서 일곱 장을 모두 찾았습니다. 이제 확인된 사실 네 장을 고르세요.";
+  keepY(search); hint(`${c.n}에서 단서를 찾았습니다.`);
+}
+function tryOpen(){
+  const C=CARDS(), g=S.sel.filter(i=>C[i].a==="g").length;
+  if(g===0){ S.opened=true; chime(); setTimeout(chime,250); S.lastFb=""; search(); syncStage(); window.scrollTo(0,0); return; }
+  S.tries++; S.wrongN+=g; S.shadow=Math.min(6,S.shadow+1); lowBuzz();
+  S.lastFb=`덜컹. 열리지 않습니다. 네 장 중 <b>${g}장</b>은 확인된 사실이 아닙니다. 그림자가 킥킥 웃습니다.`
+    + (S.tries===2?" <br>힌트: 다른 사람이 이 방에 들어와도 똑같이 볼 수 있는 것만 사실입니다.":"")
+    + (S.tries>=4?" <br>사실이 아닌 카드를 표시해 두었습니다.":"");
+  if(S.tries>=4) S.sel=S.sel.filter(i=>C[i].a==="f");
+  keepY(search); syncStage();
+  const s=$("#stage"); s.classList.remove("shake"); void s.offsetWidth; s.classList.add("shake");
 }
 
+/* ---------- 5. 보낼 한 줄 ---------- */
+function write(){
+  const v=VV();
+  hint(`${v.last}. 아직 답이 없습니다.`);
+  V().innerHTML = `
+    <p class="eyebrow">보낼 한 줄 · ${v.last}</p>
+    <h2>지금 ${esc(v.who)}에게 한 줄 보낸다면?</h2>
+    <p class="small">보낼지 말지는 아래에서 정합니다. 손가락이 먼저 가는 걸 고르세요.</p>
+    <div class="stack" id="ln">${LINES.map((l,i)=>`<button class="opt" type="button" data-i="${i}" aria-pressed="${S.line===l.t}">“${l.t}”</button>`).join("")}</div>
+    <p class="eyebrow">그리고, 어떻게 하겠습니까?</p>
+    <div class="stack" id="opts">${ACTIONS.map((a,i)=>`<button class="opt" type="button" aria-pressed="${S.act===i}" data-i="${i}"><span class="n">${i+1}</span>${a.t}</button>`).join("")}</div>
+    <button class="btn" type="button" id="next" ${S.act===null||!S.line?"disabled":""}>그리고 아침이 온다</button>`;
+  $("#ln").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.line=LINES[+b.dataset.i].t; keepY(write); };
+  $("#opts").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.act=+b.dataset.i; keepY(write); };
+  $("#next").onclick=()=>{ go("reveal",6); const g=$("#phoneG"); g.classList.remove("buzz"); void g.getBBox(); g.classList.add("buzz"); buzz(); setTimeout(()=>say("다음 날 아침, 휴대전화가 울립니다. "+VV().R[ACTIONS[S.act].r].join(" ")),1600); };
+}
+
+/* ---------- 6. 다음 날 아침 ---------- */
 function reveal(){
+  const a=ACTIONS[S.act], v=VV(), rep=v.R[a.r];
   hint("다음 날 아침. 휴대전화가 울립니다.");
+  const mySent = a.send ? (S.line + (a.r==="long"?"  …(서운한 마음이 길게 이어짐)":"")) : null;
+  const diff = S.after===null ? 0 : S.before-S.after;
   V().innerHTML = `
-    <p class="eyebrow">반전</p>
-    <h2>다음 날 아침, 답장이 왔습니다.</h2>
-    ${chatHTML(true)}
-    <p class="lede">처음 떠올린 생각과 비교하면 어떤가요?</p>
-    <p class="small">처음 고른 생각: “${FIRST[S.first].t}”</p>
-    <div class="stack" id="opts">${["거의 맞았다","조금 달랐다","전혀 달랐다"].map((t,i)=>`<button class="opt" type="button" aria-pressed="${S.guess===i}" data-i="${i}">${t}</button>`).join("")}</div>
-    ${S.guess!==null?`<div class="callout">${VV().lesson}</div>
-    <button class="btn" type="button" id="next">그 밤으로 돌아가 본다</button>`:""}`;
-  $("#opts").onclick=e=>{const b=e.target.closest("[data-i]"); if(!b) return; const was=S.guess; S.guess=+b.dataset.i; reveal(); if(was===null) say(VV().lesson);};
-  if(S.guess!==null) $("#next").onclick=()=>go("rewind",6);
+    <p class="eyebrow">다음 날 아침</p>
+    <h2>답장이 왔습니다.</h2>
+    ${chatHTML({mySent, reply:rep})}
+    ${a.send?"":`<p class="small">당신은 어젯밤 아무것도 보내지 않았습니다. 고른 한 줄은 입력창에 그대로 남아 있습니다: “${esc(S.line)}”</p>`}
+    <div class="mine"><b>어젯밤 당신이 떠올린, ${esc(jo(v.who,"이","가"))} 쓰다 지운 말</b>“${esc(S.guessType)}”</div>
+    <p class="eyebrow">답장을 읽은 지금, 마음은 얼마나 흔들리나요?</p>
+    ${nums("after",S.after)}
+    ${S.after!==null?`
+      <div class="vs"><div><span class="small">어젯밤</span><span class="big">${S.before}</span></div><div class="small">→</div><div><span class="small">지금</span><span class="big">${S.after}</span></div></div>
+      <p class="lede">${diff>=3?"바뀐 건 사실 하나뿐인데, 마음의 숫자가 이만큼 움직였습니다.":diff<=0?"답장을 받고도 마음이 가라앉지 않았습니다. 그것도 단서입니다. 이 침묵이 건드린 건 이번 일만이 아닐 수 있습니다.":"마음이 조금 움직였습니다."}</p>
+      <div class="callout">${v.lesson}</div>
+      <button class="btn" type="button" id="next">문으로 걸어간다</button>`:""}`;
+  $("#after").onclick=e=>{ const b=e.target.closest("[data-n]"); if(!b) return; const was=S.after; S.after=+b.dataset.n; keepY(reveal); if(was===null) say(v.lesson); };
+  const nx=$("#next"); if(nx) nx.onclick=()=>{ hush(); go("mine",7); };
 }
 
-function rewind(){
-  const r=S.rewind;
-  hint(r===null?`다시, ${VV().last}.`:"문틈으로 빛이 들어옵니다.");
-  V().innerHTML = `
-    <p class="eyebrow">다시, ${VV().last}</p>
-    <h2>답장은 아직 없습니다. 이번엔 무엇을 하겠습니까?</h2>
-    <div class="stack" id="opts">${REWIND.map((o,i)=>`<button class="opt" type="button" aria-pressed="${r===i}" data-i="${i}"><span class="n">${i+1}</span>${o.t}</button>`).join("")}</div>
-    ${r!==null?`<div class="fb ok">${REWIND[r].c}</div><button class="btn" type="button" id="next">열린 문으로 나간다</button>`:""}`;
-  $("#opts").onclick=e=>{const b=e.target.closest("[data-i]"); if(!b) return; const was=S.rewind; S.rewind=+b.dataset.i; markSeen(); rewind(); syncStage(); if(was===null) door();};
-  if(r!==null) $("#next").onclick=()=>{ S.done=true; go("exit",7); window.scrollTo(0,0); };
+/* ---------- 7. 역할 반전: 당신의 침묵 ---------- */
+function mine(){
+  const none = S.mineRel===RELS.length-1, m=MINE[S.mine], who=mineWho();
+  hint("문고리를 잡는 순간, 한 사람이 떠오릅니다.");
+  let h=`
+    <p class="eyebrow">당신의 침묵</p>
+    <h2>문고리를 잡는 순간, 질문 하나가 문에 떠오릅니다.</h2>
+    <div class="whisper" style="border-color:var(--line);box-shadow:none;color:var(--ink)"><small>문에 새겨진 질문</small>요즘 당신이 답을 미루고 있는 사람이 있나요?</div>
+    <div class="chips" id="rel">${RELS.map((r,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.mineRel===i}">${r}</button>`).join("")}</div>`;
+  if(S.mineRel!==null){
+    h+= none ? `
+      <p class="lede">그렇다면 이런 알림이 떠 있다고 해 봅시다.</p>
+      <div class="chat" data-t="지금"><div class="who">${esc(m.who)}</div><div class="bub them">${esc(m.t)}</div><div class="meta read">내가 읽음 · ${m.ago}</div></div>
+      <p class="small">${m.ago}에 읽고, 답하지 않은 메시지입니다.</p>` : `
+      <p class="lede">지금 그 사람의 휴대폰 화면은 이렇습니다.</p>
+      <div class="chat" data-t="지금"><div class="who">받는 사람: 나</div><div class="bub me">(그 사람이 당신에게 보낸 메시지)</div><div class="meta read">읽음</div><div class="meta">아직 답이 없습니다</div></div>
+      <p class="small">어젯밤 당신이 보던 화면과 똑같습니다. 자리만 바뀌었습니다.</p>`;
+    h+=`
+      <p class="eyebrow">${esc(jo(who,"은","는"))} 당신의 침묵을 어떻게 읽고 있을까요?</p>
+      <div class="chips" id="mr">${READS.map((r,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.mineRead===r.t}">${r.t}</button>`).join("")}</div>`;
+  }
+  if(S.mineRead) h+=`
+      <p class="eyebrow">그런데, 당신은 왜 답하지 않았나요? (여러 개 가능)</p>
+      <div class="chips" id="why">${WHY.map((w,i)=>`<button class="chip" type="button" aria-pressed="${S.why.includes(i)}" data-i="${i}">${w}</button>`).join("")}</div>`;
+  if(S.mineRead && S.why.length) h+=`
+      <div class="callout">당신의 침묵에는 이유가 있었습니다. ${S.why.map(i=>WHY[i]).join(", ")}.<br>그런데 ${esc(jo(who,"은","는"))} 그 이유를 모릅니다. 어젯밤의 당신처럼요.</div>
+      <button class="btn" type="button" id="next">문을 연다</button>`;
+  V().innerHTML=h;
+  $("#rel").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.mineRel=+b.dataset.i; keepY(mine); };
+  const mr=$("#mr"); if(mr) mr.onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.mineRead=READS[+b.dataset.i].t; keepY(mine); };
+  const w=$("#why"); if(w) w.onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; const i=+b.dataset.i; S.why=S.why.includes(i)?S.why.filter(x=>x!==i):[...S.why,i]; keepY(mine); };
+  const nx=$("#next"); if(nx) nx.onclick=()=>{ markSeen(); saveLog(); go("exit",8); door(); };
 }
 
-/* ---------- 해석 경향 계산 (임시 규칙: 전문가 검토 필요) ---------- */
+/* ---------- 8. 탈출: 나의 카드 (임시 규칙: 전문가 검토 필요) ---------- */
 function score(){
   let rej=0, mind=0, anx=0;
-  const f=FIRST[S.first]; rej+=f.rej||0; mind+=f.mind||0; anx+=(f.anx||0)+(f.self||0);
-  S.feel.forEach(i=>{rej+=FEEL[i].rej||0; anx+=FEEL[i].anx||0;});
-  S.sortLog.forEach(l=>{ if(l.a==="추측"&&l.pick==="정보") mind+=1; });
-  S.picks.forEach((p,i)=>{ const t=SC(i).o[p[0]][1]; if(t==="rej"){rej+=1; mind+=1;} if(t==="self"){anx+=1; mind+=1;} });
-  const w=REWIND[S.rewind]; rej+=w.rej||0; anx+=w.anx||0;
-  anx+=ACT[S.act].anx||0;
-  if(S.guess===2) mind+=1;
+  const f=FIRST[S.first]; rej+=f.rej||0; mind+=f.mind||0; anx+=f.anx||0;
+  let fr=0, fa=0; S.feel.forEach(i=>{fr+=FEEL[i].rej||0; fa+=FEEL[i].anx||0;}); rej+=Math.min(2,fr); anx+=Math.min(2,fa);
+  [tagOf(DELETED,S.guessType), tagOf(LINES,S.line), tagOf(READS,S.mineRead)].forEach(t=>{ rej+=t.rej||0; anx+=t.anx||0; if(t.rej||t.anx) mind+=1; });
+  const agree=wPick("up"); mind+=agree; if(grp()==="분노"||grp()==="우울") rej+=agree; else anx+=agree;
+  mind+=Math.min(3,S.wrongN);
+  const a=ACTIONS[S.act]; rej+=a.rej||0; anx+=a.anx||0;
+  if(S.before>=7) anx+=1; if(S.before>=9) anx+=1;
   const cap=(v,m)=>Math.min(1,v/m);
-  return [["거절 민감",cap(rej,8)],["마음 읽기",cap(mind,8)],["관계 불안",cap(anx,7)]];
+  return [["거절 민감",cap(rej,10)],["마음 읽기",cap(mind,11)],["관계 불안",cap(anx,11)]];
 }
 const level=v=>v>=.6?"자주":v>=.3?"가끔":"드묾";
+function typeKey(){
+  const sc=score(), top=[...sc].sort((a,b)=>b[1]-a[1])[0];
+  if(top[1]<.35) return "light";
+  if(S.tries===0 && wPick("up")===0 && top[1]<.6) return "det";
+  return top[0]==="마음 읽기"?"nov":top[0]==="거절 민감"?"rad":"alm";
+}
 function chainNote(){
-  const g=FIRST[S.first].g;
-  if(g==="분노") return "‘무시당했다’는 해석이 화를 불렀습니다. 같은 침묵에서도 다른 해석을 했다면 다른 감정이 왔을 수 있습니다.";
+  const g=grp();
+  if(g==="분노") return "‘무시당했다’는 해석이 화를 불렀습니다. 같은 침묵에 다른 해석을 붙였다면 다른 감정이 왔을 수 있습니다.";
   if(g==="불안") return "‘나쁜 일이 생길 것 같다’는 예측이 불안을 불렀습니다. 사건이 아니라 해석이 감정을 만든 고리입니다.";
   if(g==="우울") return "‘내가 부족해서’라는 해석이 마음을 가라앉혔습니다. 침묵이 내 가치를 말해 준 적은 없습니다.";
-  return "결론을 미뤄 두자 감정도 크게 흔들리지 않았습니다. 바쁠 거라는 생각도 추측이라는 점은 기억해 두세요.";
+  return "결론을 미뤄 두자 감정도 크게 흔들리지 않았습니다. 다만 ‘바쁠 것이다’도 추측이라는 점은 기억해 두세요.";
 }
-
+function saveLog(){
+  const log=store("maeum.silence.log")||[];
+  log.push({at:new Date().toISOString(), story:VV().who, typed:S.guessType, first:FIRST[S.first].t, feel:S.feel.map(i=>FEEL[i].t), before:S.before, after:S.after,
+    whisper:S.wlog.map((j,r)=>COMEBACK[r][j].k), tries:S.tries, wrongN:S.wrongN, line:S.line, act:ACTIONS[S.act].t, mineRel:RELS[S.mineRel], mineRead:S.mineRead, why:S.why.map(i=>WHY[i]), type:TYPES[typeKey()].nm});
+  store("maeum.silence.log", log.slice(-20));
+}
 function exit(){
+  const T=TYPES[typeKey()], sc=score(), v=VV();
   hint("문이 열렸습니다.");
-  setTimeout(()=>{ if(S.view==="exit" && !exit.spoken){ exit.spoken=true; const m=$(".insight"); if(m) say(m.textContent); } }, 400);
-  const sc=score(); const top=[...sc].sort((a,b)=>b[1]-a[1])[0];
-  const firstNeg = S.picks.filter((p,i)=>SC(i).o[p[0]][1]!=="neu").length;
-  let msg;
-  if(top[1]<.3) msg="당신은 침묵을 비어 있는 시간으로 둘 줄 아는 편입니다. 확인하기 전까지 결론을 미뤄 둘 수 있었습니다.";
-  else if(top[0]==="거절 민감") msg="당신은 침묵을 공백으로 두기보다, 거절의 신호로 빨리 읽는 편일 수 있습니다.";
-  else if(top[0]==="마음 읽기") msg="당신은 확인하기 전에 상대의 마음을 먼저 정해 두는 편일 수 있습니다. 침묵을 의미로 빨리 채우는 습관입니다.";
-  else msg="당신은 답이 없는 시간을 오래 견디기 어려운 편일 수 있습니다. 관계가 흔들릴까 봐 마음이 먼저 앞서 갑니다.";
-  const takes=["침묵은 대답이 아니라 아직 비어 있는 시간이다.","확인하기 전까지 결론은 연필로 적어 둔다.","내가 느낀 서운함은 진짜지만, 상대의 마음은 아직 모른다."];
+  if(!exit.spoken){ exit.spoken=true; setTimeout(()=>say(`당신의 카드는 ${T.nm}. ${T.one}.`),500); }
   V().innerHTML = `
     <p class="eyebrow">탈출 · 방 2</p>
     <h2>침묵의 방에서 나왔습니다.</h2>
-    <div class="result">
-      <p class="eyebrow">이번 체험에서 보인 해석 경향</p>
-      <p class="insight">${msg}</p>
-      <div class="meter">${sc.map(([n,v])=>`<div class="row"><span>${n}</span><span class="bar"><i style="width:${Math.max(6,Math.round(v*100))}%"></i></span><span class="lv">${level(v)}</span></div>`).join("")}</div>
-      <p class="small">네 장면 중 <span class="count">${firstNeg}</span>곳에서 처음 떠올린 이유가 '나를 향한 부정적인 뜻'이었습니다. 이 결과는 당신을 정하는 유형이 아니라, 오늘 이 방에서 나타난 반응입니다.</p>
-    </div>
-    <p class="eyebrow">내 생각 고리</p>
+    <div class="tcard ${S.flip?"flip":""}" id="tc"><div class="in">
+      <div class="f">
+        <span class="emo">${T.emo}</span>
+        <span class="small">침묵의 방에서 받은 카드</span>
+        <span class="nm">${T.nm}</span>
+        <span class="one">${T.one}</span>
+        <span>${T.s}</span>
+        <span class="small" style="margin-top:auto">눌러서 뒷면 보기</span>
+      </div>
+      <div class="b">
+        <p class="eyebrow">카드 뒷면 · 오늘 이 방에서 보인 반응</p>
+        <div class="meter">${sc.map(([n,x])=>`<div class="row"><span>${n}</span><span class="bar"><i style="width:${Math.max(6,Math.round(x*100))}%"></i></span><span class="lv">${level(x)}</span></div>`).join("")}</div>
+        <p class="small">${T.w}</p>
+        <p class="small">이 카드는 당신을 정하는 유형이 아니라, 오늘 이 방에서 나타난 반응입니다. 다른 이야기로 들어가면 다른 카드가 나올 수 있습니다.</p>
+        <span class="small" style="margin-top:auto">눌러서 앞면 보기</span>
+      </div>
+    </div></div>
+    <div class="vs"><div><span class="small">어젯밤 흔들림</span><span class="big">${S.before}</span></div><div class="small">→</div><div><span class="small">아침</span><span class="big">${S.after}</span></div></div>
+    <p class="eyebrow">오늘 밤 내 생각 고리</p>
     <ol class="chain">
       <li><span>사건</span>읽고 답이 없다</li>
       <li><span>내 생각</span>“${esc(FIRST[S.first].t)}”</li>
       <li><span>내 감정</span>${S.feel.map(i=>FEEL[i].t).join(" · ")}</li>
-      <li><span>내 몸</span>${BODY[S.body]}</li>
-      <li><span>내 행동</span>${ACT[S.act].t}</li>
+      <li><span>내 행동</span>${ACTIONS[S.act].t}</li>
     </ol>
     <p class="small">${chainNote()}</p>
-    <div class="habit">
-      <p class="eyebrow">오늘 만난 생각 습관 · 1 / 12</p>
-      <p class="habit-name">독심술 (지레짐작)</p>
-      <p>확인하지 않은 상대의 마음을 이미 안다고 믿는 습관입니다. '답이 없다'는 사실에 '나를 무시한다'는 뜻을 붙일 때 나타납니다.</p>
-      <p class="small">연습: 결론 전에 “지금 확인된 것은 무엇인가?”를 먼저 묻기</p>
+    <p class="eyebrow">당신이 고른 세 문장</p>
+    <div class="stack">
+      <div class="mine"><b>${esc(jo(v.who,"이","가"))} 쓰다 지웠을 것 같은 말</b>“${esc(S.guessType)}”</div>
+      <div class="mine"><b>당신이 보내려던 한 줄</b>“${esc(S.line)}”</div>
+      <div class="mine"><b>${esc(jo(mineWho(),"이","가"))} 당신의 침묵을 읽는 방식</b>“${esc(S.mineRead)}”</div>
     </div>
-    <p class="eyebrow">오늘 가져갈 문장 하나</p>
-    <div class="stack" id="takes">${takes.map((t,i)=>`<button class="opt" type="button" aria-pressed="${S.take===i}" data-i="${i}">${t}</button>`).join("")}</div>
-    <button class="btn" type="button" id="share">결과 문구 복사해서 공유하기</button>
+    <p class="small">누구의 마음을 상상했든, 고른 사람은 당신입니다. 세 문장이 닮아 있는지 한번 보세요.</p>
+    <div class="habit">
+      <p class="eyebrow">생각 습관 카드 · 1 / 12 획득</p>
+      <p class="habit-name">독심술 (지레짐작)</p>
+      <p>확인하지 않은 상대의 마음을 이미 안다고 믿는 습관입니다. ‘답이 없다’는 사실에 ‘나를 무시한다’는 뜻을 붙일 때 나타납니다.</p>
+      <p class="small">오늘의 열쇠: 결론을 내리기 전에 “지금 확인된 것은 무엇인가?”부터 묻기. 나머지 열한 장은 다른 방에 있습니다.</p>
+    </div>
+    <button class="btn" type="button" id="share">카드 문구 복사해서 공유하기</button>
     <p class="copyok" id="copyok"></p>
-    <button class="btn ghost" type="button" disabled>다음 방: 실수의 방 (준비 중)</button>
-    <button class="btn ghost" type="button" id="map">본관 지도로 돌아가기</button>`;
-  $("#takes").onclick=e=>{const b=e.target.closest("[data-i]"); if(!b) return; S.take=+b.dataset.i; exit(); syncStage(); prog();};
-  $("#map").onclick=()=>{ go("home",0); window.scrollTo(0,0); };
+    <button class="btn ghost" type="button" id="again">다른 이야기로 다시 들어가기</button>
+    <button class="btn ghost" type="button" id="map">처음 화면으로</button>
+    <p class="small">기록은 이 기기에만 저장됩니다. 처음 화면 아래에서 언제든 지울 수 있습니다.</p>`;
+  $("#tc").onclick=()=>{ S.flip=!S.flip; $("#tc").classList.toggle("flip",S.flip); };
+  $("#map").onclick=goHome;
+  $("#again").onclick=ROOMDEF[1].start;
   $("#share").onclick=async()=>{
-    const text=`[마음의 방탈출 · 침묵의 방]\n${msg}\n${sc.map(([n,v])=>`${n}: ${level(v)}`).join(" / ")}\n오늘 만난 생각 습관: 독심술(지레짐작)${S.take!==null?`\n오늘 가져갈 문장: ${takes[S.take]}`:""}`;
-    try{ await navigator.clipboard.writeText(text); $("#copyok").textContent="복사했습니다. 카톡이나 메모에 붙여 넣으세요."; }
-    catch(e){ $("#copyok").textContent="이 화면에서는 복사가 막혀 있습니다. 결과 카드를 캡처해 주세요."; }
+    const url=/^https?:/.test(location.href)&&!/claude/.test(location.hostname)?`\n${location.href.split("#")[0]}`:"";
+    const text=`[마음의 방탈출 · 침묵의 방]\n내 카드: ${T.emo} ${T.nm}\n“${T.one}”\n흔들림 ${S.before} → ${S.after}\n너는 무슨 카드가 나올까?${url}`;
+    try{ await navigator.clipboard.writeText(text); $("#copyok").textContent="복사했습니다. 카톡에 붙여 넣으세요."; }
+    catch(e){ $("#copyok").textContent="이 화면에서는 복사가 막혀 있습니다. 카드를 캡처해 주세요."; }
   };
 }
 
-/* ---------- 소리: 효과음은 코드로 만든 소리, 나레이션은 기기 음성 ---------- */
+/* 방 그림의 물건 누르기 */
+function touch(obj){
+  if(S.view==="home"||S.view==="enter"){ hint("먼저 방에 들어가야 합니다."); return; }
+  if(S.view==="dark" && obj==="phone" && S.clock===0){ runPhone(); return; }
+  if(S.view==="search" && !S.opened && obj!=="door"){ find(obj); return; }
+  if(obj==="door"){ hint(S.view==="exit"?"문이 열려 있습니다.":S.opened?"자물쇠가 풀려 있습니다.":OBJ_TEXT.door); return; }
+  hint(OBJ_TEXT[obj]||"");
+}
+$("#scene").addEventListener("click",e=>{ const g=e.target.closest(".hot"); if(g) RM().touch(g.dataset.obj); });
+$("#scene").addEventListener("keydown",e=>{ const g=e.target.closest(".hot"); if(g&&(e.key==="Enter"||e.key===" ")){ e.preventDefault(); RM().touch(g.dataset.obj); } });
+ROOMDEF[1]={no:2, name:"침묵의 방", steps:STEP_NAMES, touch, views:{enter, dark, first, whisper, search, write, reveal, mine, exit},
+  start(){ S=fresh(); exit.spoken=false; pickStory(); mount(1); go("enter",1); }};
+
+
+/* ---------- 소리 ---------- */
 const SND = {on:false, asked:false, ctx:null, amb:null};
 function ac(){ try{ if(!SND.ctx) SND.ctx = new (window.AudioContext||window.webkitAudioContext)(); if(SND.ctx.state==="suspended") SND.ctx.resume(); return SND.ctx; }catch(e){ return null; } }
 function env(g, t, peak, a, d){ g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(peak,t+a); g.gain.exponentialRampToValueAtTime(0.0001,t+a+d); }
@@ -758,6 +1144,14 @@ function ticks(n){
   if(!SND.on) return; const c=ac(); if(!c) return;
   for(let i=0;i<n;i++){ const t=c.currentTime+i*.5, o=c.createOscillator(), g=c.createGain(); o.type="square"; o.frequency.value=i%2?1500:1900; o.connect(g).connect(c.destination); env(g,t,.05,.002,.04); o.start(t); o.stop(t+.06); }
 }
+function typeSnd(){
+  if(!SND.on) return; const c=ac(); if(!c) return;
+  for(let i=0;i<7;i++){ const t=c.currentTime+i*.16+Math.random()*.05, s=c.createBufferSource(), hp=c.createBiquadFilter(), g=c.createGain(); s.buffer=noiseBuf(c,.03); hp.type="highpass"; hp.frequency.value=2500; s.connect(hp).connect(g).connect(c.destination); env(g,t,.04,.002,.02); s.start(t); }
+}
+function lowBuzz(){
+  if(!SND.on) return; const c=ac(); if(!c) return; const t=c.currentTime;
+  const o=c.createOscillator(), g=c.createGain(); o.type="triangle"; o.frequency.setValueAtTime(110,t); o.frequency.exponentialRampToValueAtTime(70,t+.5); o.connect(g).connect(c.destination); env(g,t,.12,.02,.5); o.start(t); o.stop(t+.6);
+}
 function buzz(){
   if(!SND.on) return; const c=ac(); if(!c) return;
   for(let i=0;i<3;i++){ const t=c.currentTime+i*.42, o=c.createOscillator(), lp=c.createBiquadFilter(), g=c.createGain(); o.type="sawtooth"; o.frequency.value=150; lp.type="lowpass"; lp.frequency.value=600; o.connect(lp).connect(g).connect(c.destination); env(g,t,.16,.01,.28); o.start(t); o.stop(t+.32); }
@@ -776,30 +1170,452 @@ function hush(){ try{ window.speechSynthesis && speechSynthesis.cancel(); }catch
 function say(text, force){
   if(!SND.on && !force) return;
   try{
-    if(!("speechSynthesis" in window)){ hint(IN_KAKAO ? "카카오톡 안에서는 읽어 주기가 안 됩니다. 위의 ‘크롬·삼성 인터넷으로 열기’를 눌러 주세요." : "이 브라우저에서는 읽어 주기를 쓸 수 없습니다. 크롬이나 삼성 인터넷으로 열어 보세요."); return; }
+    if(!("speechSynthesis" in window)) return;
     speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(text); u.lang="ko-KR"; u.rate=.9; u.pitch=.95;
+    const u=new SpeechSynthesisUtterance(text); u.lang="ko-KR"; u.rate=.92; u.pitch=.95;
     const v=speechSynthesis.getVoices().find(v=>/^ko/i.test(v.lang)); if(v) u.voice=v;
     speechSynthesis.speak(u);
-  }catch(e){ hint("이 화면에서는 읽어 주기가 막혀 있습니다."); }
+  }catch(e){}
 }
 function setSound(on){
   SND.on=on; const b=$("#sndBtn"); b.setAttribute("aria-pressed", on); b.textContent = on ? "소리 켜짐" : "소리 꺼짐";
   ambient(on && S.view!=="home"); if(!on) hush();
 }
 const IN_KAKAO = /KAKAOTALK/i.test(navigator.userAgent);
-if(IN_KAKAO){
-  const k=$("#kakao"); k.hidden=false;
-  $("#kakaoOpen").href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(location.href);
-}
+if(IN_KAKAO){ const k=$("#kakao"); k.hidden=false; $("#kakaoOpen").href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(location.href); }
 $("#sndBtn").onclick=()=>{ SND.asked=true; setSound(!SND.on); };
-document.addEventListener("click", e=>{ const b=e.target.closest("[data-say]"); if(!b) return; ac(); say(b.dataset.say, true); });
+$("#homeBtn").onclick=goHome;
 
-/* ---------- 시작 ---------- */
-$("#homeBtn").onclick=()=>go("home",0);
-window.claude?.hot?.snapshot?.(()=>S);
-const start=d=>{ S = (d && d.view) ? Object.assign(fresh(),d) : fresh(); if(S.view==="dark"&&S.phoneOpen) S.clock=4; render(); };
-window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
+/* ---------- 입체 방: 크기 맞춤과 기울이기 ---------- */
+(function(){
+  const sc=$("#scene"), rm=$("#room3d");
+  const fit=()=>{ sc.style.setProperty("--s", (sc.clientWidth/360).toFixed(4)); };
+  fit(); window.addEventListener("resize",fit); if(window.ResizeObserver) new ResizeObserver(fit).observe(sc);
+  if(reduce) return;
+  let idle=null;
+  const tilt=(x,y)=>{ const r=sc.getBoundingClientRect(); const nx=(x-r.left)/r.width-.5, ny=(y-r.top)/r.height-.5;
+    rm.classList.add("drag"); rm.style.setProperty("--ry",(nx*22).toFixed(2)+"deg"); rm.style.setProperty("--rx",(-ny*12).toFixed(2)+"deg");
+    clearTimeout(idle); idle=setTimeout(rest,1800); };
+  const rest=()=>{ rm.classList.remove("drag"); rm.style.setProperty("--ry","0deg"); rm.style.setProperty("--rx","0deg"); };
+  let dir=1; const sway=()=>{ if(S.view!=="home"||rm.classList.contains("drag")) return; dir=-dir; rm.style.setProperty("--ry",(dir*9)+"deg"); };
+  setTimeout(sway,400); setInterval(sway,3300);
+  sc.addEventListener("pointermove",e=>tilt(e.clientX,e.clientY));
+  sc.addEventListener("pointerleave",rest);
+  window.addEventListener("deviceorientation",e=>{ if(e.gamma==null) return; rm.classList.add("drag");
+    rm.style.setProperty("--ry",(Math.max(-25,Math.min(25,e.gamma))*.5).toFixed(2)+"deg");
+    rm.style.setProperty("--rx",(-(Math.max(20,Math.min(70,e.beta))-45)*.25).toFixed(2)+"deg"); });
+})();
+
+/* ================= 방 3 · 실수의 방 ================= */
+ROOMDEF[3] = (function(){
+const STEPS = ["입구","그 순간","되감기 시계","증거와 자물쇠","수습","다음 날","남의 실수","탈출"];
+const THINK = [
+  {t:"한심하다고 생각한다", spot:2},
+  {t:"웃고 넘긴다"},
+  {t:"별생각 없다"},
+  {t:"나를 다시 볼 것이다", spot:2},
+  {t:"각자 자기 일로 바쁘다"},
+  {t:"뒤에서 얘기할 것이다", spot:2, mag:1}
+];
+const FIRST3 = [
+  {t:"나는 왜 늘 이 모양일까", g:"판결", judge:2},
+  {t:"다들 나를 이상하게 볼 거야", g:"시선", spot:2},
+  {t:"이제 다 끝났다", g:"부풀림", mag:2},
+  {t:"실수할 수도 있지", g:"유보"},
+  {t:"이런 실수는 절대 하면 안 되는 건데", g:"판결", judge:2},
+  {t:"일단 수습부터 하자", g:"유보"},
+  {t:"평생 이 일로 기억될 거야", g:"부풀림", mag:2, spot:1},
+  {t:"쥐구멍에라도 숨고 싶다", g:"시선", spot:1, judge:1}
+];
+const RTAG = { brief:{}, joke:{}, long:{spot:1,judge:1}, hide:{spot:2}, tour:{mag:1,spot:1,judge:1} };
+const RECALL = ["하나도 안 떠오른다","하나쯤 떠오른다","여러 개 떠오른다"];
+const FRIEND = [
+  {t:"괜찮아, 다들 금방 잊어"},
+  {t:"ㅋㅋ 나도 그런 적 있어"},
+  {t:"다음엔 한 번만 더 확인해"},
+  {t:"솔직히 좀 한심하긴 하다", judge:2}
+];
+const VAR3 = [
+  {k:"단체방", title:"회사 단체방 · 32명", time:"오전 11:42",
+   screen:[{t:"회의 자료 공유드립니다", who:"김 팀장"},{t:"확인했습니다", who:"박 대리"},{t:"아 오늘 회의 진짜 길다ㅋㅋ 빨리 집에 가고 싶다", me:1}],
+   intro:"친구에게 보내려던 말을, 회사 단체방에 보냈습니다.",
+   beat:["안 읽음 31","안 읽음 22","안 읽음 9","안 읽음 3 · 지우기 가능 시간이 지났습니다"],
+   event:"친구에게 보낼 말을 회사 단체방에 보냈다",
+   replays:["메시지가 올라갔다. 읽음 숫자가 올라간다.","다들 화면을 보며 킥킥 웃고 있다.","팀장님이 한숨을 쉬며 고개를 젓는다.","내일부터 나는 ‘그 메시지 보낸 사람’으로 불린다."],
+   clues:{phone:"단체방 · ‘ㅋㅋ’ 이모티콘을 누른 사람 3명. 다른 말은 없다.", clock:"벽시계 · 7분 뒤, 누군가 “오늘 점심 뭐 먹어요?”를 올렸다. 대화가 넘어갔다.", drawer:"서랍 속 알림 기록 · 이 일로 나에게 따로 연락한 사람 0명.",
+     mirror:"거울 · 얼굴이 새빨갛다. 32명 전부가 이 얼굴을 보고 있는 것만 같다.", trash:"구겨진 사과문 초안 · “하루 종일 다들 이 얘기만 할 겁니다…”", calendar:"달력 · 지난달 17일, 누군가 단체방에 사진을 잘못 올렸다. 누구였는지는 적혀 있지 않다. 기억도 나지 않는다."},
+   wheels:[{q:"반응한 사람", o:["3명","12명","32명 전부"]},{q:"화제가 바뀌기까지", o:["7분","1시간","하루 종일"]},{q:"따로 뭐라고 한 사람", o:["0명","3명","여럿"]}],
+   acts:[{t:"“앗, 잘못 보냈습니다 🙏” 한 줄 남긴다", r:"brief", out:["한 줄을 남겼다.","누군가 “ㅋㅋ 저도 그런 적 있어요”라고 답했다.","다음 날, 아무도 그 얘기를 꺼내지 않았다."]},
+     {t:"왜 그런 말을 썼는지 길게 해명한다", r:"long", out:["세 문단짜리 해명을 올렸다.","“ㅋㅋ 괜찮아요” 한 줄이 달렸다.","다음 날, 사람들이 기억한 건 메시지보다 긴 해명 쪽이었다."]},
+     {t:"아무 말 없이 화면을 끈다", r:"hide", out:["아무 말도 하지 않았다.","다음 날, 아무도 그 얘기를 꺼내지 않았다.","하지만 당신은 하루 종일 사람들 표정을 살폈다. 그 일을 가장 오래 붙든 건 당신의 머릿속이었다."]},
+     {t:"“속마음이 실수로 샜네요” 하고 농담한다", r:"joke", out:["농담 한 줄을 올렸다.","웃는 이모티콘 몇 개가 달렸다.","다음 날, 누군가 장난스럽게 한 번 꺼냈고 그걸로 끝났다."]},
+     {t:"내일 한 명씩 찾아가 사과한다", r:"tour", out:["다음 날 아침, 한 사람씩 찾아가 사과했다.","대부분은 “무슨 일이요?” 하고 되물었다. 기억하지 못했다.","그 일을 가장 널리 알린 사람은, 사과하러 다닌 당신이었다."]}],
+   lesson:"32명 중 반응한 사람은 3명이었고, 대화는 7분 만에 점심 메뉴로 넘어갔습니다. 실수는 실제로 있었습니다. 다만 그 크기는 머릿속에서 본 것과 달랐습니다."},
+  {k:"발표", title:"3층 회의실 · 12명", time:"오후 2:17",
+   screen:[{t:"(12명이 화면을 보고 있다)", who:"회의실"},{t:"그래서 이 수치가 뜻하는 건…", me:1},{t:"… …", me:1}],
+   intro:"발표 도중, 다음 말이 떠오르지 않습니다.",
+   beat:["정적 1초","정적 4초","정적 7초","정적 10초 · 겨우 다음 장으로 넘겼습니다"],
+   event:"발표 중 10초 동안 말문이 막혔다",
+   replays:["말이 끊겼다. 10초쯤 지나 다음 장으로 넘겼다.","모두가 서로 눈짓을 주고받는다.","부장님이 수첩에 무언가를 적는다. 내 평가일 것이다.","이제 중요한 발표는 다시는 나에게 오지 않는다."],
+   clues:{phone:"회의 녹음 · 정적 동안 고개를 든 사람 2명. 나머지는 자료를 넘기고 있었다.", clock:"벽시계 · 발표가 끝나고 3분 뒤, 다음 발표자의 차례로 넘어갔다.", drawer:"서랍 속 휴대폰 · 선배 1명의 메시지. “아까 괜찮았어. 나도 그런 적 있어.”",
+     mirror:"거울 · 귀까지 빨갛다. 12명 전부가 이 얼굴만 본 것 같다.", trash:"구겨진 메모 · “회의 내내 다들 그 10초만 생각했을 것이다.”", calendar:"달력 · 지난달 발표에서 누군가 화면을 잘못 띄웠다. 누구였는지 떠오르지 않는다."},
+   wheels:[{q:"정적 때 고개를 든 사람", o:["2명","7명","12명 전부"]},{q:"다음 순서로 넘어가기까지", o:["3분","30분","회의 내내"]},{q:"따로 연락한 사람", o:["1명 (위로)","0명 (다들 외면)","여럿 (지적)"]}],
+   acts:[{t:"“잠깐 정리하겠습니다” 하고 이어 간다", r:"brief", out:["한마디 하고 발표를 이어 갔다.","질문이 두 개 나왔다. 둘 다 내용에 관한 것이었다.","다음 날, 아무도 그 10초를 말하지 않았다."]},
+     {t:"끝난 뒤 왜 막혔는지 길게 해명한다", r:"long", out:["회의가 끝나고 한참 해명했다.","“아, 그랬어요? 몰랐는데” 하는 사람이 있었다.","몰랐던 사람들도 이제 그 10초를 알게 됐다."]},
+     {t:"끝나자마자 자리를 피한다", r:"hide", out:["발표가 끝나자마자 회의실을 나왔다.","선배의 메시지에도 답하지 못했다.","다음 날, 그 10초를 꺼낸 사람은 없었다. 당신만 밤새 그 장면을 돌려 봤다."]},
+     {t:"“머리가 잠깐 재부팅됐네요” 하고 웃어넘긴다", r:"joke", out:["한마디에 회의실에 작은 웃음이 돌았다.","발표는 그대로 이어졌다.","다음 날, 누군가 “재부팅 잘 됐어요?” 하고 웃었고 그걸로 끝났다."]},
+     {t:"참석자를 한 명씩 찾아가 사과한다", r:"tour", out:["다음 날, 참석자를 한 명씩 찾아갔다.","대부분은 “뭐가요?” 하고 되물었다.","그 10초를 가장 널리 알린 사람은, 사과하러 다닌 당신이었다."]}],
+   lesson:"12명 중 고개를 든 사람은 2명이었고, 따로 온 연락은 위로 한 통이었습니다. 10초는 실제로 길었습니다. 다만 그 10초를 가장 오래 본 사람은 당신이었습니다."},
+  {k:"이름", title:"보낸 메일 · 참조 8명", time:"오후 4:05",
+   screen:[{t:"자료 요청드립니다. 박서준 드림", who:"박 과장 (거래처)"},{t:"김 과장님, 요청하신 자료 보내드립니다.", me:1}],
+   intro:"거래처 박 과장님을, 메일에 ‘김 과장님’이라고 썼습니다. 참조가 8명입니다.",
+   beat:["보낸 지 1분 · 읽은 사람 2명","읽은 사람 5명","읽은 사람 8명","보내기 취소 시간이 지났습니다"],
+   event:"거래처 과장님의 성을 틀리게 써서 메일을 보냈다",
+   replays:["메일이 나갔다. 이름이 틀렸다.","박 과장님이 메일을 보며 얼굴을 굳힌다.","참조된 여덟 명이 ‘기본도 안 됐네’ 하고 수군댄다.","이 거래는 나 때문에 틀어진다."],
+   clues:{phone:"받은 메일함 · 이름이 틀렸다고 말한 사람 1명. 박 과장님 본인이 “박입니다 ^^”라고 썼다.", clock:"벽시계 · 답장이 오기까지 20분. 내용은 “자료 잘 받았습니다”였다.", drawer:"서랍 속 메모 · 이 일로 화를 낸 사람 0명.",
+     mirror:"거울 · 목덜미까지 빨갛다. 8명 전부가 혀를 차는 소리가 들리는 것 같다.", trash:"구겨진 사과 메일 초안 · “이번 일로 신뢰를 완전히 잃었을 줄 압니다…”", calendar:"달력 · 지난달, 누군가 내 이름을 틀리게 쓴 메일을 받았다. 누구였더라. 기억나지 않는다."},
+   wheels:[{q:"이름을 짚은 사람", o:["1명","4명","8명 전부"]},{q:"답장이 오기까지", o:["20분","반나절","끝내 안 옴"]},{q:"화를 낸 사람", o:["0명","1명","여럿"]}],
+   acts:[{t:"“성함을 잘못 적었습니다. 죄송합니다” 한 줄 보낸다", r:"brief", out:["정정 메일 한 줄을 보냈다.","“괜찮습니다 ^^ 자주 있는 일이에요”라는 답이 왔다.","다음 주 회의는 평소처럼 진행됐다."]},
+     {t:"왜 틀렸는지 길게 해명하는 메일을 보낸다", r:"long", out:["긴 해명 메일을 전체 참조로 보냈다.","“네, 괜찮습니다” 한 줄이 왔다.","참조 8명이 이름 실수를 한 번 더 읽게 됐다."]},
+     {t:"모른 척 넘어간다", r:"hide", out:["아무 메일도 보내지 않았다.","박 과장님은 다음 메일에서도 평소처럼 답했다.","당신은 다음 회의까지 그 사람의 표정을 살피느라 내용을 놓쳤다."]},
+     {t:"“제 눈이 잠깐 성을 바꿨네요” 하고 가볍게 정정한다", r:"joke", out:["가볍게 정정했다.","“ㅎㅎ 김 과장도 좋은 사람입니다”라는 답이 왔다.","그 농담은 두 사람 사이의 인사가 됐다."]},
+     {t:"참조된 8명에게 한 명씩 전화해 사과한다", r:"tour", out:["여덟 명에게 차례로 전화했다.","대부분은 “메일 아직 안 봤는데요?”라고 했다.","이름 실수를 모두에게 알린 사람은 당신이었다."]}],
+   lesson:"이름을 짚은 사람은 본인 한 명이었고, 화를 낸 사람은 없었습니다. 실수는 실수였습니다. 다만 ‘거래가 틀어진다’는 장면은 되감기가 붙인 것이었습니다."}
+];
+const TYPES3 = {
+  roly:{emo:"🪆", nm:"오뚝이형", one:"실수를 사건으로 두고 다시 일어나는 사람", s:"실수와 나를 떼어 놓고 볼 줄 압니다.", w:"가끔은 ‘괜찮다’가 너무 빨리 나오지 않는지도 살펴보세요."},
+  fix:{emo:"🧰", nm:"수습반장형", one:"곱씹기 전에 손부터 움직이는 사람", s:"오래 되감지 않고, 센 숫자로 문을 한 번에 열었습니다.", w:"수습이 끝난 뒤 남는 민망함도 잠깐 그대로 둬 보세요. 금방 지나갑니다."},
+  mag:{emo:"🔎", nm:"돋보기형", one:"작은 실수를 크게 비춰 보는 사람", s:"일을 허투루 넘기지 않는 꼼꼼함이 있습니다.", w:"돋보기 속 크기와 실제 크기는 다릅니다. 한 번은 눈으로 재 보세요."},
+  spot:{emo:"🎭", nm:"무대형", one:"모두가 나를 보고 있다고 느끼는 사람", s:"다른 사람의 시선과 기분을 잘 헤아립니다.", w:"객석은 생각보다 어둡습니다. 다들 자기 대본을 보느라 바쁩니다."},
+  judge:{emo:"⚖️", nm:"판사형", one:"실수 하나로 나에게 판결을 내리는 사람", s:"스스로에게 높은 기준을 가지고 있습니다.", w:"친구에게 하는 말을 나에게도 한 번 해 보세요. 같은 사건입니다."}
+};
+const SCENE3 = `
+  <div class="face back">
+    <div class="lampglow"></div>
+    <svg class="o3" style="left:36px;top:22px;width:74px;height:74px" viewBox="0 0 74 74">
+      <g class="hot" data-obj="clock" role="button" tabindex="0" aria-label="벽시계">
+        <circle cx="37" cy="37" r="32" fill="#efe3c0" stroke="#9a7b45" stroke-width="4"/>
+        <g stroke="#7c6a3a" stroke-width="2"><line x1="37" y1="9" x2="37" y2="14"/><line x1="37" y1="60" x2="37" y2="65"/><line x1="9" y1="37" x2="14" y2="37"/><line x1="60" y1="37" x2="65" y2="37"/></g>
+        <g id="clk3"><line x1="37" y1="37" x2="37" y2="15" stroke="#262a4d" stroke-width="3" stroke-linecap="round"/><line x1="37" y1="37" x2="52" y2="42" stroke="#262a4d" stroke-width="4" stroke-linecap="round"/></g>
+        <circle cx="37" cy="37" r="3" fill="#b0412f"/>
+        <circle class="hl" cx="37" cy="37" r="35.5" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+    <svg class="o3" style="left:150px;top:28px;width:62px;height:70px" viewBox="0 0 62 70">
+      <g class="hot" data-obj="calendar" role="button" tabindex="0" aria-label="달력">
+        <rect x="3" y="3" width="56" height="64" rx="2" fill="#efe3c0"/><rect x="3" y="3" width="56" height="14" fill="#b0412f"/>
+        <g fill="#b9ad8a"><rect x="9" y="24" width="8" height="6"/><rect x="21" y="24" width="8" height="6"/><rect x="33" y="24" width="8" height="6"/><rect x="45" y="24" width="8" height="6"/><rect x="9" y="35" width="8" height="6"/><rect x="21" y="35" width="8" height="6"/><rect x="45" y="35" width="8" height="6"/><rect x="9" y="46" width="8" height="6"/><rect x="21" y="46" width="8" height="6"/><rect x="33" y="46" width="8" height="6"/></g>
+        <circle cx="37" cy="38" r="6" fill="none" stroke="#b0412f" stroke-width="2"/>
+        <rect class="hl" x="1" y="1" width="60" height="68" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+    <svg class="o3" style="left:258px;top:92px;width:92px;height:148px" viewBox="255 67 84 136">
+      <defs><radialGradient id="exitGlow" cx="50%" cy="60%" r="70%"><stop offset="0" stop-color="#fff2c4"/><stop offset="1" stop-color="#f2d27c" stop-opacity=".2"/></radialGradient></defs>
+      <g class="hot" data-obj="door" role="button" tabindex="0" aria-label="출구 문">
+        <rect x="258" y="70" width="78" height="133" fill="#3a2414"/>
+        <rect id="doorLight" x="261" y="73" width="72" height="130" fill="url(#exitGlow)"/>
+        <g id="doorPanel">
+          <rect x="261" y="73" width="72" height="130" fill="#6b4126" stroke="#8c5a35" stroke-width="1.5"/>
+          <rect x="269" y="82" width="56" height="48" fill="none" stroke="#83532f" stroke-width="1.5"/>
+          <rect x="269" y="140" width="56" height="52" fill="none" stroke="#83532f" stroke-width="1.5"/>
+          <circle cx="322" cy="138" r="4" fill="#f2d27c"/>
+          <g id="locks"><rect x="275" y="97" width="12" height="15" rx="2" fill="#2a1a0e" stroke="#a37a45"/><rect x="291" y="97" width="12" height="15" rx="2" fill="#2a1a0e" stroke="#a37a45"/><rect x="307" y="97" width="12" height="15" rx="2" fill="#2a1a0e" stroke="#a37a45"/></g>
+        </g>
+        <rect class="hl" x="256" y="68" width="82" height="134" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+  </div>
+  <div class="face left"></div><div class="face right"></div><div class="face ceil"></div>
+  <div class="face floor"><div class="doorspill"></div></div>
+  <svg class="o3" style="left:6px;top:112px;width:52px;height:128px;transform:translateZ(-150px) rotateY(28deg)" viewBox="0 0 52 128">
+    <g class="hot" data-obj="mirror" role="button" tabindex="0" aria-label="거울">
+      <ellipse cx="26" cy="50" rx="21" ry="44" fill="#8a6a3a"/><ellipse cx="26" cy="50" rx="17" ry="40" fill="#9fb4d6"/>
+      <ellipse cx="26" cy="46" rx="8" ry="10" fill="#d98a7a" opacity=".75"/><path d="M12,84 C14,66 38,66 40,84 Z" fill="#5a628f" opacity=".7"/>
+      <rect x="23" y="94" width="6" height="26" fill="#6e4625"/><rect x="12" y="119" width="28" height="6" rx="2" fill="#6e4625"/>
+      <rect class="hl" x="2" y="3" width="48" height="123" rx="6" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>
+  <div class="desk-top"><div class="pool"></div></div>
+  <div class="desk-front">
+    <svg class="o3" style="left:16px;top:10px;width:112px;height:40px" viewBox="47 149 106 38">
+      <g class="hot" data-obj="drawer" role="button" tabindex="0" aria-label="서랍">
+        <rect x="50" y="152" width="100" height="32" rx="3" fill="#9c6a3a" stroke="#c99a5e" stroke-width="1.5"/>
+        <rect x="90" y="166" width="20" height="4" rx="2" fill="#f1e2c2"/>
+        <rect class="hl" x="47" y="149" width="106" height="38" rx="4" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+  </div>
+  <div class="desk-side"></div>
+  <svg class="o3" style="left:168px;top:82px;width:46px;height:68px;transform:translateZ(-160px)" viewBox="44 80 42 62">
+    <polygon points="48,104 82,104 74,84 56,84" fill="#f0cd5e"/><rect x="63" y="104" width="4" height="34" fill="#c9a24a"/><rect x="55" y="136" width="20" height="4" rx="1" fill="#c9a24a"/></svg>
+  <svg class="o3 o-phone" style="left:104px;top:96px;width:42px;height:56px;transform:translateZ(-128px)" viewBox="106 98 36 48">
+    <g class="hot phone-g glow" id="phoneG" data-obj="phone" role="button" tabindex="0" aria-label="휴대전화">
+      <rect class="body" x="112" y="104" width="24" height="36" rx="4" fill="#7fbfa7" stroke="#22302b" stroke-width="2"/>
+      <rect x="116" y="110" width="16" height="22" rx="1" fill="#a9e4cc"/>
+      <rect x="118" y="114" width="9" height="3" rx="1" fill="#22302b"/><rect x="121" y="120" width="9" height="3" rx="1" fill="#22302b"/><rect x="118" y="126" width="6" height="3" rx="1" fill="#22302b"/>
+      <circle id="phoneDot" class="pulse" cx="134" cy="106" r="3" fill="#f2d27c"/>
+      <rect class="hl" x="108" y="100" width="32" height="44" rx="5" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>
+  <svg class="o3" style="left:232px;top:190px;width:44px;height:50px;transform:translateZ(-62px)" viewBox="172 162 36 42">
+    <g class="hot" data-obj="trash" role="button" tabindex="0" aria-label="쓰레기통">
+      <polygon points="176,174 204,174 200,202 180,202" fill="#5a4a5e" stroke="#8a7690" stroke-width="1.5"/>
+      <circle cx="184" cy="172" r="5" fill="#efe6cf"/><circle cx="193" cy="170" r="5" fill="#e3d6b6"/><circle cx="199" cy="174" r="4" fill="#efe6cf"/>
+      <rect class="hl" x="173" y="163" width="34" height="40" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>`;
+const OBJS = [["phone","휴대전화"],["clock","벽시계"],["drawer","서랍"],["mirror","거울"],["trash","쓰레기통"],["calendar","달력"]];
+
+function fresh3(){ return {room:3, view:"m_enter", step:1, v:0, beat:-1, think:null, first:null, before:null, rp:0, rpDone:false,
+  found:[], wh:[2,2,2], tries:0, opened:false, lastFb:"", act:null, after:null, recall:null, friend:null, flip:false}; }
+const VV3 = () => VAR3[S.v];
+function pick3(){ const seen=store("maeum.mistake.seen")||[]; let pool=VAR3.map((_,i)=>i).filter(i=>!seen.includes(i));
+  if(!pool.length){ pool=VAR3.map((_,i)=>i).filter(i=>i!==seen[seen.length-1]); store("maeum.mistake.seen",[]); }
+  S.v=pool[Math.floor(Math.random()*pool.length)]; }
+function start(){ S=fresh3(); m_exit.spoken=false; pick3(); mount(3); go("m_enter",1); }
+
+function sync(){
+  const st=$("#stage"), v=S.view;
+  st.classList.toggle("lightsoff", v==="m_enter");
+  st.classList.toggle("dooropen", v==="m_exit");
+  st.classList.toggle("morning", ["m_next","m_mirror","m_exit"].includes(v));
+  st.dataset.view=v;
+  const ok=S.wh.filter(x=>x===0).length;
+  [...$("#locks").children].forEach((c,i)=>c.setAttribute("fill", S.opened||(S.tries>=3&&S.wh[i]===0) ? "#f2d27c" : "#2a1a0e"));
+  $("#phoneDot").style.display = (v==="m_moment"&&S.beat<0) ? "" : "none";
+  $("#clk3").classList.toggle("rew", v==="m_clock" && !S.rpDone);
+}
+function screenHTML(extra){
+  const v=VV3();
+  return `<div class="chat" data-t="${v.time}"><div class="who">${v.title}</div>${v.screen.map(b=>`<div class="bub ${b.me?"me":"them"}">${b.who?`<small style="display:block;font-size:11px;color:var(--dim)">${b.who}</small>`:""}${esc(b.t)}</div>`).join("")}${extra||""}</div>`;
+}
+function m_enter(){
+  hint("방이 어둡습니다. 어디선가 시계 소리가 납니다.");
+  if(!SND.asked){
+    V().innerHTML=`<p class="eyebrow">방 3 · 입구</p><p class="quote">실수는 사건일까, 판결일까.</p>
+      <p class="lede">이 방에는 소리와 나레이션이 있습니다.</p>
+      <div class="choose"><button class="btn" type="button" id="sOn">소리와 함께</button><button class="btn ghost" type="button" id="sOff">조용히</button></div>`;
+    $("#sOn").onclick=()=>{ SND.asked=true; setSound(true); m_enter(); };
+    $("#sOff").onclick=()=>{ SND.asked=true; setSound(false); m_enter(); };
+    return;
+  }
+  const L=["보내기 버튼을 눌렀습니다.","그리고 1초 뒤에 알았습니다.","되돌릴 수 없습니다.","벽시계가 그 순간으로 자꾸 되감깁니다."];
+  V().innerHTML=`<p class="eyebrow">방 3 · 입구</p><p class="quote">실수는 사건일까, 판결일까.</p>
+    <div class="narr">${L.map((l,i)=>`<span style="animation-delay:${.3+i*.8}s">${l}</span>`).join("")}</div>
+    <button class="btn" type="button" id="next">불을 켜고 들어간다</button>`;
+  say("실수는 사건일까, 판결일까. "+L.join(" "));
+  $("#next").onclick=()=>{ hush(); go("m_moment",2); };
+}
+function m_moment(){
+  const v=VV3(), started=S.beat>=0, done=S.beat>=v.beat.length-1 && !m_moment.running;
+  hint(started?"화면에서 눈을 뗄 수가 없습니다.":"빛나는 휴대전화를 눌러 보세요.");
+  V().innerHTML=`<p class="eyebrow">그 순간</p>
+    <h2>${started?esc(v.intro):"책상 위 휴대전화가 빛납니다."}</h2>
+    ${started?screenHTML()+`<p class="tstat">${v.beat[Math.min(S.beat,v.beat.length-1)]}</p>`:`<button class="btn" type="button" id="peek">휴대전화 보기</button>`}
+    ${done?`<div class="whisper" style="border-color:var(--line);box-shadow:none;color:var(--ink)"><small>질문</small>지금 이걸 본 사람들은 무슨 생각을 하고 있을까요?</div>
+      <div class="chips" id="think">${THINK.map((t,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.think===i}">${t.t}</button>`).join("")}</div>
+      <button class="btn" type="button" id="next" ${S.think===null?"disabled":""}>다음</button>`:""}`;
+  if(!started){ $("#peek").onclick=runBeat; return; }
+  if(done){ $("#think").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.think=+b.dataset.i; keepY(m_moment); };
+    $("#next").onclick=()=>go("m_first",2); }
+}
+async function runBeat(){
+  if(m_moment.running) return; m_moment.running=true; const v=VV3();
+  for(let i=0;i<v.beat.length;i++){ S.beat=i; if(S.view!=="m_moment") break; m_moment(); sync(); ticks(1); await wait(1100); }
+  m_moment.running=false; if(S.view==="m_moment"){ m_moment(); lowBuzz(); say(v.intro+" 지금 이걸 본 사람들은 무슨 생각을 하고 있을까요?"); }
+}
+function m_first(){
+  hint("가장 먼저 떠오른 생각을 고르세요.");
+  V().innerHTML=`<p class="eyebrow">그 순간 · 첫 생각</p><h2>머릿속에 처음 스친 말은?</h2>
+    <div class="stack" id="opts">${FIRST3.map((o,i)=>`<button class="opt" type="button" aria-pressed="${S.first===i}" data-i="${i}"><span class="n">${i+1}</span>${o.t}</button>`).join("")}</div>
+    <p class="eyebrow">얼굴이 얼마나 화끈거리나요?</p>
+    ${nums("before",S.before).replace("0 · 아무렇지 않다","0 · 아무렇지 않다").replace("10 · 아무것도 손에 안 잡힌다","10 · 사라지고 싶다")}
+    <button class="btn" type="button" id="next" ${S.first===null||S.before===null?"disabled":""}>벽시계가 거꾸로 돌기 시작한다</button>`;
+  $("#opts").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.first=+b.dataset.i; keepY(m_first); };
+  $("#before").onclick=e=>{ const b=e.target.closest("[data-n]"); if(!b) return; S.before=+b.dataset.n; keepY(m_first); };
+  $("#next").onclick=()=>{ go("m_clock",3); say("벽시계가 그 순간으로 되감깁니다. "+VV3().replays[0]); };
+}
+function m_clock(){
+  const v=VV3(), R=v.replays;
+  if(S.rpDone){
+    hint("시계가 멈췄습니다.");
+    V().innerHTML=`<p class="eyebrow">되감기 시계</p>
+      <h2>${S.rp===0?"한 번도 되감지 않고 시계를 멈췄습니다.":`그 장면을 ${S.rp}번 더 돌려 봤습니다.`}</h2>
+      <p class="lede">${S.rp===0?"다시 보고 싶은 마음을 그대로 두고 멈췄습니다. 드문 일입니다.":"볼 때마다 처음에는 없던 장면이 하나씩 붙었습니다."}</p>
+      <div class="mine"><b>실제로 있었던 장면</b>${esc(R[0])}</div>
+      ${S.rp?`<div class="stack">${R.slice(1,S.rp+1).map(t=>`<p class="reply" style="text-decoration:line-through;opacity:.8">${esc(t)}</p>`).join("")}</div>
+      <p class="small">줄 그은 장면은 되감기가 붙인 것입니다. 본 적도, 들은 적도 없습니다.</p>`:""}
+      <p class="small">이제 방을 뒤져, 실제로 무슨 일이 있었는지 세어 볼 차례입니다.</p>
+      <button class="btn" type="button" id="next">방을 뒤진다</button>`;
+    $("#next").onclick=()=>go("m_search",4);
+    return;
+  }
+  hint(`되감기 ${S.rp+1}번째. 시계가 거꾸로 돕니다.`);
+  V().innerHTML=`<p class="eyebrow">되감기 시계 · ${S.rp+1}번째 재생</p>
+    <h2>${S.rp===0?"시계가 그 순간으로 돌아갑니다.":"같은 장면인데, 뭔가 더 보입니다."}</h2>
+    <div class="mine"><b>그 순간</b>${esc(R[0])}</div>
+    <div class="stack">${R.slice(1,S.rp+1).map(t=>`<p class="reply">…${esc(t)}</p>`).join("")}</div>
+    ${S.rp<R.length-1?`<p class="small">한 번 더 보면 뭔가 더 알 수 있을 것 같습니다.</p>`:`<p class="small">더 돌려도 새로 보이는 건 없습니다. 같은 장면만 반복됩니다.</p>`}
+    <div class="choose">
+      ${S.rp<R.length-1?`<button class="btn ghost" type="button" id="more">한 번 더 돌려 본다</button>`:""}
+      <button class="btn ghost" type="button" id="stop">시계를 멈춘다</button>
+    </div>`;
+  const m=$("#more"); if(m) m.onclick=()=>{ S.rp++; lowBuzz(); ticks(2); m_clock(); say(R[S.rp]); };
+  $("#stop").onclick=()=>{ S.rpDone=true; chime(); hush(); m_clock(); sync(); window.scrollTo(0,0); };
+}
+function m_search(){
+  const v=VV3(), all=OBJS.every(o=>S.found.includes(o[0]));
+  if(S.opened){
+    hint("딸깍. 다이얼이 맞았습니다.");
+    V().innerHTML=`<p class="eyebrow">증거와 자물쇠</p>
+      <h2>${S.tries?`${S.tries+1}번 만에 문이 열렸습니다.`:"한 번에 문이 열렸습니다."}</h2>
+      <div class="wheels">${v.wheels.map(w=>`<div class="wheel ok"><small>${w.q}</small><b>${w.o[0]}</b></div>`).join("")}</div>
+      <p class="lede">다이얼은 처음에 ‘${v.wheels[0].o[2]}’, ‘${v.wheels[1].o[2]}’에 맞춰져 있었습니다. 되감기 시계가 돌려놓은 숫자입니다. 문을 연 건 직접 센 숫자였습니다.</p>
+      <button class="btn" type="button" id="next">이제 어떻게 할지 정한다</button>`;
+    $("#next").onclick=()=>go("m_act",5);
+    return;
+  }
+  hint(all?"문에 새겨진 글: “느낌이 아니라 센 것만 이 문을 연다.”":"방 안의 물건을 눌러 증거를 찾으세요.");
+  V().innerHTML=`<p class="eyebrow">증거와 자물쇠 · ${all?`시도 ${S.tries+1}번째`:`찾은 증거 <span class="count">${S.found.length}</span> / ${OBJS.length}`}</p>
+    <h2>${all?"다이얼 세 개를 맞추세요.":"방을 뒤지세요."}</h2>
+    <p class="small">${all?"다이얼을 누르면 값이 바뀝니다. 답은 모두 아래 증거에 적혀 있습니다.":"위 그림의 물건을 누르거나, 아래 이름을 누르세요."}</p>
+    ${all?"":`<div class="chips" id="objs">${OBJS.map(o=>`<button class="chip" type="button" data-o="${o[0]}" aria-pressed="${S.found.includes(o[0])}">${o[1]}</button>`).join("")}</div>`}
+    ${all?`<div class="wheels" id="wheels">${v.wheels.map((w,i)=>`<button class="wheel ${S.tries>=3&&S.wh[i]===0?"ok":""}" type="button" data-i="${i}"><small>${w.q}</small><b>${w.o[S.wh[i]]}</b><i>눌러서 돌리기</i></button>`).join("")}</div>
+      <button class="btn" type="button" id="tryBtn">이 숫자로 문을 연다</button>`:""}
+    <div class="fb ${S.tries?"miss":""}">${S.lastFb||(all?"다이얼은 지금 되감기 시계가 돌려놓은 숫자에 맞춰져 있습니다.":"물건마다 증거가 하나씩 있습니다.")}</div>
+    <div class="cards">${OBJS.map(o=>S.found.includes(o[0])?`<div class="card"><b>${o[1]}</b>${esc(v.clues[o[0]].split(" · ").slice(1).join(" · "))}</div>`:`<div class="card unk"><b>?</b>아직 찾지 못함</div>`).join("")}</div>`;
+  const ob=$("#objs"); if(ob) ob.onclick=e=>{ const b=e.target.closest("[data-o]"); if(b) find3(b.dataset.o); };
+  if(all){
+    $("#wheels").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; const i=+b.dataset.i; S.wh[i]=(S.wh[i]+2)%3; ticks(1); keepY(m_search); };
+    $("#tryBtn").onclick=()=>{ const bad=S.wh.filter(x=>x!==0).length;
+      if(!bad){ S.opened=true; chime(); setTimeout(chime,250); m_search(); sync(); window.scrollTo(0,0); return; }
+      S.tries++; lowBuzz(); S.lastFb=`덜컹. 세 칸 중 <b>${bad}칸</b>은 센 숫자가 아니라 느낌이 붙인 숫자입니다.`+(S.tries>=3?" <br>맞은 칸에 불을 켜 두었습니다.":"");
+      keepY(m_search); sync(); const s=$("#stage"); s.classList.remove("shake"); void s.offsetWidth; s.classList.add("shake"); };
+  }
+}
+function find3(o){
+  if(!OBJS.some(x=>x[0]===o)) return;
+  if(OBJS.every(x=>S.found.includes(x[0]))) return;
+  if(!S.found.includes(o)){ S.found.push(o); chime(); }
+  S.lastFb=esc(VV3().clues[o]);
+  if(OBJS.every(x=>S.found.includes(x[0]))) S.lastFb="증거 여섯 개를 모두 찾았습니다. 이제 문의 다이얼을 맞추세요.";
+  keepY(m_search); hint("증거를 찾았습니다.");
+}
+function m_act(){
+  const v=VV3();
+  hint("문은 열렸습니다. 나가기 전에 할 일이 하나 있습니다.");
+  V().innerHTML=`<p class="eyebrow">수습</p><h2>이제 어떻게 하겠습니까?</h2>
+    <div class="stack" id="opts">${v.acts.map((a,i)=>`<button class="opt" type="button" aria-pressed="${S.act===i}" data-i="${i}"><span class="n">${i+1}</span>${a.t}</button>`).join("")}</div>
+    <button class="btn" type="button" id="next" ${S.act===null?"disabled":""}>그리고 다음 날이 온다</button>`;
+  $("#opts").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.act=+b.dataset.i; keepY(m_act); };
+  $("#next").onclick=()=>{ go("m_next",6); say("다음 날. "+VV3().acts[S.act].out.join(" ")); };
+}
+function m_next(){
+  const v=VV3(), a=v.acts[S.act], diff=S.after===null?0:S.before-S.after;
+  hint("다음 날 아침입니다.");
+  V().innerHTML=`<p class="eyebrow">다음 날</p><h2>하루가 지났습니다.</h2>
+    <div class="narr" style="font-size:17px">${a.out.map((l,i)=>`<span style="animation-delay:${.2+i*.9}s">${esc(l)}</span>`).join("")}</div>
+    <p class="eyebrow">지금, 얼굴은 얼마나 화끈거리나요?</p>
+    ${nums("after",S.after).replace("10 · 아무것도 손에 안 잡힌다","10 · 사라지고 싶다")}
+    ${S.after!==null?`<div class="vs"><div><span class="small">그 순간</span><span class="big">${S.before}</span></div><div class="small">→</div><div><span class="small">다음 날</span><span class="big">${S.after}</span></div></div>
+      <p class="lede">${diff>=3?"하루 사이에 사건은 그대로인데, 숫자는 이만큼 내려왔습니다.":diff<=0?"하루가 지나도 화끈거림이 그대로입니다. 그렇다면 이 실수가 건드린 건 이번 일만이 아닐 수 있습니다.":"숫자가 조금 내려왔습니다."}</p>
+      <div class="callout">${v.lesson}</div>
+      <button class="btn" type="button" id="next">문으로 걸어간다</button>`:""}`;
+  $("#after").onclick=e=>{ const b=e.target.closest("[data-n]"); if(!b) return; S.after=+b.dataset.n; keepY(m_next); };
+  const nx=$("#next"); if(nx) nx.onclick=()=>{ hush(); go("m_mirror",7); };
+}
+function m_mirror(){
+  hint("문고리를 잡는 순간, 문에 질문이 떠오릅니다.");
+  let h=`<p class="eyebrow">남의 실수</p><h2>문고리를 잡는 순간, 질문 하나가 문에 떠오릅니다.</h2>
+    <div class="whisper" style="border-color:var(--line);box-shadow:none;color:var(--ink)"><small>문에 새겨진 질문</small>지난 한 달, 다른 사람이 한 실수 중에 지금 바로 떠오르는 게 있나요?</div>
+    <div class="chips" id="rc">${RECALL.map((r,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.recall===i}">${r}</button>`).join("")}</div>`;
+  if(S.recall!==null) h+=`<p class="lede">${S.recall===0?"당신이 남의 실수를 기억하지 못하는 만큼, 남도 당신의 실수를 기억하지 못합니다.":S.recall===1?"한 달 동안 주변에서 일어난 수많은 실수 가운데 하나입니다. 나머지는 이미 지워졌습니다.":"기억력이 좋은 편입니다. 그래도 그 사람들을 ‘그 실수’로만 기억하고 있지는 않을 겁니다."}</p>
+    <p class="eyebrow">친한 친구가 오늘 당신과 똑같은 실수를 했다면, 뭐라고 하겠습니까?</p>
+    <div class="stack" id="fr">${FRIEND.map((f,i)=>`<button class="opt" type="button" data-i="${i}" aria-pressed="${S.friend===i}">“${f.t}”</button>`).join("")}</div>`;
+  if(S.friend!==null) h+=`<div class="stack">
+      <div class="mine"><b>친구에게 한 말</b>“${esc(FRIEND[S.friend].t)}”</div>
+      <div class="mine"><b>그 순간 나에게 한 말</b>“${esc(FIRST3[S.first].t)}”</div></div>
+    <div class="callout">${(FIRST3[S.first].g==="유보"&&!FRIEND[S.friend].judge)||(FIRST3[S.first].g==="판결"&&FRIEND[S.friend].judge)?"친구에게 하는 말과 나에게 하는 말이 비슷합니다. 같은 사건에 같은 잣대를 대고 있습니다.":"같은 실수인데, 친구에게 하는 말과 나에게 하는 말이 다릅니다. 어느 쪽이 더 사실에 가까울까요."}</div>
+    <button class="btn" type="button" id="next">문을 연다</button>`;
+  V().innerHTML=h;
+  $("#rc").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.recall=+b.dataset.i; keepY(m_mirror); };
+  const fr=$("#fr"); if(fr) fr.onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.friend=+b.dataset.i; keepY(m_mirror); };
+  const nx=$("#next"); if(nx) nx.onclick=()=>{ const seen=store("maeum.mistake.seen")||[]; if(!seen.includes(S.v)){ seen.push(S.v); store("maeum.mistake.seen",seen); } save3(); go("m_exit",8); door(); };
+}
+/* 임시 규칙: 전문가 검토 필요 */
+function score3(){
+  let mag=0, spot=0, judge=0;
+  const add=t=>{ mag+=t.mag||0; spot+=t.spot||0; judge+=t.judge||0; };
+  add(THINK[S.think]); add(FIRST3[S.first]); add(RTAG[VV3().acts[S.act].r]); add(FRIEND[S.friend]);
+  mag+=S.rp; mag+=Math.min(2,S.tries);
+  if(S.before>=7) mag+=1; if(S.before>=9) mag+=1;
+  if(S.after!==null && S.after>=S.before && S.before>=5) judge+=1;
+  const cap=(v,m)=>Math.min(1,v/m);
+  return [["부풀리기",cap(mag,12)],["시선 의식",cap(spot,6)],["자기 판결",cap(judge,6)]];
+}
+function type3(){
+  const sc=score3(), top=[...sc].sort((a,b)=>b[1]-a[1])[0];
+  if(top[1]<.34) return "roly";
+  if(S.rp<=1 && S.tries===0 && top[1]<.67) return "fix";
+  return top[0]==="부풀리기"?"mag":top[0]==="시선 의식"?"spot":"judge";
+}
+function save3(){
+  const log=store("maeum.mistake.log")||[]; const v=VV3();
+  log.push({at:new Date().toISOString(), story:v.k, think:THINK[S.think].t, first:FIRST3[S.first].t, before:S.before, after:S.after, replays:S.rp, tries:S.tries,
+    act:v.acts[S.act].r, recall:RECALL[S.recall], friend:FRIEND[S.friend].t, type:TYPES3[type3()].nm});
+  store("maeum.mistake.log", log.slice(-20));
+}
+function m_exit(){
+  const T=TYPES3[type3()], sc=score3(), v=VV3();
+  hint("문이 열렸습니다.");
+  if(!m_exit.spoken){ m_exit.spoken=true; setTimeout(()=>say(`당신의 카드는 ${T.nm}. ${T.one}.`),500); }
+  V().innerHTML=`<p class="eyebrow">탈출 · 방 3</p><h2>실수의 방에서 나왔습니다.</h2>
+    <div class="tcard ${S.flip?"flip":""}" id="tc"><div class="in">
+      <div class="f"><span class="emo">${T.emo}</span><span class="small">실수의 방에서 받은 카드</span><span class="nm">${T.nm}</span><span class="one">${T.one}</span><span>${T.s}</span><span class="small" style="margin-top:auto">눌러서 뒷면 보기</span></div>
+      <div class="b"><p class="eyebrow">카드 뒷면 · 오늘 이 방에서 보인 반응</p>
+        <div class="meter">${sc.map(([n,x])=>`<div class="row"><span>${n}</span><span class="bar"><i style="width:${Math.max(6,Math.round(x*100))}%"></i></span><span class="lv">${x>=.6?"자주":x>=.3?"가끔":"드묾"}</span></div>`).join("")}</div>
+        <p class="small">${T.w}</p>
+        <p class="small">이 카드는 당신을 정하는 유형이 아니라, 오늘 이 방에서 나타난 반응입니다.</p>
+        <span class="small" style="margin-top:auto">눌러서 앞면 보기</span></div>
+    </div></div>
+    <div class="vs"><div><span class="small">그 순간 화끈거림</span><span class="big">${S.before}</span></div><div class="small">→</div><div><span class="small">다음 날</span><span class="big">${S.after}</span></div></div>
+    <p class="eyebrow">오늘 내 생각 고리</p>
+    <ol class="chain">
+      <li><span>사건</span>${esc(v.event)}</li>
+      <li><span>내 생각</span>“${esc(FIRST3[S.first].t)}”</li>
+      <li><span>되감기</span>${S.rp?`${S.rp}번 다시 봄 · 없던 장면 ${S.rp}개가 붙음`:"되감지 않음"}</li>
+      <li><span>내 행동</span>${esc(v.acts[S.act].t)}</li>
+    </ol>
+    <div class="stack">
+      <div class="mine"><b>친구에게 한 말</b>“${esc(FRIEND[S.friend].t)}”</div>
+      <div class="mine"><b>나에게 한 말</b>“${esc(FIRST3[S.first].t)}”</div>
+    </div>
+    <div class="habit">
+      <p class="eyebrow">생각 습관 카드 · 12장 중 한 장 획득</p>
+      <p class="habit-name">돋보기 (부풀려 보기)</p>
+      <p>작은 실수 하나를 크게 키워 보고, 잘한 일은 작게 줄여 보는 습관입니다. ‘실수했다’는 사실에 ‘다 끝났다’는 크기를 붙일 때 나타납니다.</p>
+      <p class="small">오늘의 열쇠: 느낌의 숫자 대신 센 숫자를 묻기. “실제로 몇 명이, 몇 분 동안?”</p>
+    </div>
+    <button class="btn" type="button" id="share">카드 문구 복사해서 공유하기</button>
+    <p class="copyok" id="copyok"></p>
+    <button class="btn ghost" type="button" id="again">다른 이야기로 다시 들어가기</button>
+    <button class="btn ghost" type="button" id="map">처음 화면으로</button>
+    <p class="small">기록은 이 기기에만 저장됩니다. 처음 화면 아래에서 언제든 지울 수 있습니다.</p>`;
+  $("#tc").onclick=()=>{ S.flip=!S.flip; $("#tc").classList.toggle("flip",S.flip); };
+  $("#map").onclick=goHome; $("#again").onclick=start;
+  $("#share").onclick=async()=>{
+    const url=/^https?:/.test(location.href)&&!/claude/.test(location.hostname)?`\n${location.href.split("#")[0]}`:"";
+    const text=`[마음의 방탈출 · 실수의 방]\n내 카드: ${T.emo} ${T.nm}\n“${T.one}”\n화끈거림 ${S.before} → ${S.after}\n너는 무슨 카드가 나올까?${url}`;
+    try{ await navigator.clipboard.writeText(text); $("#copyok").textContent="복사했습니다. 카톡에 붙여 넣으세요."; }
+    catch(e){ $("#copyok").textContent="이 화면에서는 복사가 막혀 있습니다. 카드를 캡처해 주세요."; }
+  };
+}
+function touch3(obj){
+  if(S.view==="m_enter"){ hint("먼저 불을 켜야 합니다."); return; }
+  if(S.view==="m_moment" && obj==="phone" && S.beat<0){ runBeat(); return; }
+  if(S.view==="m_search" && !S.opened && obj!=="door"){ find3(obj); return; }
+  if(obj==="door"){ hint(S.view==="m_exit"?"문이 열려 있습니다.":"문에 다이얼 세 개가 달려 있습니다. “느낌이 아니라 센 것만 이 문을 연다.”"); return; }
+  hint(({clock:"벽시계가 째깍거립니다.",calendar:"달력에 동그라미 하나가 있습니다.",mirror:"거울 속 얼굴이 조금 붉습니다.",trash:"구겨진 종이가 여러 장 있습니다.",drawer:"서랍이 살짝 열려 있습니다.",phone:"휴대전화 화면이 켜져 있습니다."})[obj]||"");
+}
+return {no:3, name:"실수의 방", steps:STEPS, scene:SCENE3, start, sync, touch:touch3, score3, type3, VAR3, THINK, FIRST3, FRIEND,
+  views:{m_enter, m_moment, m_first, m_clock, m_search, m_act, m_next, m_mirror, m_exit}};
+})();
+
+SCENE2=$("#room3d").innerHTML;
+render();
 </script>
 </body>
 </html>
