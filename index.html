@@ -413,6 +413,20 @@ div.wheel i{display:none}
 #stage[data-view="a_search"] .room3d{--bx:3deg}
 #stage[data-view="a_mine"] .room3d{--cx:-74px;--cy:-30px;--cz:140px;--by:-4deg}
 #stage[data-view="a_exit"] .room3d{--cx:-52px;--cy:-20px;--cz:100px;--by:-3deg}
+
+/* ===== 방 6 · 통제의 방 ===== */
+#ropes6 path{transition:d .5s, stroke .5s}
+#stage[data-room="6"] .face.back{background:linear-gradient(180deg,#46553c,#2f3b2a);box-shadow:inset 0 -5px 0 #182014}
+#stage[data-room="6"] .face.left{background:linear-gradient(270deg,#3c4a34,#1c2418)}
+#stage[data-room="6"] .face.right{background:linear-gradient(90deg,#3c4a34,#1c2418)}
+#stage[data-room="6"] .face.ceil{background:linear-gradient(0deg,#141a11,#232d1e)}
+#stage[data-room="6"] .face.floor{background:repeating-linear-gradient(90deg,rgba(0,0,0,.22) 0 1px,transparent 1px 45px),linear-gradient(0deg,#54503e,#30302a)}
+#stage[data-view="k_enter"] .room3d{--cz:40px}
+#stage[data-view="k_moment"] .room3d,#stage[data-view="k_first"] .room3d,#stage[data-view="k_act"] .room3d,#stage[data-view="k_next"] .room3d{--cx:62px;--cy:-8px;--cz:150px;--by:5deg}
+#stage[data-view="k_grip"] .room3d{--cx:-10px;--cy:56px;--cz:170px}
+#stage[data-view="k_search"] .room3d{--bx:3deg}
+#stage[data-view="k_mine"] .room3d{--cx:-74px;--cy:-30px;--cz:140px;--by:-4deg}
+#stage[data-view="k_exit"] .room3d{--cx:-52px;--cy:-20px;--cz:100px;--by:-3deg}
 </style>
 </head>
 <body>
@@ -776,13 +790,14 @@ function render(){
 /* ---------- 본관 ---------- */
 function home(){
   hint("마우스나 손가락을 움직이면 방을 둘러볼 수 있습니다.");
-  const l2=store("maeum.silence.log")||[], l3=store("maeum.mistake.log")||[], l4=store("maeum.compare.log")||[], l5=store("maeum.left.log")||[];
-  const got=[...new Set([...l2,...l3,...l4,...l5].map(l=>l.type))];
+  const l2=store("maeum.silence.log")||[], l3=store("maeum.mistake.log")||[], l4=store("maeum.compare.log")||[], l5=store("maeum.left.log")||[], l6=store("maeum.control.log")||[];
+  const got=[...new Set([...l2,...l3,...l4,...l5,...l6].map(l=>l.type))];
   const open=[
     {i:1, no:2, nm:"침묵의 방", hook:"읽음 표시는 떴는데 답이 없습니다. 방 구석에서 누군가 속삭입니다.", n:VARIANTS.length, done:l2.length, habit:"독심술"},
     {i:3, no:3, nm:"실수의 방", hook:"보내기를 누르고 1초 뒤에 알았습니다. 벽시계가 그 순간으로 자꾸 되감깁니다.", n:ROOMDEF[3].VAR3.length, done:l3.length, habit:"돋보기"},
     {i:4, no:4, nm:"비교의 거울방", hook:"자기 전에 친구들의 사진을 넘깁니다. 한 장 넘길 때마다 거울 속 내가 작아집니다.", n:ROOMDEF[4].VAR.length, done:l4.length, habit:"색안경"},
-    {i:5, no:5, nm:"버려짐의 방", hook:"내가 없는 자리에서 사람들이 웃고 있습니다. 벽의 오래된 사진들이 흔들립니다.", n:ROOMDEF[5].VAR.length, done:l5.length, habit:"도돌이표"}
+    {i:5, no:5, nm:"버려짐의 방", hook:"내가 없는 자리에서 사람들이 웃고 있습니다. 벽의 오래된 사진들이 흔들립니다.", n:ROOMDEF[5].VAR.length, done:l5.length, habit:"도돌이표"},
+    {i:6, no:6, nm:"통제의 방", hook:"꼼꼼히 준비했는데 일이 내 뜻대로 가지 않습니다. 천장에서 밧줄이 내려옵니다.", n:ROOMDEF[6].VAR.length, done:l6.length, habit:"명령문"}
   ];
   V().innerHTML = `
     <h1>마음의 방탈출</h1>
@@ -793,13 +808,13 @@ function home(){
       <span class="ds">${r.done?`탈출함 · 다시 들어가기`:`들어가기`} · 이야기 ${r.n}가지</span></button>`).join("")}</div>
     ${got.length?`<p class="small">모은 카드: ${got.join(", ")}</p>`:""}
     <details class="fold">
-      <summary>본관 지도 · 열 개의 방 중 네 곳이 열려 있습니다</summary>
+      <summary>본관 지도 · 열 개의 방 중 다섯 곳이 열려 있습니다</summary>
       <div class="map">${ROOMS.map((r,i)=>{ const o=open.find(x=>x.no===i+1);
         return `<button class="room ${o?"open":""}" type="button" ${o?`data-r="${o.i}"`:"disabled"}><span class="no">방 ${i+1}</span><span class="nm">${r}</span><span class="st">${o?"입장 가능":"준비 중"}</span></button>`;}).join("")}</div>
     </details>
-    ${l2.length+l3.length+l4.length+l5.length?`<button class="btn ghost" type="button" id="del">내 기록 지우기</button>`:""}`;
+    ${l2.length+l3.length+l4.length+l5.length+l6.length?`<button class="btn ghost" type="button" id="del">내 기록 지우기</button>`:""}`;
   V().querySelectorAll("[data-r]").forEach(b => b.onclick = () => ROOMDEF[+b.dataset.r].start());
-  const d=$("#del"); if(d){ let armed=false; d.onclick=()=>{ if(!armed){ armed=true; d.textContent="한 번 더 누르면 이 기기의 기록이 모두 지워집니다"; return; } try{ ["maeum.silence.log","maeum.silence.seen","maeum.mistake.log","maeum.mistake.seen","maeum.compare.log","maeum.compare.seen","maeum.left.log","maeum.left.seen"].forEach(k=>localStorage.removeItem(k)); }catch(e){} home(); }; }
+  const d=$("#del"); if(d){ let armed=false; d.onclick=()=>{ if(!armed){ armed=true; d.textContent="한 번 더 누르면 이 기기의 기록이 모두 지워집니다"; return; } try{ ["maeum.silence.log","maeum.silence.seen","maeum.mistake.log","maeum.mistake.seen","maeum.compare.log","maeum.compare.seen","maeum.left.log","maeum.left.seen","maeum.control.log","maeum.control.seen"].forEach(k=>localStorage.removeItem(k)); }catch(e){} home(); }; }
 }
 
 /* ---------- 1. 입구 ---------- */
@@ -2442,6 +2457,408 @@ function touch(obj){
 }
 return {no:5, name:"버려짐의 방", steps:STEPS, scene:SCENE, start, sync, touch, type, VAR, THINK, FIRST,
   views:{a_enter, a_moment, a_first, a_memory, a_search, a_act, a_next, a_mine, a_exit}};
+})();
+
+/* ================= 방 6 · 통제의 방 ================= */
+ROOMDEF[6] = (function(){
+const STEPS = ["입구","틀어짐","손잡이","매듭 풀기","대처","다음 날","내가 들은 말","탈출"];
+const THINK = [
+  {t:"나를 무시해서다", grip:1, must:1},
+  {t:"원래 대충 하는 사람이라서다", must:2},
+  {t:"자기 나름의 방식이 있어서다"},
+  {t:"몰라서 그랬다"},
+  {t:"별생각 없이 그랬다"},
+  {t:"일부러 내 속을 긁으려고 그랬다", grip:2}
+];
+const FIRST = [
+  {t:"내가 안 챙기면 다 망한다", g:"쥐기", grip:2},
+  {t:"제대로 하려면 내 방식대로 해야 한다", g:"해야 한다", must:2},
+  {t:"왜 다들 이 모양일까", g:"해야 한다", must:2},
+  {t:"뭐, 저것도 방법이긴 하다", g:"유보"},
+  {t:"하나라도 틀어지면 전부 소용없다", g:"틀리면 끝", all:2},
+  {t:"일단 지켜보자", g:"유보"},
+  {t:"내가 처음부터 다시 다 해야겠다", g:"쥐기", grip:2},
+  {t:"이 정도는 당연히 해야 하는 거 아닌가", g:"해야 한다", must:2}
+];
+const RTAG = { one:{}, redo:{grip:2}, scold:{must:2}, swallow:{must:1}, quit:{all:2} };
+const TOLD = ["있다","가끔 있다","없다"];
+const FELT = ["숨이 막혔다","챙겨 줘서 고마웠다","무시당하는 것 같았다","그냥 따랐다"];
+const VAR = [
+  {k:"여행", title:"가족 단톡방", time:"아침 7:05",
+   screen:[{t:"일정표 다들 봤지? 8시 정각 출발이야", me:1},{t:"아 그냥 가서 정하자~ 비도 오는데", who:"동생"},{t:"천천히 가자", who:"엄마"}],
+   intro:"석 달 준비한 가족 여행 날 아침. 비가 오고, 아무도 일정표를 보지 않았습니다.",
+   beat:["창밖에 비가 온다","일정표는 열두 쪽이다","아무도 읽지 않았다","8시가 지나간다"],
+   event:"여행 날 비가 오고, 가족이 일정표를 보지 않았다",
+   grips:[{t:"오늘의 날씨"},{t:"내가 챙길 우산과 겉옷", c:1},{t:"동생의 기분"},{t:"가족에게 건네는 내 말투", c:1},{t:"도로가 막히는 정도"},{t:"꼭 가고 싶은 한 곳을 말하는 일", c:1}],
+   clues:{phone:"일기예보 · 오전 비. 오후 2시부터 갬.", calendar:"내 일정표 · 열두 쪽. 30분 단위로 적혀 있고 빈칸이 없다.", frame:"작년 여행 사진 · 가장 아끼는 사진. 길을 잘못 들었다가 우연히 본 노을이다.", drawer:"동생의 쪽지 · “일정표 덕에 편하긴 해. 근데 가끔은 숨이 좀 막혀.”", window:"창밖 · 비가 온다. 멈추게 할 방법은 없다."},
+   rules:[{q:"여행은 계획대로 되어야 한다", o:[{t:"한 치도 어긋나선 안 된다. 더 촘촘히 짜야 한다", k:"r"},{t:"계획대로 되면 좋겠다. 틀어지면 그 자리에서 다시 정하면 된다", k:"p"},{t:"계획 같은 건 다 소용없다. 이제 안 짠다", k:"g"}]},
+     {q:"가족은 내 일정표를 따라야 한다", o:[{t:"따라 주면 좋겠다. 다만 저마다 여행을 즐기는 방식이 있다", k:"p"},{t:"아무도 안 따르니 나도 손을 뗀다", k:"g"},{t:"따르지 않는 건 나를 무시하는 것이다", k:"r"}]},
+     {q:"비가 오면 여행은 망친 것이다", o:[{t:"어차피 망쳤다. 뭘 해도 똑같다", k:"g"},{t:"비가 오면 안 됐다. 날짜를 잘못 잡은 내 잘못이다", k:"r"},{t:"맑으면 좋겠다. 비가 와도 할 수 있는 일이 있다", k:"p"}]}],
+   acts:[{t:"혼자서라도 일정표대로 밀어붙인다", r:"redo", out:["시간마다 가족을 재촉했다.","일정은 다 채웠다. 사진 속에서 웃는 사람은 없었다."]},
+     {t:"“석 달을 준비했는데 다들 너무한다”고 쏘아붙인다", r:"scold", out:["차 안이 조용해졌다.","여행 내내 다들 당신 눈치를 봤다. 일정표는 지켜졌지만 말수가 줄었다."]},
+     {t:"“저녁 식당 한 곳만은 꼭 가자. 나머진 가서 정하자”고 한다", r:"one", out:["저녁 식당 한 곳만 부탁했다.","오후에 비가 갰다. 동생이 찾은 골목 카페가 이번 여행에서 가장 좋았다. 식당 예약도 지켜졌다."]},
+     {t:"아무 말 않고 속으로 삭인다", r:"swallow", out:["아무 말도 하지 않았다.","가족은 즐거워했다. 당신은 지나치는 곳마다 일정표를 떠올리느라 풍경을 놓쳤다."]},
+     {t:"“그럼 알아서들 해” 하고 일정표를 덮는다", r:"quit", out:["일정표를 가방에 넣어 버렸다.","가족은 우왕좌왕했고 당신은 ‘거봐’ 하고 생각했다. 꼭 가고 싶던 식당에도 가지 못했다."]}],
+   lesson:"비는 오후에 갰습니다. 작년에 가장 아끼는 사진도 계획에 없던 길에서 나왔습니다. 계획은 쓸모가 있습니다. 다만 ‘계획대로여야만 한다’는 일정표에 없던 문장이었습니다."},
+  {k:"보고서", title:"후배 서윤", time:"오후 4:40",
+   screen:[{t:"선배, 보고서 초안 올렸습니다!", who:"서윤"},{t:"양식을 조금 바꿔 봤어요", who:"서윤"},{t:"…", me:1}],
+   intro:"마감 전날, 후배가 내가 정한 양식과 다르게 보고서를 만들어 왔습니다.",
+   beat:["파일을 연다","표 위치가 다르다","글꼴도 다르다","마감은 내일이다"],
+   event:"후배가 내 양식과 다르게 보고서를 만들어 왔다",
+   grips:[{t:"후배가 일하는 방식"},{t:"내가 양식을 설명하는 방법", c:1},{t:"내일 부장의 반응"},{t:"지금 고칠 것의 우선순위를 정하는 일", c:1},{t:"후배의 속마음"},{t:"후배에게 건네는 내 말투", c:1}],
+   clues:{phone:"후배의 메시지 · “표가 더 잘 보일 것 같아서 바꿔 봤습니다.”", calendar:"일정표 · 마감은 내일 오후 5시. 고칠 시간이 하루 남았다.", frame:"벽의 상장 · 3년 전 내가 받은 우수 보고서상. 그때 내 보고서도 기존 양식과 조금 달랐다.", drawer:"후배의 메모 · “선배는 기준이 높아서 배울 게 많다. 근데 물어보기가 무섭다.”", window:"창밖 · 부장실에 불이 켜져 있다. 내일 뭐라고 할지는 알 수 없다."},
+   rules:[{q:"일은 내가 정한 양식대로 해야 한다", o:[{t:"양식을 지켜 주면 좋겠다. 내용이 맞다면 고칠 수 있는 부분이다", k:"p"},{t:"양식 하나 못 지키면 일할 자격이 없다", k:"r"},{t:"양식이고 뭐고 이제 신경 쓰지 않는다", k:"g"}]},
+     {q:"후배는 한 번 말하면 알아들어야 한다", o:[{t:"말해 봤자 소용없다. 내가 다 한다", k:"g"},{t:"한 번에 전해지면 좋겠다. 안 됐다면 다시 설명하면 된다", k:"p"},{t:"두 번 말하게 하는 건 태도 문제다", k:"r"}]},
+     {q:"보고서에 흠이 하나라도 있으면 실패다", o:[{t:"흠은 하나도 용납할 수 없다", k:"r"},{t:"어차피 완벽할 수 없으니 대충 낸다", k:"g"},{t:"흠이 없으면 좋겠다. 작은 흠이 있어도 보고서는 제 몫을 한다", k:"p"}]}],
+   acts:[{t:"밤새 내 양식으로 처음부터 다시 만든다", r:"redo", out:["새벽 3시까지 혼자 다시 만들었다.","보고서는 깔끔했다. 서윤은 자기 초안이 통째로 사라진 걸 보고 말이 없어졌다."]},
+     {t:"“양식 지키라고 했잖아요” 하고 지적한다", r:"scold", out:["딱 잘라 지적했다.","서윤은 양식을 고쳤다. 그 뒤로는 시킨 것만 하고, 제안은 하지 않았다."]},
+     {t:"“표 바꾼 건 좋네요. 표지와 번호만 기존대로 맞춰 줘요” 하고 부탁한다", r:"one", out:["두 가지만 맞춰 달라고 했다.","한 시간 만에 수정본이 왔다. 부장은 바뀐 표를 보고 “이게 더 보기 좋네” 했다."]},
+     {t:"아무 말 않고 그대로 낸다", r:"swallow", out:["그대로 제출했다.","별일은 없었다. 다만 당신 눈에는 회의 내내 달라진 글꼴만 보였다."]},
+     {t:"“알아서 하세요” 하고 손을 뗀다", r:"quit", out:["검토를 그만뒀다.","번호가 틀려 부장이 되돌려 보냈다. 미리 고칠 수 있던 부분이었다."]}],
+   lesson:"바꾼 표에는 이유가 있었고, 번호는 실제로 맞춰야 했습니다. 지킬 것과 놓을 것이 섞여 있었습니다. ‘전부 내 양식대로’는 그 둘을 가려 보지 못하게 했습니다."},
+  {k:"설거지", title:"집", time:"저녁 8:30",
+   screen:[{t:"설거지 해 놨어! 오늘은 내가 했다 ㅎㅎ", who:"같이 사는 사람"},{t:"(건조대를 본다)", me:1},{t:"…", me:1}],
+   intro:"같이 사는 사람이 설거지를 해 놓았습니다. 그릇이 건조대에 아무렇게나 쌓여 있습니다.",
+   beat:["큰 접시 위에 컵이 엎어져 있다","젓가락이 눕혀져 있다","내 방식과 하나도 맞지 않는다","다시 하고 싶어 손이 움직인다"],
+   event:"같이 사는 사람이 내 방식과 다르게 설거지를 해 놓았다",
+   grips:[{t:"상대의 설거지 습관"},{t:"내가 쓴 그릇을 내가 정리하는 일", c:1},{t:"상대가 내 말을 어떻게 받아들일지"},{t:"부탁하는 말투와 때", c:1},{t:"상대가 자라 온 집의 방식"},{t:"무엇이 정말 중요한지 정하는 일", c:1}],
+   clues:{phone:"메시지 · “설거지 해 놨어! 오늘은 내가 했다 ㅎㅎ”", calendar:"집안일 표 · 이번 주 설거지 일곱 번 가운데 다섯 번을 상대가 했다.", frame:"식탁 위 사진 · 이사 온 날, 둘이 바닥에 앉아 짜장면을 먹던 사진. 그릇은 하나도 없었다.", drawer:"서랍 속 그림 · 내가 그려 둔 ‘그릇 놓는 법’. 상대는 본 적이 없다고 했다.", window:"창가 건조대 · 그릇에서 물이 떨어진다. 아무렇게나 쌓였지만 마르고 있다."},
+   rules:[{q:"그릇은 크기순으로 세워서 말려야 한다", o:[{t:"제대로 하는 방법은 하나뿐이다", k:"r"},{t:"어떻게 하든 이제 말 안 한다. 나도 안 한다", k:"g"},{t:"크기순이면 좋겠다. 다르게 쌓아도 그릇은 마른다", k:"p"}]},
+     {q:"같이 살면 내 방식을 알아서 맞춰야 한다", o:[{t:"맞춰 주면 좋겠다. 말하지 않은 건 모를 수 있다", k:"p"},{t:"말 안 해도 아는 게 당연하다", k:"r"},{t:"기대를 접는다. 남남처럼 살면 된다", k:"g"}]},
+     {q:"사소한 것도 못 맞추면 큰일은 더 못 맞춘다", o:[{t:"이 사람과는 뭘 해도 안 맞는다", k:"g"},{t:"작은 것도 맞으면 좋겠다. 그릇과 큰일은 다른 문제다", k:"p"},{t:"그릇 하나가 그 사람의 전부를 보여 준다", k:"r"}]}],
+   acts:[{t:"말없이 전부 꺼내 다시 쌓는다", r:"redo", out:["그릇을 전부 다시 쌓았다.","상대가 그걸 봤다. 다음 날부터 설거지를 하지 않았다. “어차피 다시 할 거잖아.”"]},
+     {t:"“이렇게 쌓으면 안 마른다니까” 하고 지적한다", r:"scold", out:["한마디 했다.","상대의 얼굴이 굳었다. “해 줘도 뭐라 그러네.”"]},
+     {t:"“고마워! 칼만 따로 세워 줘, 위험해서” 하고 부탁한다", r:"one", out:["고맙다고 먼저 말하고, 칼 하나만 부탁했다.","다음 날 칼은 따로 세워져 있었다. 컵은 여전히 접시 위에 엎어져 있었고, 잘 말랐다."]},
+     {t:"아무 말 않고 속으로 삭인다", r:"swallow", out:["아무 말도 하지 않았다.","그릇은 말랐다. 당신 속은 사흘 뒤 다른 일로 터졌다."]},
+     {t:"“이제 집안일은 각자 알아서 하자”고 한다", r:"quit", out:["선을 그었다.","집은 조용해졌다. 설거지도 따로, 식사도 점점 따로 하게 됐다."]}],
+   lesson:"그릇은 아무렇게나 쌓여도 말랐고, 칼은 따로 세울 이유가 있었습니다. 내 방식에는 이유가 있습니다. 다만 하나뿐인 방식은 아니었습니다."}
+];
+const TYPES = {
+  sail:{emo:"⛵", nm:"돛형", one:"바람은 못 바꿔도 돛은 조절하는 사람", s:"쥘 것과 놓을 것을 가려낼 줄 압니다.", w:"가끔은 내가 정말 바라는 방향을 분명히 말해도 됩니다. 바란다고 말하는 것은 쥐는 것과 다릅니다."},
+  tuner:{emo:"🎻", nm:"조율사형", one:"가장 중요한 한 줄만 조이고 나머지는 풀어 두는 사람", s:"손잡이를 가려 잡고, 매듭을 한 번에 풀었습니다.", w:"조율이 안 되는 날도 있습니다. 그런 날에도 연주는 계속할 수 있습니다."},
+  pilot:{emo:"🎮", nm:"조종사형", one:"내가 쥐고 있어야 일이 굴러간다고 느끼는 사람", s:"책임감이 크고, 일을 끝까지 챙깁니다.", w:"쥘 수 없는 것을 쥐고 있을 때 가장 먼저 지치는 건 내 손입니다."},
+  rule:{emo:"📕", nm:"규칙집형", one:"‘해야 한다’로 세상을 재는 사람", s:"기준이 분명하고, 스스로도 그 기준을 지킵니다.", w:"‘해야 한다’를 ‘하면 좋겠다’로 바꿔 읽어 보세요. 바라는 것은 그대로이고, 조이는 것만 풀립니다."},
+  target:{emo:"🎯", nm:"과녁형", one:"정중앙이 아니면 빗나간 것으로 치는 사람", s:"높은 완성도를 향해 갑니다.", w:"과녁에는 정중앙 말고도 점수가 있습니다. 8점도 맞힌 것입니다."}
+};
+const SCENE = `
+  <div class="face back">
+    <div class="lampglow"></div>
+    <svg class="o3" style="left:26px;top:20px;width:104px;height:79px" viewBox="20 14 100 76">
+      <g class="hot" data-obj="window" role="button" tabindex="0" aria-label="창문">
+        <rect x="22" y="16" width="96" height="72" rx="2" fill="#2f3a2a" stroke="#5d6a4f" stroke-width="2"/>
+        <rect id="sky6" x="26" y="20" width="88" height="64" fill="#55606a"/>
+        <g id="rain6" stroke="#c9d6e2" stroke-width="1.2" opacity=".8"><line x1="36" y1="24" x2="32" y2="36"/><line x1="52" y1="30" x2="48" y2="42"/><line x1="66" y1="22" x2="62" y2="34"/><line x1="84" y1="28" x2="80" y2="40"/><line x1="100" y1="24" x2="96" y2="36"/><line x1="42" y1="52" x2="38" y2="64"/><line x1="60" y1="58" x2="56" y2="70"/><line x1="78" y1="54" x2="74" y2="66"/><line x1="96" y1="60" x2="92" y2="72"/><line x1="108" y1="46" x2="104" y2="58"/></g>
+        <line x1="70" y1="20" x2="70" y2="84" stroke="#5d6a4f" stroke-width="2"/><line x1="26" y1="52" x2="114" y2="52" stroke="#5d6a4f" stroke-width="2"/>
+        <rect class="hl" x="20" y="14" width="100" height="76" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+    <svg class="o3" style="left:144px;top:6px;width:96px;height:96px" viewBox="0 0 96 96">
+      <g id="ropes6" fill="none" stroke="#d8c69a" stroke-width="2.4" stroke-linecap="round">
+        <path id="rp0" d="M18,0 Q30,44 18,82"/><path id="rp1" d="M48,0 Q60,48 48,88"/><path id="rp2" d="M78,0 Q90,44 78,82"/>
+      </g>
+      <g fill="#9a7b45"><circle id="kn0" cx="18" cy="82" r="5"/><circle id="kn1" cx="48" cy="88" r="5"/><circle id="kn2" cx="78" cy="82" r="5"/></g>
+    </svg>
+    <svg class="o3" style="left:258px;top:92px;width:92px;height:148px" viewBox="255 67 84 136">
+      <defs><radialGradient id="exitGlow" cx="50%" cy="60%" r="70%"><stop offset="0" stop-color="#fff2c4"/><stop offset="1" stop-color="#f2d27c" stop-opacity=".2"/></radialGradient></defs>
+      <g class="hot" data-obj="door" role="button" tabindex="0" aria-label="출구 문">
+        <rect x="258" y="70" width="78" height="133" fill="#3a2414"/>
+        <rect id="doorLight" x="261" y="73" width="72" height="130" fill="url(#exitGlow)"/>
+        <g id="doorPanel">
+          <rect x="261" y="73" width="72" height="130" fill="#6b4126" stroke="#8c5a35" stroke-width="1.5"/>
+          <rect x="269" y="140" width="56" height="52" fill="none" stroke="#83532f" stroke-width="1.5"/>
+          <circle cx="322" cy="138" r="4" fill="#f2d27c"/>
+          <g id="locks"><circle cx="279" cy="100" r="7" fill="#2a1a0e" stroke="#d8c69a" stroke-width="2"/><circle cx="297" cy="100" r="7" fill="#2a1a0e" stroke="#d8c69a" stroke-width="2"/><circle cx="315" cy="100" r="7" fill="#2a1a0e" stroke="#d8c69a" stroke-width="2"/></g>
+        </g>
+        <rect class="hl" x="256" y="68" width="82" height="134" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+  </div>
+  <div class="face left">
+    <svg class="o3" style="left:66px;top:34px;width:62px;height:70px" viewBox="0 0 62 70">
+      <g class="hot" data-obj="calendar" role="button" tabindex="0" aria-label="일정표">
+        <rect x="3" y="3" width="56" height="64" rx="2" fill="#efe3c0"/><rect x="3" y="3" width="56" height="12" fill="#5d6a4f"/>
+        <g stroke="#8a7d5a" stroke-width="1.5"><line x1="9" y1="22" x2="53" y2="22"/><line x1="9" y1="28" x2="53" y2="28"/><line x1="9" y1="34" x2="53" y2="34"/><line x1="9" y1="40" x2="53" y2="40"/><line x1="9" y1="46" x2="53" y2="46"/><line x1="9" y1="52" x2="53" y2="52"/><line x1="9" y1="58" x2="53" y2="58"/></g>
+        <rect class="hl" x="1" y="1" width="60" height="68" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+  </div>
+  <div class="face right"></div><div class="face ceil"></div>
+  <div class="face floor"><div class="doorspill"></div></div>
+  <div class="desk-top"><div class="pool"></div></div>
+  <div class="desk-front">
+    <svg class="o3" style="left:16px;top:10px;width:112px;height:40px" viewBox="47 149 106 38">
+      <g class="hot" data-obj="drawer" role="button" tabindex="0" aria-label="서랍">
+        <rect x="50" y="152" width="100" height="32" rx="3" fill="#9c6a3a" stroke="#c99a5e" stroke-width="1.5"/>
+        <rect x="90" y="166" width="20" height="4" rx="2" fill="#f1e2c2"/>
+        <rect class="hl" x="47" y="149" width="106" height="38" rx="4" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+  </div>
+  <div class="desk-side"></div>
+  <svg class="o3" style="left:40px;top:82px;width:46px;height:68px;transform:translateZ(-160px)" viewBox="44 80 42 62">
+    <polygon points="48,104 82,104 74,84 56,84" fill="#f0cd5e"/><rect x="63" y="104" width="4" height="34" fill="#c9a24a"/><rect x="55" y="136" width="20" height="4" rx="1" fill="#c9a24a"/></svg>
+  <svg class="o3 o-phone" style="left:104px;top:96px;width:42px;height:56px;transform:translateZ(-128px)" viewBox="106 98 36 48">
+    <g class="hot phone-g glow" id="phoneG" data-obj="phone" role="button" tabindex="0" aria-label="휴대전화">
+      <rect class="body" x="112" y="104" width="24" height="36" rx="4" fill="#7fbfa7" stroke="#22302b" stroke-width="2"/>
+      <rect x="116" y="110" width="16" height="22" rx="1" fill="#a9e4cc"/>
+      <path d="M119,116 l3,3 l6,-6" fill="none" stroke="#22302b" stroke-width="1.6"/><path d="M119,125 l3,3 l6,-6" fill="none" stroke="#22302b" stroke-width="1.6"/>
+      <circle id="phoneDot" class="pulse" cx="134" cy="106" r="3" fill="#f2d27c"/>
+      <rect class="hl" x="108" y="100" width="32" height="44" rx="5" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>
+  <svg class="o3" style="left:156px;top:104px;width:56px;height:46px;transform:translateZ(-150px)" viewBox="0 0 56 46">
+    <g class="hot" data-obj="frame" role="button" tabindex="0" aria-label="사진">
+      <rect x="3" y="3" width="50" height="38" fill="#2a2418" stroke="#9a7b45" stroke-width="3"/><rect x="8" y="8" width="40" height="28" fill="#d98a5a"/><circle cx="36" cy="18" r="6" fill="#f6dd9a"/><rect x="8" y="27" width="40" height="9" fill="#5a4a6a"/>
+      <rect class="hl" x="1" y="1" width="54" height="42" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>`;
+const OBJS = [["phone","휴대전화"],["calendar","일정표"],["frame","사진"],["drawer","서랍"],["window","창문"]];
+
+function fresh6(){ return {room:6, view:"k_enter", step:1, v:0, beat:-1, think:null, first:null, before:null, gi:0, gp:[],
+  found:[], pk:[null,null,null], tries:0, wr:0, wg:0, opened:false, lastFb:"", act:null, after:null, told:null, felt:null, flip:false}; }
+const VV = () => VAR[S.v];
+const gu = () => VV().grips.filter((g,i)=>!g.c && S.gp[i]===true).length;   /* 쥘 수 없는 것을 쥠 */
+const rc = () => VV().grips.filter((g,i)=>g.c && S.gp[i]===false).length;   /* 쥘 수 있는 것을 놓음 */
+function pick(){ const seen=store("maeum.control.seen")||[]; let pool=VAR.map((_,i)=>i).filter(i=>!seen.includes(i));
+  if(!pool.length){ pool=VAR.map((_,i)=>i).filter(i=>i!==seen[seen.length-1]); store("maeum.control.seen",[]); }
+  S.v=pool[Math.floor(Math.random()*pool.length)]; }
+function start(){ S=fresh6(); k_exit.spoken=false; k_moment.running=false; pick(); mount(6); go("k_enter",1); }
+
+function sync(){
+  const st=$("#stage"), v=S.view, morning=["k_next","k_mine","k_exit"].includes(v);
+  st.classList.toggle("lightsoff", v==="k_enter");
+  st.classList.toggle("dooropen", v==="k_exit");
+  st.classList.toggle("morning", morning);
+  st.dataset.view=v;
+  [...$("#locks").children].forEach((c,i)=>c.setAttribute("fill", S.opened||(S.tries>=3&&S.pk[i]!==null&&VV().rules[i].o[S.pk[i]].k==="p") ? "#f2d27c" : "#2a1a0e"));
+  $("#phoneDot").style.display = (v==="k_moment"&&S.beat<0) ? "" : "none";
+  const held = S.gp.filter(x=>x===true).length;
+  [0,1,2].forEach(i=>{ const taut = !S.opened && held>i*2;
+    $("#rp"+i).setAttribute("d", taut ? `M${18+i*30},0 L${18+i*30},${i===1?88:82}` : `M${18+i*30},0 Q${30+i*30},${i===1?48:44} ${18+i*30},${i===1?88:82}`);
+    $("#rp"+i).setAttribute("stroke", taut ? "#e07a5a" : "#d8c69a");
+    $("#kn"+i).setAttribute("fill", S.opened ? "#f2d27c" : taut ? "#e07a5a" : "#9a7b45"); });
+  $("#rain6").style.display = morning ? "none" : "";
+  $("#sky6").setAttribute("fill", morning ? "#8fb8d0" : "#55606a");
+}
+function screenHTML(){
+  const v=VV();
+  return `<div class="chat" data-t="${v.time}"><div class="who">${v.title}</div>${v.screen.map(b=>`<div class="bub ${b.me?"me":"them"}">${b.who?`<small style="display:block;font-size:11px;color:var(--dim)">${b.who}</small>`:""}${esc(b.t)}</div>`).join("")}</div>`;
+}
+function k_enter(){
+  hint("방이 어둡습니다. 천장에서 밧줄 세 가닥이 내려와 있습니다.");
+  if(!SND.asked){
+    V().innerHTML=`<p class="eyebrow">방 6 · 입구</p><p class="quote">쥐고 있는 걸까, 붙들려 있는 걸까.</p>
+      <p class="lede">이 방에는 소리와 나레이션이 있습니다.</p>
+      <div class="choose"><button class="btn" type="button" id="sOn">소리와 함께</button><button class="btn ghost" type="button" id="sOff">조용히</button></div>`;
+    $("#sOn").onclick=()=>{ SND.asked=true; setSound(true); k_enter(); };
+    $("#sOff").onclick=()=>{ SND.asked=true; setSound(false); k_enter(); };
+    return;
+  }
+  const L=["꼼꼼하게 준비했습니다.","그런데 일이 내 뜻대로 가지 않습니다.","손에 힘이 들어갑니다.","이 방의 문은, 쥔 손으로는 열리지 않습니다."];
+  V().innerHTML=`<p class="eyebrow">방 6 · 입구</p><p class="quote">쥐고 있는 걸까, 붙들려 있는 걸까.</p>
+    <div class="narr">${L.map((l,i)=>`<span style="animation-delay:${.3+i*.8}s">${l}</span>`).join("")}</div>
+    <button class="btn" type="button" id="next">불을 켜고 들어간다</button>`;
+  say("쥐고 있는 걸까, 붙들려 있는 걸까. "+L.join(" "));
+  $("#next").onclick=()=>{ hush(); go("k_moment",2); };
+}
+function k_moment(){
+  const v=VV(), started=S.beat>=0, done=S.beat>=v.beat.length-1 && !k_moment.running;
+  hint(started?"속이 조여 옵니다.":"빛나는 휴대전화를 눌러 보세요.");
+  V().innerHTML=`<p class="eyebrow">틀어짐</p>
+    <h2>${started?esc(v.intro):"책상 위 휴대전화가 빛납니다."}</h2>
+    ${started?screenHTML()+`<p class="tstat">${v.beat[Math.min(S.beat,v.beat.length-1)]}</p>`:`<button class="btn" type="button" id="peek">휴대전화 보기</button>`}
+    ${done?`<div class="whisper" style="border-color:var(--line);box-shadow:none;color:var(--ink)"><small>질문</small>그 사람은 왜 그렇게 했을까요?</div>
+      <div class="chips" id="think">${THINK.map((t,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.think===i}">${t.t}</button>`).join("")}</div>
+      <button class="btn" type="button" id="next" ${S.think===null?"disabled":""}>다음</button>`:""}`;
+  if(!started){ $("#peek").onclick=runBeat; return; }
+  if(done){ $("#think").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.think=+b.dataset.i; keepY(k_moment); };
+    $("#next").onclick=()=>go("k_first",2); }
+}
+async function runBeat(){
+  if(k_moment.running) return; k_moment.running=true; const v=VV();
+  for(let i=0;i<v.beat.length;i++){ S.beat=i; if(S.view!=="k_moment") break; k_moment(); sync(); ticks(1); await wait(1100); }
+  k_moment.running=false; if(S.view==="k_moment"){ k_moment(); lowBuzz(); say(v.intro+" 그 사람은 왜 그렇게 했을까요?"); }
+}
+function k_first(){
+  hint("가장 먼저 떠오른 생각을 고르세요.");
+  V().innerHTML=`<p class="eyebrow">틀어짐 · 첫 생각</p><h2>손에 힘이 들어가며 스친 말은?</h2>
+    <div class="stack" id="opts">${FIRST.map((o,i)=>`<button class="opt" type="button" aria-pressed="${S.first===i}" data-i="${i}"><span class="n">${i+1}</span>${o.t}</button>`).join("")}</div>
+    <p class="eyebrow">속이 얼마나 조여 오나요?</p>
+    ${nums("before",S.before).replace("10 · 아무것도 손에 안 잡힌다","10 · 숨이 막힌다")}
+    <button class="btn" type="button" id="next" ${S.first===null||S.before===null?"disabled":""}>천장의 밧줄이 흔들린다</button>`;
+  $("#opts").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.first=+b.dataset.i; keepY(k_first); };
+  $("#before").onclick=e=>{ const b=e.target.closest("[data-n]"); if(!b) return; S.before=+b.dataset.n; keepY(k_first); };
+  $("#next").onclick=()=>{ go("k_grip",3); say("천장에서 밧줄이 내려옵니다. 밧줄마다 이름표가 달려 있습니다."); };
+}
+function k_grip(){
+  const v=VV(), G=v.grips;
+  if(S.gi>=G.length){
+    const a=gu(), b=rc();
+    hint(a?"밧줄이 팽팽합니다. 손바닥이 아픕니다.":"밧줄이 느슨하게 흔들립니다.");
+    V().innerHTML=`<p class="eyebrow">손잡이</p>
+      <h2>${a===0&&b===0?"쥘 것만 쥐고, 놓을 것은 놓았습니다.":a?`내 손에 닿지 않는 밧줄 ${a}가닥을 쥐고 있습니다.`:`쥘 수 있는 밧줄 ${b}가닥을 놓았습니다.`}</h2>
+      <div class="stack">${G.map((g,i)=>`<div class="mine" style="border-left-color:${g.c?"var(--screen)":"#e07a5a"}"><b>${g.c?"내 손에 닿는 것":"내 손에 닿지 않는 것"} · ${S.gp[i]?"쥐었음":"놓았음"}</b>${esc(g.t)}</div>`).join("")}</div>
+      <p class="small">${a?"닿지 않는 밧줄은 아무리 당겨도 움직이지 않습니다. 당기는 내 손만 아픕니다.":""}${b?" 닿는 밧줄까지 놓으면, 바꿀 수 있는 것도 흘러갑니다.":""}${!a&&!b?"쉬운 일이 아닙니다. 대부분은 닿지 않는 밧줄부터 당깁니다.":""}</p>
+      <button class="btn" type="button" id="next">방을 뒤진다</button>`;
+    $("#next").onclick=()=>go("k_search",4);
+    return;
+  }
+  hint("밧줄에 이름표가 달려 있습니다.");
+  V().innerHTML=`<p class="eyebrow">손잡이 · ${S.gi+1} / ${G.length}</p>
+    <h2>밧줄 하나가 손 앞에 내려옵니다.</h2>
+    <div class="cards" style="grid-template-columns:1fr"><div class="card" style="min-height:0;transform:rotate(.5deg);text-align:center;padding:16px"><b>이름표</b>${esc(G[S.gi].t)}</div></div>
+    <p class="small">이 밧줄을 어떻게 하겠습니까?</p>
+    <div class="choose">
+      <button class="btn ghost" type="button" id="hold">꽉 쥔다</button>
+      <button class="btn ghost" type="button" id="let">놓는다</button>
+    </div>`;
+  const nx=t=>{ S.gp[S.gi]=t; S.gi++; t?lowBuzz():ticks(1); k_grip(); sync(); };
+  $("#hold").onclick=()=>nx(true); $("#let").onclick=()=>nx(false);
+}
+function k_search(){
+  const v=VV(), all=OBJS.every(o=>S.found.includes(o[0]));
+  if(S.opened){
+    hint("매듭 세 개가 풀립니다. 밧줄이 느슨해집니다.");
+    V().innerHTML=`<p class="eyebrow">매듭 풀기</p>
+      <h2>${S.tries?`${S.tries+1}번 만에 매듭이 풀렸습니다.`:"한 번에 매듭이 풀렸습니다."}</h2>
+      <div class="stack">${v.rules.map(r=>`<div class="mine"><b style="text-decoration:line-through;opacity:.7">${esc(r.q)}</b>${esc(r.o.find(o=>o.k==="p").t)}</div>`).join("")}</div>
+      <p class="lede">바라는 것은 하나도 버리지 않았습니다. ‘해야 한다’만 ‘하면 좋겠다’로 바뀌었습니다.</p>
+      ${S.wr+S.wg?`<p class="small">풀다가 ${S.wr?`더 세게 조인 것이 ${S.wr}번`:""}${S.wr&&S.wg?", ":""}${S.wg?`아예 끊어 버린 것이 ${S.wg}번`:""} 있었습니다. 조이는 것도 끊는 것도 매듭을 푸는 것과는 다릅니다.</p>`:""}
+      <button class="btn" type="button" id="next">이제 어떻게 할지 정한다</button>`;
+    $("#next").onclick=()=>go("k_act",5);
+    return;
+  }
+  hint(all?"문에 새겨진 글: “쥔 손으로는 열리지 않는다. 매듭을 풀어라.”":"방 안의 물건을 눌러 살펴보세요.");
+  V().innerHTML=`<p class="eyebrow">매듭 풀기 · ${all?`시도 ${S.tries+1}번째`:`살펴본 것 <span class="count">${S.found.length}</span> / ${OBJS.length}`}</p>
+    <h2>${all?"문에 매듭 세 개가 묶여 있습니다.":"방을 뒤지세요."}</h2>
+    <p class="small">${all?"매듭마다 ‘해야 한다’ 문장이 하나씩 적혀 있습니다. 조이지도 끊지도 말고, 풀어 쓴 문장을 고르세요.":"위 그림의 물건을 누르거나, 아래 이름을 누르세요."}</p>
+    ${all?"":`<div class="chips" id="objs">${OBJS.map(o=>`<button class="chip" type="button" data-o="${o[0]}" aria-pressed="${S.found.includes(o[0])}">${o[1]}</button>`).join("")}</div>`}
+    ${all?`<div class="stack" id="match">${v.rules.map((r,i)=>`<div class="mq ${S.tries>=3&&S.pk[i]!==null&&r.o[S.pk[i]].k==="p"?"ok":""}"><p><b>매듭 ${i+1}</b> “${esc(r.q)}”</p>
+        ${r.o.map((o,j)=>`<button class="opt" type="button" data-q="${i}" data-j="${j}" aria-pressed="${S.pk[i]===j}">${o.t}</button>`).join("")}</div>`).join("")}</div>
+      <button class="btn" type="button" id="tryBtn" ${S.pk.includes(null)?"disabled":""}>이 문장들로 매듭을 푼다</button>`:""}
+    <div class="fb ${S.tries?"miss":""}">${S.lastFb||(all?"매듭 하나에 문장 하나씩 고르세요.":"물건마다 이 일의 다른 면이 적혀 있습니다.")}</div>
+    <div class="cards">${OBJS.map(o=>S.found.includes(o[0])?`<div class="card"><b>${esc(v.clues[o[0]].split(" · ")[0])}</b>${esc(v.clues[o[0]].split(" · ")[1])}</div>`:`<div class="card unk"><b>?</b>아직 보지 않음</div>`).join("")}</div>`;
+  const ob=$("#objs"); if(ob) ob.onclick=e=>{ const b=e.target.closest("[data-o]"); if(b) find(b.dataset.o); };
+  if(all){
+    $("#match").onclick=e=>{ const b=e.target.closest("[data-q]"); if(!b) return; S.pk[+b.dataset.q]=+b.dataset.j; ticks(1); keepY(k_search); };
+    $("#tryBtn").onclick=()=>{ const ks=S.pk.map((j,i)=>v.rules[i].o[j].k), bad=ks.filter(k=>k!=="p").length;
+      if(!bad){ S.opened=true; chime(); setTimeout(chime,250); k_search(); sync(); window.scrollTo(0,0); return; }
+      S.tries++; S.wr+=ks.filter(k=>k==="r").length; S.wg+=ks.filter(k=>k==="g").length; lowBuzz();
+      S.lastFb=`덜컹. 매듭 세 개 중 <b>${bad}개</b>가 풀리지 않았습니다. 더 조였거나, 끊어 버렸습니다.`+(S.tries>=3?" <br>풀린 매듭에 표시해 두었습니다.":"");
+      keepY(k_search); sync(); const s=$("#stage"); s.classList.remove("shake"); void s.offsetWidth; s.classList.add("shake"); };
+  }
+}
+function find(o){
+  if(!OBJS.some(x=>x[0]===o)) return;
+  if(OBJS.every(x=>S.found.includes(x[0]))) return;
+  if(!S.found.includes(o)){ S.found.push(o); chime(); }
+  S.lastFb=esc(VV().clues[o]);
+  if(OBJS.every(x=>S.found.includes(x[0]))) S.lastFb="다섯 가지를 모두 살펴봤습니다. 이제 문의 매듭을 풀어 보세요.";
+  keepY(k_search); hint("이 일의 다른 면을 찾았습니다.");
+}
+function k_act(){
+  const v=VV();
+  hint("밧줄이 느슨해졌습니다. 나가기 전에 할 일이 하나 있습니다.");
+  V().innerHTML=`<p class="eyebrow">대처</p><h2>이제 어떻게 하겠습니까?</h2>
+    <div class="stack" id="opts">${v.acts.map((a,i)=>`<button class="opt" type="button" aria-pressed="${S.act===i}" data-i="${i}"><span class="n">${i+1}</span>${a.t}</button>`).join("")}</div>
+    <button class="btn" type="button" id="next" ${S.act===null?"disabled":""}>그리고 시간이 지난다</button>`;
+  $("#opts").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.act=+b.dataset.i; keepY(k_act); };
+  $("#next").onclick=()=>{ go("k_next",6); say("그 뒤. "+VV().acts[S.act].out.join(" ")); };
+}
+function k_next(){
+  const v=VV(), a=v.acts[S.act], diff=S.after===null?0:S.before-S.after;
+  hint("시간이 지났습니다. 비가 그쳤습니다.");
+  V().innerHTML=`<p class="eyebrow">다음 날</p><h2>그 뒤의 일입니다.</h2>
+    <div class="narr" style="font-size:17px">${a.out.map((l,i)=>`<span style="animation-delay:${.2+i*.9}s">${esc(l)}</span>`).join("")}</div>
+    <p class="eyebrow">지금, 속은 얼마나 조여 있나요?</p>
+    ${nums("after",S.after).replace("10 · 아무것도 손에 안 잡힌다","10 · 숨이 막힌다")}
+    ${S.after!==null?`<div class="vs"><div><span class="small">그 순간</span><span class="big">${S.before}</span></div><div class="small">→</div><div><span class="small">지금</span><span class="big">${S.after}</span></div></div>
+      <p class="lede">${diff>=3?"일은 여전히 내 뜻대로 되지 않았는데, 숫자가 이만큼 풀렸습니다.":diff<=0?"시간이 지나도 조이는 느낌이 그대로입니다. 그렇다면 아직 손에서 놓지 못한 밧줄이 있을 수 있습니다.":"숫자가 조금 풀렸습니다."}</p>
+      <div class="callout">${v.lesson}</div>
+      <button class="btn" type="button" id="next">문으로 걸어간다</button>`:""}`;
+  $("#after").onclick=e=>{ const b=e.target.closest("[data-n]"); if(!b) return; S.after=+b.dataset.n; keepY(k_next); };
+  const nx=$("#next"); if(nx) nx.onclick=()=>{ hush(); go("k_mine",7); };
+}
+function k_mine(){
+  hint("문고리를 잡는 순간, 문에 질문이 떠오릅니다.");
+  let h=`<p class="eyebrow">내가 들은 말</p><h2>문고리를 잡는 순간, 질문 하나가 문에 떠오릅니다.</h2>
+    <div class="whisper" style="border-color:var(--line);box-shadow:none;color:var(--ink)"><small>문에 새겨진 질문</small>누군가 당신에게 “이건 꼭 이렇게 해야 해”라고 한 적이 있나요?</div>
+    <div class="chips" id="td">${TOLD.map((r,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.told===i}">${r}</button>`).join("")}</div>`;
+  if(S.told!==null) h+=`<p class="eyebrow">${S.told===2?"만약 그런 말을 듣는다면, 어떤 기분이 들 것 같나요?":"그 말을 들었을 때 기분은 어땠나요?"}</p>
+    <div class="chips" id="fl">${FELT.map((w,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.felt===i}">${w}</button>`).join("")}</div>`;
+  if(S.felt!==null) h+=`<div class="callout">${S.felt===1?"고마울 때도 있습니다. 챙기는 마음이 전해진 날입니다. 같은 말이 다른 날에는 밧줄처럼 느껴지기도 합니다.":`“${FELT[S.felt]}.” 당신의 ‘해야 한다’를 듣는 사람도 가끔 같은 기분일 수 있습니다.`}<br>바라는 마음은 같아도, ‘해야 해’와 ‘해 주면 좋겠어’는 다르게 들립니다.</div>
+    <button class="btn" type="button" id="next">문을 연다</button>`;
+  V().innerHTML=h;
+  $("#td").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.told=+b.dataset.i; keepY(k_mine); };
+  const fl=$("#fl"); if(fl) fl.onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.felt=+b.dataset.i; keepY(k_mine); };
+  const nx=$("#next"); if(nx) nx.onclick=()=>{ const seen=store("maeum.control.seen")||[]; if(!seen.includes(S.v)){ seen.push(S.v); store("maeum.control.seen",seen); } save(); go("k_exit",8); door(); };
+}
+/* 임시 규칙: 전문가 검토 필요 */
+function score(){
+  let grip=0, must=0, all=0;
+  const add=t=>{ grip+=t.grip||0; must+=t.must||0; all+=t.all||0; };
+  add(THINK[S.think]); add(FIRST[S.first]); add(RTAG[VV().acts[S.act].r]);
+  grip+=gu(); all+=Math.min(2,rc()); must+=Math.min(2,S.wr); all+=Math.min(2,S.wg);
+  if(S.before>=7) grip+=1; if(S.before>=9) must+=1;
+  const cap=(v,m)=>Math.min(1,v/m);
+  return [["쥐기",cap(grip,9)],["해야 한다",cap(must,8)],["틀리면 끝",cap(all,6)]];
+}
+function type(){
+  const sc=score(), top=[...sc].sort((a,b)=>b[1]-a[1])[0];
+  if(top[1]<.34) return "sail";
+  if(gu()===0 && S.tries===0 && VV().acts[S.act].r==="one" && top[1]<.8) return "tuner";
+  return top[0]==="쥐기"?"pilot":top[0]==="해야 한다"?"rule":"target";
+}
+function save(){
+  const log=store("maeum.control.log")||[]; const v=VV();
+  log.push({at:new Date().toISOString(), story:v.k, think:THINK[S.think].t, first:FIRST[S.first].t, before:S.before, after:S.after, gripWrong:gu(), letWrong:rc(), tries:S.tries, rigid:S.wr, giveup:S.wg,
+    act:v.acts[S.act].r, told:TOLD[S.told], felt:FELT[S.felt], type:TYPES[type()].nm});
+  store("maeum.control.log", log.slice(-20));
+}
+function k_exit(){
+  const T=TYPES[type()], sc=score(), v=VV();
+  hint("문이 열렸습니다.");
+  if(!k_exit.spoken){ k_exit.spoken=true; setTimeout(()=>say(`당신의 카드는 ${T.nm}. ${T.one}.`),500); }
+  V().innerHTML=`<p class="eyebrow">탈출 · 방 6</p><h2>통제의 방에서 나왔습니다.</h2>
+    <div class="tcard ${S.flip?"flip":""}" id="tc"><div class="in">
+      <div class="f"><span class="emo">${T.emo}</span><span class="small">통제의 방에서 받은 카드</span><span class="nm">${T.nm}</span><span class="one">${T.one}</span><span>${T.s}</span><span class="small" style="margin-top:auto">눌러서 뒷면 보기</span></div>
+      <div class="b"><p class="eyebrow">카드 뒷면 · 오늘 이 방에서 보인 반응</p>
+        <div class="meter">${sc.map(([nm,x])=>`<div class="row"><span>${nm}</span><span class="bar"><i style="width:${Math.max(6,Math.round(x*100))}%"></i></span><span class="lv">${x>=.6?"자주":x>=.3?"가끔":"드묾"}</span></div>`).join("")}</div>
+        <p class="small">${T.w}</p>
+        <p class="small">이 카드는 당신을 정하는 유형이 아니라, 오늘 이 방에서 나타난 반응입니다.</p>
+        <span class="small" style="margin-top:auto">눌러서 앞면 보기</span></div>
+    </div></div>
+    <div class="vs"><div><span class="small">그 순간 조이는 느낌</span><span class="big">${S.before}</span></div><div class="small">→</div><div><span class="small">그 뒤</span><span class="big">${S.after}</span></div></div>
+    <p class="eyebrow">오늘 내 생각 고리</p>
+    <ol class="chain">
+      <li><span>사건</span>${esc(v.event)}</li>
+      <li><span>내 생각</span>“${esc(FIRST[S.first].t)}”</li>
+      <li><span>손잡이</span>닿지 않는 밧줄 ${gu()}가닥을 쥠 · 닿는 밧줄 ${rc()}가닥을 놓음</li>
+      <li><span>내 행동</span>${esc(v.acts[S.act].t)}</li>
+    </ol>
+    <div class="habit">
+      <p class="eyebrow">생각 습관 카드 · 12장 중 한 장 획득</p>
+      <p class="habit-name">명령문 (해야 한다)</p>
+      <p>바라는 것을 ‘반드시, 당연히, 해야 한다’는 규칙으로 바꿔 나와 남에게 적용하는 습관입니다. 규칙이 깨지면 화가 나고, 내가 못 지키면 죄책감이 듭니다.</p>
+      <p class="small">오늘의 열쇠: ‘해야 한다’를 ‘하면 좋겠다’로 바꿔 읽고, 내 손에 닿는 밧줄 하나만 고르기.</p>
+    </div>
+    <button class="btn" type="button" id="share">카드 문구 복사해서 공유하기</button>
+    <p class="copyok" id="copyok"></p>
+    <button class="btn ghost" type="button" id="again">다른 이야기로 다시 들어가기</button>
+    <button class="btn ghost" type="button" id="map">처음 화면으로</button>
+    <p class="small">기록은 이 기기에만 저장됩니다. 처음 화면 아래에서 언제든 지울 수 있습니다.</p>`;
+  $("#tc").onclick=()=>{ S.flip=!S.flip; $("#tc").classList.toggle("flip",S.flip); };
+  $("#map").onclick=goHome; $("#again").onclick=start;
+  $("#share").onclick=async()=>{
+    const url=/^https?:/.test(location.href)&&!/claude/.test(location.hostname)?`\n${location.href.split("#")[0]}`:"";
+    const text=`[마음의 방탈출 · 통제의 방]\n내 카드: ${T.emo} ${T.nm}\n“${T.one}”\n조이는 느낌 ${S.before} → ${S.after}\n너는 무슨 카드가 나올까?${url}`;
+    try{ await navigator.clipboard.writeText(text); $("#copyok").textContent="복사했습니다. 카톡에 붙여 넣으세요."; }
+    catch(e){ $("#copyok").textContent="이 화면에서는 복사가 막혀 있습니다. 카드를 캡처해 주세요."; }
+  };
+}
+function touch(obj){
+  if(S.view==="k_enter"){ hint("먼저 불을 켜야 합니다."); return; }
+  if(S.view==="k_moment" && obj==="phone" && S.beat<0){ runBeat(); return; }
+  if(S.view==="k_search" && !S.opened && obj!=="door"){ find(obj); return; }
+  if(obj==="door"){ hint(S.view==="k_exit"?"문이 열려 있습니다.":"문에 매듭 세 개가 묶여 있습니다. “쥔 손으로는 열리지 않는다.”"); return; }
+  hint(({window:"창밖을 봅니다.",calendar:"빈칸 없이 빽빽한 일정표입니다.",frame:"사진 한 장이 놓여 있습니다.",drawer:"서랍이 살짝 열려 있습니다.",phone:"휴대전화 화면이 켜져 있습니다."})[obj]||"");
+}
+return {no:6, name:"통제의 방", steps:STEPS, scene:SCENE, start, sync, touch, type, VAR, THINK, FIRST,
+  views:{k_enter, k_moment, k_first, k_grip, k_search, k_act, k_next, k_mine, k_exit}};
 })();
 
 SCENE2=$("#room3d").innerHTML;
