@@ -462,6 +462,22 @@ div.wheel i{display:none}
 #stage[data-view="r_search"] .room3d{--bx:3deg}
 #stage[data-view="r_mine"] .room3d{--cx:-74px;--cy:-30px;--cz:140px;--by:-4deg}
 #stage[data-view="r_exit"] .room3d{--cx:-52px;--cy:-20px;--cz:100px;--by:-3deg}
+
+/* ===== 방 9 · 내면비평가의 방 ===== */
+.sd{padding:10px 8px;font-size:14px}
+.sd[aria-pressed="true"]{border-color:var(--gold);background:var(--gold-soft);color:var(--gold)}
+#beam9{transition:transform .9s cubic-bezier(.3,1.5,.5,1)}
+#stage[data-room="9"] .face.back{background:linear-gradient(180deg,#5a2c36,#3e1e26);box-shadow:inset 0 -5px 0 #200e13}
+#stage[data-room="9"] .face.left{background:linear-gradient(270deg,#4e2630,#2a1218)}
+#stage[data-room="9"] .face.right{background:linear-gradient(90deg,#4e2630,#2a1218)}
+#stage[data-room="9"] .face.ceil{background:linear-gradient(0deg,#1c0c10,#30161c)}
+#stage[data-room="9"] .face.floor{background:repeating-linear-gradient(90deg,rgba(0,0,0,.22) 0 1px,transparent 1px 45px),linear-gradient(0deg,#564248,#33262a)}
+#stage[data-view="i_enter"] .room3d{--cz:40px}
+#stage[data-view="i_moment"] .room3d,#stage[data-view="i_first"] .room3d,#stage[data-view="i_next"] .room3d{--cx:62px;--cy:-8px;--cz:150px;--by:5deg}
+#stage[data-view="i_stick"] .room3d,#stage[data-view="i_act"] .room3d{--cx:-56px;--cy:-30px;--cz:150px;--by:-10deg}
+#stage[data-view="i_search"] .room3d{--bx:3deg}
+#stage[data-view="i_mine"] .room3d{--cx:-80px;--cy:-30px;--cz:140px;--by:-4deg}
+#stage[data-view="i_exit"] .room3d{--cx:-52px;--cy:-20px;--cz:100px;--by:-3deg}
 </style>
 </head>
 <body>
@@ -825,8 +841,8 @@ function render(){
 /* ---------- 본관 ---------- */
 function home(){
   hint("마우스나 손가락을 움직이면 방을 둘러볼 수 있습니다.");
-  const l2=store("maeum.silence.log")||[], l3=store("maeum.mistake.log")||[], l4=store("maeum.compare.log")||[], l5=store("maeum.left.log")||[], l6=store("maeum.control.log")||[], l7=store("maeum.doom.log")||[], l8=store("maeum.blame.log")||[];
-  const got=[...new Set([...l2,...l3,...l4,...l5,...l6,...l7,...l8].map(l=>l.type))];
+  const l2=store("maeum.silence.log")||[], l3=store("maeum.mistake.log")||[], l4=store("maeum.compare.log")||[], l5=store("maeum.left.log")||[], l6=store("maeum.control.log")||[], l7=store("maeum.doom.log")||[], l8=store("maeum.blame.log")||[], l9=store("maeum.critic.log")||[];
+  const got=[...new Set([...l2,...l3,...l4,...l5,...l6,...l7,...l8,...l9].map(l=>l.type))];
   const open=[
     {i:1, no:2, nm:"침묵의 방", hook:"읽음 표시는 떴는데 답이 없습니다. 방 구석에서 누군가 속삭입니다.", n:VARIANTS.length, done:l2.length, habit:"독심술"},
     {i:3, no:3, nm:"실수의 방", hook:"보내기를 누르고 1초 뒤에 알았습니다. 벽시계가 그 순간으로 자꾸 되감깁니다.", n:ROOMDEF[3].VAR3.length, done:l3.length, habit:"돋보기"},
@@ -834,7 +850,8 @@ function home(){
     {i:5, no:5, nm:"버려짐의 방", hook:"내가 없는 자리에서 사람들이 웃고 있습니다. 벽의 오래된 사진들이 흔들립니다.", n:ROOMDEF[5].VAR.length, done:l5.length, habit:"도돌이표"},
     {i:6, no:6, nm:"통제의 방", hook:"꼼꼼히 준비했는데 일이 내 뜻대로 가지 않습니다. 천장에서 밧줄이 내려옵니다.", n:ROOMDEF[6].VAR.length, done:l6.length, habit:"명령문"},
     {i:7, no:7, nm:"재앙의 방", hook:"작은 신호 하나가 왔습니다. 머릿속이 먼저 달려가고, 방에 물이 차오릅니다.", n:ROOMDEF[7].VAR.length, done:l7.length, habit:"수정 구슬"},
-    {i:8, no:8, nm:"책임의 방", hook:"일이 잘못됐습니다. 벽에는 열 조각짜리 둥근 판이, 바닥에는 가방 하나가 있습니다.", n:ROOMDEF[8].VAR.length, done:l8.length, habit:"자석"}
+    {i:8, no:8, nm:"책임의 방", hook:"일이 잘못됐습니다. 벽에는 열 조각짜리 둥근 판이, 바닥에는 가방 하나가 있습니다.", n:ROOMDEF[8].VAR.length, done:l8.length, habit:"자석"},
+    {i:9, no:9, nm:"내면비평가의 방", hook:"하루가 끝났습니다. 머릿속에서 내 목소리를 닮은 목소리가 꼬리표를 내밉니다.", n:ROOMDEF[9].VAR.length, done:l9.length, habit:"꼬리표"}
   ];
   V().innerHTML = `
     <h1>마음의 방탈출</h1>
@@ -845,13 +862,13 @@ function home(){
       <span class="ds">${r.done?`탈출함 · 다시 들어가기`:`들어가기`} · 이야기 ${r.n}가지</span></button>`).join("")}</div>
     ${got.length?`<p class="small">모은 카드: ${got.join(", ")}</p>`:""}
     <details class="fold">
-      <summary>본관 지도 · 열 개의 방 중 일곱 곳이 열려 있습니다</summary>
+      <summary>본관 지도 · 열 개의 방 중 여덟 곳이 열려 있습니다</summary>
       <div class="map">${ROOMS.map((r,i)=>{ const o=open.find(x=>x.no===i+1);
         return `<button class="room ${o?"open":""}" type="button" ${o?`data-r="${o.i}"`:"disabled"}><span class="no">방 ${i+1}</span><span class="nm">${r}</span><span class="st">${o?"입장 가능":"준비 중"}</span></button>`;}).join("")}</div>
     </details>
-    ${l2.length+l3.length+l4.length+l5.length+l6.length+l7.length+l8.length?`<button class="btn ghost" type="button" id="del">내 기록 지우기</button>`:""}`;
+    ${l2.length+l3.length+l4.length+l5.length+l6.length+l7.length+l8.length+l9.length?`<button class="btn ghost" type="button" id="del">내 기록 지우기</button>`:""}`;
   V().querySelectorAll("[data-r]").forEach(b => b.onclick = () => ROOMDEF[+b.dataset.r].start());
-  const d=$("#del"); if(d){ let armed=false; d.onclick=()=>{ if(!armed){ armed=true; d.textContent="한 번 더 누르면 이 기기의 기록이 모두 지워집니다"; return; } try{ ["maeum.silence.log","maeum.silence.seen","maeum.mistake.log","maeum.mistake.seen","maeum.compare.log","maeum.compare.seen","maeum.left.log","maeum.left.seen","maeum.control.log","maeum.control.seen","maeum.doom.log","maeum.doom.seen","maeum.blame.log","maeum.blame.seen"].forEach(k=>localStorage.removeItem(k)); }catch(e){} home(); }; }
+  const d=$("#del"); if(d){ let armed=false; d.onclick=()=>{ if(!armed){ armed=true; d.textContent="한 번 더 누르면 이 기기의 기록이 모두 지워집니다"; return; } try{ ["maeum.silence.log","maeum.silence.seen","maeum.mistake.log","maeum.mistake.seen","maeum.compare.log","maeum.compare.seen","maeum.left.log","maeum.left.seen","maeum.control.log","maeum.control.seen","maeum.doom.log","maeum.doom.seen","maeum.blame.log","maeum.blame.seen","maeum.critic.log","maeum.critic.seen"].forEach(k=>localStorage.removeItem(k)); }catch(e){} home(); }; }
 }
 
 /* ---------- 1. 입구 ---------- */
@@ -3702,6 +3719,442 @@ function touch(obj){
 }
 return {no:8, name:"책임의 방", steps:STEPS, scene:SCENE, start, sync, touch, type, VAR, THINK, FIRST,
   views:{r_enter, r_moment, r_first, r_gut, r_search, r_act, r_next, r_mine, r_exit}};
+})();
+
+/* ================= 방 9 · 내면비평가의 방 ================= */
+ROOMDEF[9] = (function(){
+const STEPS = ["입구","그 밤","꼬리표","증거의 저울","나에게 하는 말","다음 날","비평가의 속셈","탈출"];
+const THINK = [
+  {t:"나는 원래 이런 사람이다", label:2},
+  {t:"오늘 한 번 그런 것이다"},
+  {t:"더 독하게 해야 한다는 뜻이다", whip:1},
+  {t:"별 뜻 없다"},
+  {t:"잘한 것도 있었다"},
+  {t:"남들은 이런 일 없이 잘만 한다", label:1, disc:1}
+];
+const FIRST = [
+  {t:"나는 한심하다", g:"꼬리표", label:2},
+  {t:"이래서 내가 안 되는 거다", g:"꼬리표", label:2},
+  {t:"정신 차려. 더 독하게 해야 해", g:"다그치기", whip:2},
+  {t:"오늘은 좀 안 풀렸다", g:"유보"},
+  {t:"잘한 건 당연한 거고, 못한 게 진짜 나다", g:"잘한 것 흘리기", disc:2},
+  {t:"어디가 걸렸는지 보자", g:"유보"},
+  {t:"나를 봐주기 시작하면 끝장이다", g:"다그치기", whip:2},
+  {t:"칭찬은 다 빈말이다", g:"잘한 것 흘리기", disc:2}
+];
+const RTAG = { kind:{}, whip:{whip:2}, deny:{}, quit:{label:2}, prove:{whip:1, disc:1} };
+const PURP = ["더 잘하게 하려고","다치지 않게 지키려고","벌을 주려고","모르겠다"];
+const WORK = ["덕분에 더 잘하게 됐다","움츠러들기만 했다","잘하게는 됐지만 많이 지쳤다"];
+const VAR = [
+  {k:"발표", title:"녹음 파일 · 오늘 발표 20분", time:"밤 11:30", label:"나는 무능하다",
+   screen:[{t:"(재생) …그래서 이 수치는, 어…, 그러니까…", who:"녹음"},{t:"(3초간 정적)", who:"녹음"},{t:"(되감아 다시 듣는다)", me:1}],
+   intro:"발표를 마친 밤, 녹음을 다시 듣습니다. 말이 막힌 부분에서 자꾸 멈추게 됩니다.",
+   beat:["7분 12초, 말이 막혔다","되감아 다시 듣는다","14분 40초, 또 막혔다","그 두 군데만 돌려 듣고 있다"],
+   event:"발표 녹음에서 말이 막힌 두 군데를 되풀이해 들었다",
+   critic:["그것도 발표라고 했냐.","넌 원래 이 정도밖에 안 돼.","다들 속으로 한심하다고 했을 거다."],
+   ev:[{o:"phone", s:"f", c:"녹음 기록 · 7분과 14분, 두 군데에서 말이 막혔다."},
+     {o:"trash", s:"f", c:"버린 메모 · 수치 하나를 틀리게 말했다가 바로 고쳤다."},
+     {o:"calendar", s:"a", c:"회의 기록 · 발표 뒤 질문 세 개에 모두 답했다."},
+     {o:"frame", s:"a", c:"동료의 쪽지 · “수치 설명이 알기 쉬웠어요.”"},
+     {o:"drawer", s:"a", c:"서랍 속 · 이 발표는 아무도 안 맡으려 해서 내가 자원했다."},
+     {o:"window", s:"a", c:"창가의 메모 · 지난 분기 발표 뒤 자료를 보내 달라는 요청이 두 건 왔다."}],
+   fact:"오늘 발표에서 두 번 말이 막혔고, 질문 세 개에는 모두 답했다",
+   acts:[{t:"“두 번 막혔다. 그 두 부분만 내일 소리 내어 연습하자” 하고 녹음을 끈다", r:"kind", out:["녹음을 끄고 잤다.","다음 날 막힌 두 문장을 다섯 번 소리 내어 읽었다. 10분 걸렸다. 다음 발표에서 그 대목은 막히지 않았다."]},
+     {t:"“이따위로는 안 된다”며 새벽까지 전체를 다시 연습한다", r:"whip", out:["새벽 3시까지 20분짜리 발표를 여섯 번 되풀이했다.","다음 날 목이 쉬고 머리가 멍했다. 다음 발표 전날에는 겁이 나서 잠을 못 잤다."]},
+     {t:"“완벽했어, 문제없어” 하고 녹음을 지운다", r:"deny", out:["녹음을 지웠다.","마음은 잠깐 편했다. 다음 발표에서 같은 대목에서 또 막혔다."]},
+     {t:"“난 발표 체질이 아니다. 다음부턴 안 맡는다”고 정한다", r:"quit", out:["다음 발표를 다른 사람에게 넘겼다.","편해졌다. 그리고 ‘발표 못 하는 사람’이라는 꼬리표가 진짜가 되어 갔다."]},
+     {t:"만회하려고 내일 추가 보고서 세 개를 자원한다", r:"prove", out:["보고서 세 개를 떠맡았다.","일주일 내내 야근했다. 말이 막힌 두 대목은 그대로였다."]}],
+   lesson:"말이 두 번 막힌 것은 사실입니다. 질문에 모두 답한 것도 사실입니다. ‘무능하다’는 그 여섯 장의 증거를 한 단어로 덮은 꼬리표였습니다."},
+  {k:"불합격", title:"받은 메일", time:"오후 6:05", label:"나는 쓸모없는 사람이다",
+   screen:[{t:"[결과 안내] 아쉽게도 이번에는 모시지 못하게 되었습니다.", who:"인사팀"},{t:"(세 번째 읽는다)", me:1}],
+   intro:"지원한 곳에서 불합격 메일이 왔습니다.",
+   beat:["‘아쉽게도’라는 단어가 보인다","다시 읽는다","이번 달 들어 세 번째다","이력서 파일을 연다"],
+   event:"지원한 곳에서 세 번째 불합격 메일을 받았다",
+   critic:["세 번이면 답 나온 거지.","넌 어디서도 안 뽑아.","남들은 다 붙는데 너만 이래."],
+   ev:[{o:"phone", s:"f", c:"받은 메일함 · 이번 달 불합격 메일이 세 통 왔다."},
+     {o:"trash", s:"f", c:"버린 메모 · 이번 지원서는 마감 한 시간 전에 급히 냈다. 오타가 하나 있었다."},
+     {o:"calendar", s:"a", c:"달력 · 세 곳 중 두 곳은 서류를 통과해 면접까지 갔다."},
+     {o:"frame", s:"a", c:"채용 공고 · 한 명을 뽑는 자리에 240명이 지원했다."},
+     {o:"drawer", s:"a", c:"서랍 속 · 전 직장 동료가 써 준 추천서. “다시 같이 일하고 싶은 사람.”"},
+     {o:"window", s:"a", c:"창가의 메모 · 지난주, 후배가 이력서를 봐 달라고 찾아왔다."}],
+   fact:"이번 달에 세 곳에서 떨어졌고, 그중 두 곳은 면접까지 갔다",
+   acts:[{t:"“세 번 떨어졌다. 면접까지 간 두 곳의 질문부터 적어 보자” 하고 정리한다", r:"kind", out:["면접 질문 여덟 개를 적었다.","답이 막혔던 질문 두 개가 눈에 들어왔다. 다음 면접에서 그 두 질문이 다시 나왔다."]},
+     {t:"“노력이 부족해서다”라며 밤새 스무 곳에 지원서를 뿌린다", r:"whip", out:["스무 곳에 같은 지원서를 냈다.","열여덟 곳에서 불합격 메일이 왔다. 꼬리표를 뒷받침할 메일이 열여덟 통 늘었다."]},
+     {t:"“그 회사가 보는 눈이 없는 거다” 하고 메일을 지운다", r:"deny", out:["메일을 지웠다.","기분은 조금 나아졌다. 오타가 있던 지원서는 고치지 않은 채 다음 곳에 다시 냈다."]},
+     {t:"“나는 안 되는 사람”이라며 지원을 그만둔다", r:"quit", out:["지원을 멈췄다.","불합격 메일은 더 오지 않았다. 합격 메일이 올 길도 함께 닫혔다."]},
+     {t:"쓸모를 증명하려고 주변의 부탁을 전부 떠맡는다", r:"prove", out:["부탁 다섯 개를 떠맡았다.","다들 고마워했다. 지원서를 고칠 시간은 남지 않았다."]}],
+   lesson:"세 번 떨어진 것은 사실입니다. 두 번은 면접까지 갔고, 240명 중 한 명을 뽑는 자리였던 것도 사실입니다. ‘쓸모없다’는 결과 세 개로 사람 전체를 부른 말이었습니다."},
+  {k:"짜증", title:"엄마", time:"밤 10:10", label:"나는 못된 자식이다",
+   screen:[{t:"밥은 먹었니", who:"엄마"},{t:"아 좀! 바쁘다고 했잖아", me:1},{t:"그래… 미안하다", who:"엄마"}],
+   intro:"걱정해 준 엄마에게 짜증을 냈습니다. 엄마의 “미안하다”가 화면에 남아 있습니다.",
+   beat:["보내고 나서야 다시 읽는다","‘미안하다’ 세 글자가 보인다","지울 수 없다","가슴이 답답하다"],
+   event:"걱정해 준 엄마에게 짜증을 냈다",
+   critic:["그게 엄마한테 할 소리냐.","넌 원래 이기적이야.","이러다 나중에 후회해도 늦어."],
+   ev:[{o:"phone", s:"f", c:"대화 기록 · 오늘 내가 보낸 말. “아 좀! 바쁘다고 했잖아.”"},
+     {o:"trash", s:"f", c:"버린 메모 · 지난달에도 비슷하게 짜증을 낸 적이 한 번 있다."},
+     {o:"calendar", s:"a", c:"달력 · 일요일 칸마다 ‘엄마 전화’라고 적혀 있다. 빠진 주가 없다."},
+     {o:"frame", s:"a", c:"책상 위 영수증 · 지난주에 엄마 무릎 보호대를 사서 보냈다."},
+     {o:"drawer", s:"a", c:"서랍 속 근무표 · 오늘 열네 시간째 일하는 중이었다."},
+     {o:"window", s:"a", c:"창가의 메모 · 짜증을 낸 뒤 10분째 이 화면만 보고 있다."}],
+   fact:"오늘 엄마에게 짜증을 냈고, 매주 빠짐없이 전화를 드려 왔다",
+   acts:[{t:"“심했다. 사과하자” 하고 “아까 미안해요. 밥 먹었어요” 하고 보낸다", r:"kind", out:["사과 한 줄을 보냈다.","엄마가 답했다. “괜찮다. 바쁜데 엄마가 눈치가 없었지. 일요일에 통화하자.”"]},
+     {t:"밤새 ‘나는 못된 자식’이라고 되뇌며 잠들지 못한다", r:"whip", out:["새벽까지 스스로를 몰아붙였다.","다음 날은 더 지쳤고, 더 쉽게 짜증이 났다. 엄마에게 사과는 아직 하지 못했다."]},
+     {t:"“바쁜 사람한테 자꾸 묻는 엄마가 문제지” 하고 넘긴다", r:"deny", out:["그냥 넘겼다.","엄마는 그 뒤로 밥 먹었냐고 묻지 않았다. 묻지 않는 것이 편하지만은 않았다."]},
+     {t:"“난 원래 이런 인간”이라며 연락을 피한다", r:"quit", out:["일요일 전화를 걸지 않았다.","엄마는 기다렸다. ‘못된 자식’이라는 꼬리표가 한 주만큼 더 진짜가 됐다."]},
+     {t:"죄책감에 비싼 선물을 주문한다. 사과는 하지 않는다", r:"prove", out:["비싼 안마기를 보냈다.","엄마가 전화했다. “이런 거 말고, 목소리나 듣자.”"]}],
+   lesson:"짜증을 낸 것은 사실이고, 사과할 일이었습니다. 매주 전화를 드려 온 것도 사실입니다. ‘못된 자식’은 오늘의 한마디로 지난 모든 일요일을 덮은 말이었습니다."}
+];
+const TYPES = {
+  garden:{emo:"🌱", nm:"정원사형", one:"꾸짖기보다 가꾸는 쪽을 고르는 사람", s:"실수를 사람 전체로 넓히지 않습니다.", w:"잡초를 봐주라는 뜻은 아닙니다. 뽑을 것은 뽑되, 화분째 버리지는 마세요."},
+  coach:{emo:"📣", nm:"코치형", one:"사실 한 줄과 다음 걸음 한 줄을 말해 주는 사람", s:"꼬리표를 떼고, 증거를 한 번에 제자리에 놓았습니다.", w:"코치도 선수와 함께 쉽니다. 다음 걸음이 떠오르지 않는 날은 쉬는 것이 다음 걸음입니다."},
+  tag:{emo:"🏷️", nm:"딱지형", one:"한 번의 일에 나 전체의 이름표를 붙이는 사람", s:"스스로를 정직하게 보려고 합니다.", w:"이름표에 적힌 말을 ‘오늘 있었던 일’로 다시 써 보세요. 사람은 한 단어보다 깁니다."},
+  shout:{emo:"⚡", nm:"호통형", one:"다그쳐야만 내가 움직인다고 믿는 사람", s:"더 나아지려는 힘이 큽니다.", w:"호통으로 달린 거리와 호통 때문에 주저앉은 날을 함께 세어 보세요."},
+  sieve:{emo:"🧺", nm:"소쿠리형", one:"잘한 일은 새어 나가고 못한 일만 남는 사람", s:"겸손하고, 고칠 점을 잘 찾아냅니다.", w:"저울의 반대쪽 접시에도 올릴 것이 있었습니다. 새어 나간 것을 한 장만 주워 보세요."}
+};
+const SCENE = `
+  <div class="face back">
+    <div class="lampglow"></div>
+    <svg class="o3" style="left:26px;top:20px;width:104px;height:79px" viewBox="20 14 100 76">
+      <g class="hot" data-obj="window" role="button" tabindex="0" aria-label="창문">
+        <rect x="22" y="16" width="96" height="72" rx="2" fill="#3a2028" stroke="#6e4650" stroke-width="2"/>
+        <rect id="sky9" x="26" y="20" width="88" height="64" fill="#10080c"/>
+        <line x1="70" y1="20" x2="70" y2="84" stroke="#6e4650" stroke-width="2"/><line x1="26" y1="52" x2="114" y2="52" stroke="#6e4650" stroke-width="2"/>
+        <rect x="76" y="58" width="22" height="18" fill="#f3dfa0" transform="rotate(5 87 67)"/>
+        <rect class="hl" x="20" y="14" width="100" height="76" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+    <svg class="o3" style="left:140px;top:12px;width:104px;height:92px" viewBox="-52 -10 104 92">
+      <rect x="-2" y="0" width="4" height="70" fill="#9a7b45"/><rect x="-18" y="68" width="36" height="6" rx="2" fill="#9a7b45"/>
+      <g transform="translate(0,8)"><g id="beam9">
+        <rect x="-40" y="-2" width="80" height="4" rx="2" fill="#d8c69a"/>
+        <line x1="-36" y1="2" x2="-36" y2="26" stroke="#d8c69a" stroke-width="1.5"/><line x1="36" y1="2" x2="36" y2="26" stroke="#d8c69a" stroke-width="1.5"/>
+        <path d="M-50,26 h28 l-4,9 h-20 z" fill="#b0412f"/><path d="M22,26 h28 l-4,9 h-20 z" fill="#2f7a70"/>
+      </g></g>
+      <circle cx="0" cy="8" r="4" fill="#f2d27c"/>
+    </svg>
+    <svg class="o3" style="left:258px;top:92px;width:92px;height:148px" viewBox="255 67 84 136">
+      <defs><radialGradient id="exitGlow" cx="50%" cy="60%" r="70%"><stop offset="0" stop-color="#fff2c4"/><stop offset="1" stop-color="#f2d27c" stop-opacity=".2"/></radialGradient></defs>
+      <g class="hot" data-obj="door" role="button" tabindex="0" aria-label="출구 문">
+        <rect x="258" y="70" width="78" height="133" fill="#3a2414"/>
+        <rect id="doorLight" x="261" y="73" width="72" height="130" fill="url(#exitGlow)"/>
+        <g id="doorPanel">
+          <rect x="261" y="73" width="72" height="130" fill="#6b4126" stroke="#8c5a35" stroke-width="1.5"/>
+          <rect x="269" y="140" width="56" height="52" fill="none" stroke="#83532f" stroke-width="1.5"/>
+          <circle cx="322" cy="138" r="4" fill="#f2d27c"/>
+          <g id="locks"><rect x="272" y="86" width="50" height="34" rx="3" fill="#2a1a0e" stroke="#a37a45" stroke-width="2"/></g>
+          <text id="tag9" x="297" y="107" text-anchor="middle" font-family="Hahmlet,serif" font-size="7" font-weight="700" fill="#e07a5a">꼬리표</text>
+        </g>
+        <rect class="hl" x="256" y="68" width="82" height="134" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+  </div>
+  <div class="face left">
+    <svg class="o3" style="left:66px;top:34px;width:62px;height:70px" viewBox="0 0 62 70">
+      <g class="hot" data-obj="calendar" role="button" tabindex="0" aria-label="달력">
+        <rect x="3" y="3" width="56" height="64" rx="2" fill="#efe3c0"/><rect x="3" y="3" width="56" height="14" fill="#8a3a44"/>
+        <g fill="#b9ad8a"><rect x="9" y="24" width="8" height="6"/><rect x="21" y="24" width="8" height="6"/><rect x="33" y="24" width="8" height="6"/><rect x="45" y="24" width="8" height="6"/><rect x="9" y="35" width="8" height="6"/><rect x="21" y="35" width="8" height="6"/><rect x="33" y="35" width="8" height="6"/><rect x="9" y="46" width="8" height="6"/></g>
+        <rect class="hl" x="1" y="1" width="60" height="68" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+  </div>
+  <div class="face right"></div><div class="face ceil"></div>
+  <div class="face floor"><div class="doorspill"></div></div>
+  <svg class="o3" style="left:214px;top:96px;width:66px;height:144px;transform:translateZ(-120px) rotateY(-22deg)" viewBox="0 0 66 144">
+    <g class="hot" data-obj="mirror" role="button" tabindex="0" aria-label="거울">
+      <rect x="4" y="4" width="58" height="124" rx="6" fill="#8a6a3a"/><rect x="9" y="9" width="48" height="114" rx="3" fill="#b5c4cc"/>
+      <circle cx="33" cy="42" r="11" fill="#f0d9b0"/><path d="M13,120 C15,70 51,70 53,120 Z" fill="#5a6f8f"/>
+      <g id="stk9" font-family="Hahmlet,serif" font-size="6" font-weight="700"></g>
+      <rect x="14" y="128" width="38" height="12" rx="2" fill="#6e4625"/>
+      <rect class="hl" x="1" y="1" width="64" height="142" rx="7" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>
+  <div class="desk-top"><div class="pool"></div></div>
+  <div class="desk-front">
+    <svg class="o3" style="left:16px;top:10px;width:112px;height:40px" viewBox="47 149 106 38">
+      <g class="hot" data-obj="drawer" role="button" tabindex="0" aria-label="서랍">
+        <rect x="50" y="152" width="100" height="32" rx="3" fill="#9c6a3a" stroke="#c99a5e" stroke-width="1.5"/>
+        <rect x="90" y="166" width="20" height="4" rx="2" fill="#f1e2c2"/>
+        <rect class="hl" x="47" y="149" width="106" height="38" rx="4" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+  </div>
+  <svg class="o3" style="left:40px;top:82px;width:46px;height:68px;transform:translateZ(-160px)" viewBox="44 80 42 62">
+    <polygon points="48,104 82,104 74,84 56,84" fill="#f0cd5e"/><rect x="63" y="104" width="4" height="34" fill="#c9a24a"/><rect x="55" y="136" width="20" height="4" rx="1" fill="#c9a24a"/></svg>
+  <svg class="o3 o-phone" style="left:104px;top:96px;width:42px;height:56px;transform:translateZ(-128px)" viewBox="106 98 36 48">
+    <g class="hot phone-g glow" id="phoneG" data-obj="phone" role="button" tabindex="0" aria-label="휴대전화">
+      <rect class="body" x="112" y="104" width="24" height="36" rx="4" fill="#7fbfa7" stroke="#22302b" stroke-width="2"/>
+      <rect x="116" y="110" width="16" height="22" rx="1" fill="#a9e4cc"/>
+      <path d="M121,115 l8,6 l-8,6 z" fill="#22302b"/>
+      <circle id="phoneDot" class="pulse" cx="134" cy="106" r="3" fill="#f2d27c"/>
+      <rect class="hl" x="108" y="100" width="32" height="44" rx="5" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>
+  <svg class="o3" style="left:152px;top:106px;width:52px;height:44px;transform:translateZ(-150px)" viewBox="0 0 52 44">
+    <g class="hot" data-obj="frame" role="button" tabindex="0" aria-label="책상 위 종이">
+      <rect x="4" y="4" width="44" height="34" rx="2" fill="#efe3c0" transform="rotate(-4 26 21)"/>
+      <g stroke="#8a7d5a" stroke-width="1.5" transform="rotate(-4 26 21)"><line x1="10" y1="12" x2="42" y2="12"/><line x1="10" y1="19" x2="42" y2="19"/><line x1="10" y1="26" x2="32" y2="26"/></g>
+      <rect class="hl" x="1" y="1" width="50" height="42" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>
+  <svg class="o3" style="left:14px;top:190px;width:44px;height:50px;transform:translateZ(-96px)" viewBox="172 162 36 42">
+    <g class="hot" data-obj="trash" role="button" tabindex="0" aria-label="쓰레기통">
+      <polygon points="176,174 204,174 200,202 180,202" fill="#5a3a40" stroke="#8a6068" stroke-width="1.5"/>
+      <circle cx="186" cy="172" r="5" fill="#efe6cf"/><circle cx="195" cy="173" r="4" fill="#e3d6b6"/>
+      <rect class="hl" x="173" y="163" width="34" height="40" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>`;
+const ONAME = {phone:"휴대전화",trash:"쓰레기통",calendar:"달력",frame:"책상 위 종이",drawer:"서랍",window:"창문"};
+const STK = [[12,56],[30,74],[14,92],[32,24],[12,30],[30,104]];
+
+function fresh9(){ return {room:9, view:"i_enter", step:1, v:0, beat:-1, think:null, first:null, before:null, ci:0, cs:[],
+  found:[], side:{}, tries:0, toF:0, toA:0, opened:false, lastFb:"", act:null, after:null, purp:null, work:null, flip:false}; }
+const VV = () => VAR[S.v];
+const stickers = () => S.cs.reduce((a,c)=>a+(c==="keep"?1:c==="add"?2:0),0);
+function pick(){ const seen=store("maeum.critic.seen")||[]; let pool=VAR.map((_,i)=>i).filter(i=>!seen.includes(i));
+  if(!pool.length){ pool=VAR.map((_,i)=>i).filter(i=>i!==seen[seen.length-1]); store("maeum.critic.seen",[]); }
+  S.v=pool[Math.floor(Math.random()*pool.length)]; }
+function start(){ S=fresh9(); i_exit.spoken=false; i_moment.running=false; pick(); mount(9); go("i_enter",1); }
+
+function sync(){
+  const st=$("#stage"), v=S.view, morning=["i_next","i_mine","i_exit"].includes(v);
+  st.classList.toggle("lightsoff", v==="i_enter");
+  st.classList.toggle("dooropen", v==="i_exit");
+  st.classList.toggle("morning", morning);
+  st.dataset.view=v;
+  $("#locks").children[0].setAttribute("fill", S.opened ? "#f2d27c" : "#2a1a0e");
+  $("#tag9").textContent = S.opened ? "" : "꼬리표";
+  $("#phoneDot").style.display = (v==="i_moment"&&S.beat<0) ? "" : "none";
+  const n = S.opened ? 0 : Math.min(6, stickers());
+  $("#stk9").innerHTML = STK.slice(0,n).map(([x,y],i)=>`<g transform="rotate(${i%2?6:-7} ${x+11} ${y+5})"><rect x="${x}" y="${y}" width="22" height="10" rx="1.5" fill="#e07a5a"/><text x="${x+11}" y="${y+7.5}" text-anchor="middle" fill="#2a1208">${["한심","무능","이기적","게으름","부족","실패"][i]}</text></g>`).join("");
+  const vals=Object.values(S.side), f=vals.filter(x=>x==="f").length, a=vals.filter(x=>x==="a").length;
+  const ang = S.opened ? 14 : Math.max(-16, Math.min(16, (a-f)*4 - (vals.length?0:10) - Math.min(6,stickers())));
+  $("#beam9").style.transform=`rotate(${ang}deg)`;
+  $("#sky9").setAttribute("fill", morning ? "#8fb8d0" : "#10080c");
+}
+function screenHTML(){
+  const v=VV();
+  return `<div class="chat" data-t="${v.time}"><div class="who">${v.title}</div>${v.screen.map(b=>`<div class="bub ${b.me?"me":"them"}">${b.who?`<small style="display:block;font-size:11px;color:var(--dim)">${b.who}</small>`:""}${esc(b.t)}</div>`).join("")}</div>`;
+}
+function i_enter(){
+  hint("방이 어둡습니다. 거울 앞에 누군가 서 있는 것 같습니다.");
+  if(!SND.asked){
+    V().innerHTML=`<p class="eyebrow">방 9 · 입구</p><p class="quote">그 목소리는 사실을 말하는 걸까, 이름을 붙이는 걸까.</p>
+      <p class="lede">이 방에는 소리와 나레이션이 있습니다.</p>
+      <div class="choose"><button class="btn" type="button" id="sOn">소리와 함께</button><button class="btn ghost" type="button" id="sOff">조용히</button></div>`;
+    $("#sOn").onclick=()=>{ SND.asked=true; setSound(true); i_enter(); };
+    $("#sOff").onclick=()=>{ SND.asked=true; setSound(false); i_enter(); };
+    return;
+  }
+  const L=["하루가 끝났습니다.","잘 안 된 일 하나가 자꾸 떠오릅니다.","머릿속에서 익숙한 목소리가 말을 겁니다.","그 목소리는 내 목소리와 똑같습니다."];
+  V().innerHTML=`<p class="eyebrow">방 9 · 입구</p><p class="quote">그 목소리는 사실을 말하는 걸까, 이름을 붙이는 걸까.</p>
+    <div class="narr">${L.map((l,i)=>`<span style="animation-delay:${.3+i*.8}s">${l}</span>`).join("")}</div>
+    <button class="btn" type="button" id="next">불을 켜고 들어간다</button>`;
+  say("그 목소리는 사실을 말하는 걸까, 이름을 붙이는 걸까. "+L.join(" "));
+  $("#next").onclick=()=>{ hush(); go("i_moment",2); };
+}
+function i_moment(){
+  const v=VV(), started=S.beat>=0, done=S.beat>=v.beat.length-1 && !i_moment.running;
+  hint(started?"그 장면에서 눈을 뗄 수가 없습니다.":"빛나는 휴대전화를 눌러 보세요.");
+  V().innerHTML=`<p class="eyebrow">그 밤</p>
+    <h2>${started?esc(v.intro):"책상 위 휴대전화가 빛납니다."}</h2>
+    ${started?screenHTML()+`<p class="tstat">${v.beat[Math.min(S.beat,v.beat.length-1)]}</p>`:`<button class="btn" type="button" id="peek">휴대전화 보기</button>`}
+    ${done?`<div class="whisper" style="border-color:var(--line);box-shadow:none;color:var(--ink)"><small>질문</small>이 일은 나에 대해 무엇을 말해 줄까요?</div>
+      <div class="chips" id="think">${THINK.map((t,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.think===i}">${t.t}</button>`).join("")}</div>
+      <button class="btn" type="button" id="next" ${S.think===null?"disabled":""}>다음</button>`:""}`;
+  if(!started){ $("#peek").onclick=runBeat; return; }
+  if(done){ $("#think").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.think=+b.dataset.i; keepY(i_moment); };
+    $("#next").onclick=()=>go("i_first",2); }
+}
+async function runBeat(){
+  if(i_moment.running) return; i_moment.running=true; const v=VV();
+  for(let i=0;i<v.beat.length;i++){ S.beat=i; if(S.view!=="i_moment") break; i_moment(); sync(); ticks(1); await wait(1100); }
+  i_moment.running=false; if(S.view==="i_moment"){ i_moment(); lowBuzz(); say(v.intro+" 이 일은 나에 대해 무엇을 말해 줄까요?"); }
+}
+function i_first(){
+  hint("가장 먼저 떠오른 생각을 고르세요.");
+  V().innerHTML=`<p class="eyebrow">그 밤 · 첫 생각</p><h2>나에게 처음 던진 말은?</h2>
+    <div class="stack" id="opts">${FIRST.map((o,i)=>`<button class="opt" type="button" aria-pressed="${S.first===i}" data-i="${i}"><span class="n">${i+1}</span>${o.t}</button>`).join("")}</div>
+    <p class="eyebrow">지금 내가 얼마나 못나 보이나요?</p>
+    ${nums("before",S.before).replace("0 · 아무렇지 않다","0 · 괜찮아 보인다").replace("10 · 아무것도 손에 안 잡힌다","10 · 꼴도 보기 싫다")}
+    <button class="btn" type="button" id="next" ${S.first===null||S.before===null?"disabled":""}>거울 쪽에서 목소리가 들린다</button>`;
+  $("#opts").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.first=+b.dataset.i; keepY(i_first); };
+  $("#before").onclick=e=>{ const b=e.target.closest("[data-n]"); if(!b) return; S.before=+b.dataset.n; keepY(i_first); };
+  $("#next").onclick=()=>{ go("i_stick",3); say(VV().critic[0]); };
+}
+function i_stick(){
+  const v=VV(), C=v.critic, n=stickers();
+  if(S.ci>=C.length){
+    hint(n?`거울 속 얼굴에 꼬리표 ${n}장이 붙어 있습니다.`:"거울 속 얼굴이 그대로 보입니다.");
+    V().innerHTML=`<p class="eyebrow">꼬리표</p>
+      <h2>${n===0?"꼬리표를 한 장도 붙여 두지 않았습니다.":`거울에 꼬리표 ${n}장이 붙었습니다.`}</h2>
+      <p class="lede">${n===0?"목소리가 내민 것을 받아 들고, 붙이지 않았습니다.":"꼬리표가 늘수록 거울 속 얼굴이 가려집니다. 꼬리표는 사람 대신 단어를 보게 만듭니다."}</p>
+      <p class="small">문에는 큰 꼬리표 한 장이 붙어 있습니다. “${esc(v.label)}.” 이 말이 맞는지, 방 안의 증거를 저울에 올려 볼 차례입니다.</p>
+      <button class="btn" type="button" id="next">방을 뒤진다</button>`;
+    $("#next").onclick=()=>go("i_search",4);
+    return;
+  }
+  hint("목소리가 꼬리표 한 장을 내밉니다.");
+  V().innerHTML=`<p class="eyebrow">꼬리표 · ${S.ci+1} / ${C.length}</p>
+    <div class="whisper"><small>내 목소리를 닮은 목소리</small>“${esc(C[S.ci])}”</div>
+    <p class="small">목소리가 꼬리표 한 장을 내밉니다. 어떻게 하겠습니까?</p>
+    <div class="stack">
+      <button class="opt" type="button" data-k="keep">받아서 거울에 붙인다</button>
+      <button class="opt" type="button" data-k="peel">받지 않고 내려놓는다</button>
+      <button class="opt" type="button" data-k="add">“맞아, 나는 원래 그래” 하고 한 장 더 붙인다</button>
+    </div>`;
+  V().querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{ const k=b.dataset.k; S.cs[S.ci]=k; S.ci++; k==="peel"?chime():lowBuzz(); i_stick(); sync(); window.scrollTo(0,0); const nx=C[S.ci]; if(nx) say(nx); });
+}
+function i_search(){
+  const v=VV(), E=v.ev, all=E.every(e=>S.found.includes(e.o));
+  if(S.opened){
+    hint("저울이 기울었습니다. 문의 꼬리표가 떨어집니다.");
+    V().innerHTML=`<p class="eyebrow">증거의 저울</p>
+      <h2>${S.tries?`${S.tries+1}번 만에 저울이 맞았습니다.`:"한 번에 저울이 맞았습니다."}</h2>
+      <p class="lede">꼬리표 쪽 접시에 2장, 반대쪽 접시에 4장. 실수는 실제로 있었습니다. 그리고 그것이 전부가 아니었습니다.</p>
+      <div class="stack">
+        <div class="mine" style="border-left-color:#e07a5a"><b>문에 붙어 있던 꼬리표</b><span style="text-decoration:line-through;opacity:.75">${esc(v.label)}.</span></div>
+        <div class="mine" style="border-left-color:var(--screen)"><b>여섯 장으로 다시 쓴 문장</b>${esc(v.fact)}.</div>
+      </div>
+      ${S.toF+S.toA?`<p class="small">저울을 맞추는 동안 ${S.toF?`내 편인 증거를 꼬리표 쪽에 올린 것이 ${S.toF}장`:""}${S.toF&&S.toA?", ":""}${S.toA?`실수를 반대쪽에 올린 것이 ${S.toA}장`:""} 있었습니다.</p>`:""}
+      <button class="btn" type="button" id="next">오늘 밤 나에게 할 말을 정한다</button>`;
+    $("#next").onclick=()=>go("i_act",5);
+    return;
+  }
+  const done6=E.every(e=>S.side[e.o]);
+  hint(all?"문에 새겨진 글: “한 단어가 아니라 증거 전부를 올려야 열린다.”":"방 안의 물건을 눌러 증거를 찾으세요.");
+  V().innerHTML=`<p class="eyebrow">증거의 저울 · ${all?`시도 ${S.tries+1}번째`:`찾은 증거 <span class="count">${S.found.length}</span> / ${E.length}`}</p>
+    <h2>${all?`“${esc(v.label)}.” 이 말을 저울에 답니다.`:"방을 뒤지세요."}</h2>
+    <p class="small">${all?"증거마다 어느 접시에 올릴지 고르세요. 이 꼬리표를 뒷받침하면 왼쪽, 꼬리표와 맞지 않으면 오른쪽입니다.":"위 그림의 물건을 누르거나, 아래 이름을 누르세요."}</p>
+    ${all?"":`<div class="chips" id="objs">${E.map(e=>`<button class="chip" type="button" data-o="${e.o}" aria-pressed="${S.found.includes(e.o)}">${ONAME[e.o]}</button>`).join("")}</div>`}
+    <div class="fb ${S.tries?"miss":""}">${S.lastFb||(all?"여섯 장을 모두 올리면 저울을 확인할 수 있습니다.":"물건마다 증거가 하나씩 있습니다.")}</div>
+    <div class="stack" id="evs">${E.map(e=>{ if(!S.found.includes(e.o)) return `<div class="mq" style="opacity:.5"><p>? 아직 찾지 못함</p></div>`;
+      const ok=S.tries>=3&&S.side[e.o]===e.s;
+      return `<div class="mq ${ok?"ok":""}"><p><b>${esc(e.c.split(" · ")[0])}</b><br>${esc(e.c.split(" · ")[1])}</p>
+        ${all?`<div class="choose"><button class="btn ghost sd" type="button" data-o="${e.o}" data-s="f" aria-pressed="${S.side[e.o]==="f"}">꼬리표 쪽</button><button class="btn ghost sd" type="button" data-o="${e.o}" data-s="a" aria-pressed="${S.side[e.o]==="a"}">반대쪽</button></div>`:""}</div>`; }).join("")}</div>
+    ${all?`<button class="btn" type="button" id="tryBtn" ${done6?"":"disabled"}>저울을 확인한다</button>`:""}`;
+  const ob=$("#objs"); if(ob) ob.onclick=e=>{ const b=e.target.closest("[data-o]"); if(b) find(b.dataset.o); };
+  if(all){
+    $("#evs").onclick=e=>{ const b=e.target.closest(".sd"); if(!b) return; S.side[b.dataset.o]=b.dataset.s; ticks(1); keepY(i_search); sync(); };
+    $("#tryBtn").onclick=()=>{ const bad=E.filter(e=>S.side[e.o]!==e.s);
+      if(!bad.length){ S.opened=true; chime(); setTimeout(chime,250); i_search(); sync(); window.scrollTo(0,0); return; }
+      S.tries++; S.toF+=bad.filter(e=>e.s==="a").length; S.toA+=bad.filter(e=>e.s==="f").length; lowBuzz();
+      S.lastFb=`덜컹. 여섯 장 중 <b>${bad.length}장</b>이 맞지 않는 접시에 있습니다.`+(S.tries>=3?" <br>제자리에 놓인 증거에 표시해 두었습니다.":"");
+      i_search(); window.scrollTo(0,0); const s=$("#stage"); s.classList.remove("shake"); void s.offsetWidth; s.classList.add("shake"); };
+  }
+}
+function find(o){
+  const E=VV().ev, e=E.find(x=>x.o===o); if(!e) return;
+  if(E.every(x=>S.found.includes(x.o))) return;
+  if(!S.found.includes(o)){ S.found.push(o); chime(); }
+  S.lastFb=esc(e.c);
+  if(E.every(x=>S.found.includes(x.o))) S.lastFb="증거 여섯 장을 모두 찾았습니다. 이제 저울에 올리세요.";
+  keepY(i_search); hint("증거를 찾았습니다.");
+}
+function i_act(){
+  const v=VV();
+  hint("문의 꼬리표가 떨어졌습니다. 나가기 전에 할 일이 하나 있습니다.");
+  V().innerHTML=`<p class="eyebrow">나에게 하는 말</p><h2>오늘 밤, 나에게 뭐라고 하겠습니까?</h2>
+    <div class="stack" id="opts">${v.acts.map((a,i)=>`<button class="opt" type="button" aria-pressed="${S.act===i}" data-i="${i}"><span class="n">${i+1}</span>${a.t}</button>`).join("")}</div>
+    <button class="btn" type="button" id="next" ${S.act===null?"disabled":""}>그리고 날이 밝는다</button>`;
+  $("#opts").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.act=+b.dataset.i; keepY(i_act); };
+  $("#next").onclick=()=>{ go("i_next",6); say("그 뒤. "+VV().acts[S.act].out.join(" ")); };
+}
+function i_next(){
+  const v=VV(), a=v.acts[S.act], diff=S.after===null?0:S.before-S.after;
+  hint("날이 밝았습니다.");
+  V().innerHTML=`<p class="eyebrow">다음 날</p><h2>그 뒤의 일입니다.</h2>
+    <div class="narr" style="font-size:17px">${a.out.map((l,i)=>`<span style="animation-delay:${.2+i*.9}s">${esc(l)}</span>`).join("")}</div>
+    <p class="eyebrow">지금, 내가 얼마나 못나 보이나요?</p>
+    ${nums("after",S.after).replace("0 · 아무렇지 않다","0 · 괜찮아 보인다").replace("10 · 아무것도 손에 안 잡힌다","10 · 꼴도 보기 싫다")}
+    ${S.after!==null?`<div class="vs"><div><span class="small">어젯밤</span><span class="big">${S.before}</span></div><div class="small">→</div><div><span class="small">지금</span><span class="big">${S.after}</span></div></div>
+      <p class="lede">${diff>=3?"있었던 일은 그대로인데, 나를 보는 숫자가 이만큼 달라졌습니다.":diff<=0?"증거를 달아 보고도 숫자가 그대로입니다. 그렇다면 그 목소리는 오늘 일보다 훨씬 오래된 것일 수 있습니다.":"숫자가 조금 달라졌습니다."}</p>
+      <div class="callout">${v.lesson}</div>
+      <button class="btn" type="button" id="next">문으로 걸어간다</button>`:""}`;
+  $("#after").onclick=e=>{ const b=e.target.closest("[data-n]"); if(!b) return; S.after=+b.dataset.n; keepY(i_next); };
+  const nx=$("#next"); if(nx) nx.onclick=()=>{ hush(); go("i_mine",7); };
+}
+function i_mine(){
+  hint("문고리를 잡는 순간, 문에 질문이 떠오릅니다.");
+  let h=`<p class="eyebrow">비평가의 속셈</p><h2>문고리를 잡는 순간, 질문 하나가 문에 떠오릅니다.</h2>
+    <div class="whisper" style="border-color:var(--line);box-shadow:none;color:var(--ink)"><small>문에 새겨진 질문</small>머릿속 그 목소리는, 당신을 어떻게 하려고 그러는 걸까요?</div>
+    <div class="chips" id="pp">${PURP.map((r,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.purp===i}">${r}</button>`).join("")}</div>`;
+  if(S.purp!==null) h+=`<p class="eyebrow">지금까지 그 방법은 어땠나요?</p>
+    <div class="chips" id="wk">${WORK.map((w,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.work===i}">${w}</button>`).join("")}</div>`;
+  if(S.work!==null) h+=`<div class="callout">${S.purp===2?"벌을 주려는 목소리로 들립니다. 벌은 한 일에 주는 것입니다. 사람 전체에 주는 벌은 고칠 것을 알려 주지 않습니다.":S.purp===3?"속셈을 알 수 없는 목소리입니다. 다음에 그 목소리가 들리면 “그래서 나더러 뭘 하라는 거야?” 하고 물어볼 수 있습니다.":`그 목소리는 당신을 “${PURP[S.purp]}” 그러는 것으로 들립니다. 바라는 것은 나쁘지 않습니다. 방법이 꼬리표였을 뿐입니다.`}<br>${S.work===0?"효과가 있었다면, 같은 내용을 꼬리표 없이 말해도 효과가 있는지 한 번 시험해 볼 만합니다.":"같은 바람을 다르게 말할 수 있습니다. “사실 한 줄, 다음 걸음 한 줄.”"}</div>
+    <button class="btn" type="button" id="next">문을 연다</button>`;
+  V().innerHTML=h;
+  $("#pp").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.purp=+b.dataset.i; keepY(i_mine); };
+  const wk=$("#wk"); if(wk) wk.onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.work=+b.dataset.i; keepY(i_mine); };
+  const nx=$("#next"); if(nx) nx.onclick=()=>{ const seen=store("maeum.critic.seen")||[]; if(!seen.includes(S.v)){ seen.push(S.v); store("maeum.critic.seen",seen); } save(); go("i_exit",8); door(); };
+}
+/* 임시 규칙: 전문가 검토 필요 */
+function score(){
+  let label=0, whip=0, disc=0;
+  const add=t=>{ label+=t.label||0; whip+=t.whip||0; disc+=t.disc||0; };
+  add(THINK[S.think]); add(FIRST[S.first]); add(RTAG[VV().acts[S.act].r]);
+  label+=Math.min(4,stickers()); disc+=Math.min(3,S.toF);
+  if(S.before>=7) label+=1; if(S.before>=9) whip+=1;
+  const cap=(v,m)=>Math.min(1,v/m);
+  return [["꼬리표",cap(label,14)],["다그치기",cap(whip,6)],["잘한 것 흘리기",cap(disc,6)]];
+}
+function type(){
+  const sc=score(), top=[...sc].sort((a,b)=>b[1]-a[1])[0];
+  if(top[1]<.34) return "garden";
+  if(stickers()<=1 && S.tries===0 && VV().acts[S.act].r==="kind" && top[1]<.8) return "coach";
+  return top[0]==="꼬리표"?"tag":top[0]==="다그치기"?"shout":"sieve";
+}
+function save(){
+  const log=store("maeum.critic.log")||[]; const v=VV();
+  log.push({at:new Date().toISOString(), story:v.k, think:THINK[S.think].t, first:FIRST[S.first].t, before:S.before, after:S.after, stickers:stickers(), tries:S.tries, goodToLabel:S.toF, slipToOther:S.toA,
+    act:v.acts[S.act].r, purp:PURP[S.purp], work:WORK[S.work], type:TYPES[type()].nm});
+  store("maeum.critic.log", log.slice(-20));
+}
+function i_exit(){
+  const T=TYPES[type()], sc=score(), v=VV(), n=stickers();
+  hint("문이 열렸습니다.");
+  if(!i_exit.spoken){ i_exit.spoken=true; setTimeout(()=>say(`당신의 카드는 ${T.nm}. ${T.one}.`),500); }
+  V().innerHTML=`<p class="eyebrow">탈출 · 방 9</p><h2>내면비평가의 방에서 나왔습니다.</h2>
+    <div class="tcard ${S.flip?"flip":""}" id="tc"><div class="in">
+      <div class="f"><span class="emo">${T.emo}</span><span class="small">내면비평가의 방에서 받은 카드</span><span class="nm">${T.nm}</span><span class="one">${T.one}</span><span>${T.s}</span><span class="small" style="margin-top:auto">눌러서 뒷면 보기</span></div>
+      <div class="b"><p class="eyebrow">카드 뒷면 · 오늘 이 방에서 보인 반응</p>
+        <div class="meter">${sc.map(([nm,x])=>`<div class="row"><span>${nm}</span><span class="bar"><i style="width:${Math.max(6,Math.round(x*100))}%"></i></span><span class="lv">${x>=.6?"자주":x>=.3?"가끔":"드묾"}</span></div>`).join("")}</div>
+        <p class="small">${T.w}</p>
+        <p class="small">이 카드는 당신을 정하는 유형이 아니라, 오늘 이 방에서 나타난 반응입니다.</p>
+        <span class="small" style="margin-top:auto">눌러서 앞면 보기</span></div>
+    </div></div>
+    <div class="vs"><div><span class="small">어젯밤 못나 보인 정도</span><span class="big">${S.before}</span></div><div class="small">→</div><div><span class="small">다음 날</span><span class="big">${S.after}</span></div></div>
+    <p class="eyebrow">오늘 내 생각 고리</p>
+    <ol class="chain">
+      <li><span>사건</span>${esc(v.event)}</li>
+      <li><span>내 생각</span>“${esc(FIRST[S.first].t)}”</li>
+      <li><span>꼬리표</span>${n?`거울에 ${n}장을 붙임`:"한 장도 붙이지 않음"}</li>
+      <li><span>나에게 한 말</span>${esc(v.acts[S.act].t)}</li>
+    </ol>
+    <div class="stack">
+      <div class="mine" style="border-left-color:#e07a5a"><b>꼬리표</b>${esc(v.label)}.</div>
+      <div class="mine" style="border-left-color:var(--screen)"><b>증거로 다시 쓴 문장</b>${esc(v.fact)}.</div>
+    </div>
+    <div class="habit">
+      <p class="eyebrow">생각 습관 카드 · 12장 중 한 장 획득</p>
+      <p class="habit-name">꼬리표 (한 단어로 부르기)</p>
+      <p>한 번의 행동이나 결과를 가지고 사람 전체에 이름을 붙이는 습관입니다. “말이 막혔다”가 “나는 무능하다”로, “짜증을 냈다”가 “나는 못된 사람이다”로 바뀔 때 나타납니다.</p>
+      <p class="small">오늘의 열쇠: 꼬리표가 들리면 “무슨 일이 있었지?”로 바꿔 묻기. 그리고 사실 한 줄, 다음 걸음 한 줄.</p>
+    </div>
+    <button class="btn" type="button" id="share">카드 문구 복사해서 공유하기</button>
+    <p class="copyok" id="copyok"></p>
+    <button class="btn ghost" type="button" id="again">다른 이야기로 다시 들어가기</button>
+    <button class="btn ghost" type="button" id="map">처음 화면으로</button>
+    <p class="small">기록은 이 기기에만 저장됩니다. 처음 화면 아래에서 언제든 지울 수 있습니다.</p>`;
+  $("#tc").onclick=()=>{ S.flip=!S.flip; $("#tc").classList.toggle("flip",S.flip); };
+  $("#map").onclick=goHome; $("#again").onclick=start;
+  $("#share").onclick=async()=>{
+    const url=/^https?:/.test(location.href)&&!/claude/.test(location.hostname)?`\n${location.href.split("#")[0]}`:"";
+    const text=`[마음의 방탈출 · 내면비평가의 방]\n내 카드: ${T.emo} ${T.nm}\n“${T.one}”\n못나 보인 정도 ${S.before} → ${S.after}\n너는 무슨 카드가 나올까?${url}`;
+    try{ await navigator.clipboard.writeText(text); $("#copyok").textContent="복사했습니다. 카톡에 붙여 넣으세요."; }
+    catch(e){ $("#copyok").textContent="이 화면에서는 복사가 막혀 있습니다. 카드를 캡처해 주세요."; }
+  };
+}
+function touch(obj){
+  if(S.view==="i_enter"){ hint("먼저 불을 켜야 합니다."); return; }
+  if(S.view==="i_moment" && obj==="phone" && S.beat<0){ runBeat(); return; }
+  if(S.view==="i_search" && !S.opened && obj!=="door" && obj!=="mirror"){ find(obj); return; }
+  if(obj==="door"){ hint(S.view==="i_exit"?"문이 열려 있습니다.":`문에 큰 꼬리표가 붙어 있습니다. “${VV().label}.”`); return; }
+  hint(({mirror:stickers()&&!S.opened?"거울 속 얼굴이 꼬리표에 가려져 있습니다.":"거울에 내가 비칩니다.",window:"창가에 메모지 한 장이 붙어 있습니다.",calendar:"달력에 글씨가 적혀 있습니다.",frame:"책상 위에 종이가 놓여 있습니다.",drawer:"서랍이 살짝 열려 있습니다.",trash:"구겨진 메모가 있습니다.",phone:"휴대전화 화면이 켜져 있습니다."})[obj]||"");
+}
+return {no:9, name:"내면비평가의 방", steps:STEPS, scene:SCENE, start, sync, touch, type, VAR, THINK, FIRST,
+  views:{i_enter, i_moment, i_first, i_stick, i_search, i_act, i_next, i_mine, i_exit}};
 })();
 
 SCENE2=$("#room3d").innerHTML;
