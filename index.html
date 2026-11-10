@@ -374,6 +374,28 @@ div.wheel i{display:none}
 #stage[data-view="m_mirror"] .room3d{--cx:-74px;--cy:-30px;--cz:140px;--by:-4deg}
 #stage[data-view="m_exit"] .room3d{--cx:-52px;--cy:-20px;--cz:100px;--by:-3deg}
 @media (prefers-reduced-motion:reduce){#clk3.rew{animation:none}}
+
+/* ===== 방 4 · 비교의 거울방 ===== */
+.post{display:flex;flex-direction:column;gap:8px;padding-bottom:4px}
+.post .pn{font-size:14px;font-weight:600;padding:4px 0 2px}
+.post .pi{height:170px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:72px;box-shadow:inset 0 -60px 60px -40px rgba(0,0,0,.45)}
+.post .pc{font-size:15px;line-height:1.5}
+.post .pl{font-size:12.5px;color:#f08a8a;font-weight:600}
+.mq{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:14px;border:1px solid var(--line);background:var(--panel)}
+.mq p{margin:0 0 2px;font-size:14.5px;line-height:1.55}
+.mq.ok{border-color:var(--screen)}
+#refl4{transform-box:fill-box;transform-origin:50% 100%;transition:transform 1s cubic-bezier(.3,1.3,.5,1)}
+#stage[data-room="4"] .face.back{background:linear-gradient(180deg,#235a5c,#173f44);box-shadow:inset 0 -5px 0 #0c2428}
+#stage[data-room="4"] .face.left{background:linear-gradient(270deg,#1e4d50,#0e2a2e)}
+#stage[data-room="4"] .face.right{background:linear-gradient(90deg,#1e4d50,#0e2a2e)}
+#stage[data-room="4"] .face.ceil{background:linear-gradient(0deg,#0b2024,#143338)}
+#stage[data-room="4"] .face.floor{background:repeating-linear-gradient(90deg,rgba(0,0,0,.22) 0 1px,transparent 1px 45px),linear-gradient(0deg,#4d4a40,#2c2e2c)}
+#stage[data-view="c_enter"] .room3d{--cz:40px}
+#stage[data-view="c_feed"] .room3d,#stage[data-view="c_first"] .room3d,#stage[data-view="c_act"] .room3d,#stage[data-view="c_next"] .room3d{--cx:46px;--cy:-8px;--cz:140px;--by:6deg}
+#stage[data-view="c_more"] .room3d{--cx:104px;--cy:-14px;--cz:150px;--by:14deg}
+#stage[data-view="c_search"] .room3d{--bx:3deg}
+#stage[data-view="c_mine"] .room3d{--cx:-74px;--cy:-30px;--cz:140px;--by:-4deg}
+#stage[data-view="c_exit"] .room3d{--cx:-52px;--cy:-20px;--cz:100px;--by:-3deg}
 </style>
 </head>
 <body>
@@ -737,11 +759,12 @@ function render(){
 /* ---------- 본관 ---------- */
 function home(){
   hint("마우스나 손가락을 움직이면 방을 둘러볼 수 있습니다.");
-  const l2=store("maeum.silence.log")||[], l3=store("maeum.mistake.log")||[];
-  const got=[...new Set([...l2,...l3].map(l=>l.type))];
+  const l2=store("maeum.silence.log")||[], l3=store("maeum.mistake.log")||[], l4=store("maeum.compare.log")||[];
+  const got=[...new Set([...l2,...l3,...l4].map(l=>l.type))];
   const open=[
     {i:1, no:2, nm:"침묵의 방", hook:"읽음 표시는 떴는데 답이 없습니다. 방 구석에서 누군가 속삭입니다.", n:VARIANTS.length, done:l2.length, habit:"독심술"},
-    {i:3, no:3, nm:"실수의 방", hook:"보내기를 누르고 1초 뒤에 알았습니다. 벽시계가 그 순간으로 자꾸 되감깁니다.", n:ROOMDEF[3].VAR3.length, done:l3.length, habit:"돋보기"}
+    {i:3, no:3, nm:"실수의 방", hook:"보내기를 누르고 1초 뒤에 알았습니다. 벽시계가 그 순간으로 자꾸 되감깁니다.", n:ROOMDEF[3].VAR3.length, done:l3.length, habit:"돋보기"},
+    {i:4, no:4, nm:"비교의 거울방", hook:"자기 전에 친구들의 사진을 넘깁니다. 한 장 넘길 때마다 거울 속 내가 작아집니다.", n:ROOMDEF[4].VAR.length, done:l4.length, habit:"색안경"}
   ];
   V().innerHTML = `
     <h1>마음의 방탈출</h1>
@@ -752,13 +775,13 @@ function home(){
       <span class="ds">${r.done?`탈출함 · 다시 들어가기`:`들어가기`} · 이야기 ${r.n}가지</span></button>`).join("")}</div>
     ${got.length?`<p class="small">모은 카드: ${got.join(", ")}</p>`:""}
     <details class="fold">
-      <summary>본관 지도 · 열 개의 방 중 두 곳이 열려 있습니다</summary>
+      <summary>본관 지도 · 열 개의 방 중 세 곳이 열려 있습니다</summary>
       <div class="map">${ROOMS.map((r,i)=>{ const o=open.find(x=>x.no===i+1);
         return `<button class="room ${o?"open":""}" type="button" ${o?`data-r="${o.i}"`:"disabled"}><span class="no">방 ${i+1}</span><span class="nm">${r}</span><span class="st">${o?"입장 가능":"준비 중"}</span></button>`;}).join("")}</div>
     </details>
-    ${l2.length+l3.length?`<button class="btn ghost" type="button" id="del">내 기록 지우기</button>`:""}`;
+    ${l2.length+l3.length+l4.length?`<button class="btn ghost" type="button" id="del">내 기록 지우기</button>`:""}`;
   V().querySelectorAll("[data-r]").forEach(b => b.onclick = () => ROOMDEF[+b.dataset.r].start());
-  const d=$("#del"); if(d){ let armed=false; d.onclick=()=>{ if(!armed){ armed=true; d.textContent="한 번 더 누르면 이 기기의 기록이 모두 지워집니다"; return; } try{ ["maeum.silence.log","maeum.silence.seen","maeum.mistake.log","maeum.mistake.seen"].forEach(k=>localStorage.removeItem(k)); }catch(e){} home(); }; }
+  const d=$("#del"); if(d){ let armed=false; d.onclick=()=>{ if(!armed){ armed=true; d.textContent="한 번 더 누르면 이 기기의 기록이 모두 지워집니다"; return; } try{ ["maeum.silence.log","maeum.silence.seen","maeum.mistake.log","maeum.mistake.seen","maeum.compare.log","maeum.compare.seen"].forEach(k=>localStorage.removeItem(k)); }catch(e){} home(); }; }
 }
 
 /* ---------- 1. 입구 ---------- */
@@ -1612,6 +1635,392 @@ function touch3(obj){
 }
 return {no:3, name:"실수의 방", steps:STEPS, scene:SCENE3, start, sync, touch:touch3, score3, type3, VAR3, THINK, FIRST3, FRIEND,
   views:{m_enter, m_moment, m_first, m_clock, m_search, m_act, m_next, m_mirror, m_exit}};
+})();
+
+/* ================= 방 4 · 비교의 거울방 ================= */
+ROOMDEF[4] = (function(){
+const STEPS = ["입구","넘기기","거울","잘린 사진","내 하루","다음 날","내 사진첩","탈출"];
+const THINK = [
+  {t:"매일 이렇게 산다", filt:2},
+  {t:"오늘만 특별했다"},
+  {t:"보이는 게 전부는 아니다"},
+  {t:"나만 빼고 다 잘 산다", filt:1, rank:1},
+  {t:"부럽지만 그건 그 사람 일이다"},
+  {t:"저 정도는 돼야 정상이다", rank:2}
+];
+const FIRST = [
+  {t:"나는 그동안 뭐 했나", g:"지우기", eras:2},
+  {t:"나만 뒤처졌다", g:"줄 세우기", rank:2},
+  {t:"난 원래 안 되는 사람이다", g:"지우기", eras:2},
+  {t:"부럽다. 그뿐이다", g:"유보"},
+  {t:"이 나이엔 저 정도는 해야 하는데", g:"줄 세우기", rank:2},
+  {t:"나도 내 속도가 있다", g:"유보"},
+  {t:"저건 운이 좋았을 뿐이다", g:"걸러 보기", filt:1},
+  {t:"보고 있으면 기분만 나빠진다", g:"걸러 보기", filt:1}
+];
+const GOOD = [{t:"있었다"},{t:"잘 모르겠다", eras:1},{t:"없었다", eras:2}];
+const ACTS = [
+  {t:"좋아요를 누르고 축하 댓글을 단다", r:"congr", out:["“축하해, 고생 많았지” 한 줄을 남겼다.","누른 순간에는 조금 쓰렸지만, 화면을 끄고 나니 금방 잊혔다."]},
+  {t:"아무것도 누르지 않고 앱을 끈다", r:"off", out:["아무것도 누르지 않고 앱을 껐다.","한동안 그 사진들이 눈앞에 남아 있다가, 저녁을 먹을 즈음 흐려졌다."]},
+  {t:"나도 그럴듯한 사진을 골라 올린다", r:"post", rank:2, out:["사진첩을 한참 뒤져 가장 잘 나온 한 장을 올렸다.","좋아요가 몇 개 달렸는지 밤새 여러 번 확인했다. 누군가는 그 사진을 넘기며 작아졌을지 모른다."]},
+  {t:"그 친구의 소식을 숨김으로 돌린다", r:"hide", filt:1, out:["그 친구의 소식을 숨겼다.","화면은 조용해졌다. 하지만 다른 사람의 사진이 그 자리를 채웠다."]},
+  {t:"잠들 때까지 계속 넘겨 본다", r:"more", filt:2, out:["새벽 두 시까지 넘겨 봤다.","본 사진은 쉰 장쯤. 기억나는 내 하루는 한 장도 없다."]}
+];
+const ALBUM = ["있다","있을지도 모르겠다","없다"];
+const BEHIND = ["사진 그대로 좋은 날이었다","사진만 좋았다","힘든 날이었는데 사진 속에선 웃고 있다"];
+const VAR = [
+  {k:"성취", who:"지수", time:"밤 11:20",
+   posts:[{n:"지수", e:"🎉", bg:"#7a5a2a", c:"드디어 팀장이 됐습니다! 응원해 준 분들 감사해요", like:214},
+          {n:"민재", e:"🚗", bg:"#2f5a7a", c:"새 차 뽑았습니다. 첫 드라이브", like:156},
+          {n:"하은", e:"🏅", bg:"#5a7a3a", c:"첫 마라톤 완주! 해냈다", like:302}],
+   extra:[{n:"동기 석진", e:"🏆", bg:"#6a4a7a", c:"올해의 사원상 받았습니다", like:188},{n:"후배 유나", e:"✈️", bg:"#3a6a7a", c:"퇴사하고 세계 일주 시작", like:420},{n:"선배 도현", e:"🏠", bg:"#7a4a3a", c:"드디어 내 집 마련", like:267}],
+   scraps:{calendar:"지수의 달력 · 석 달째 주말마다 ‘출근’이라고 적혀 있다.", drawer:"민재의 메모 · 10년 탄 차가 고속도로에서 멈춰 섰다. 견인비 영수증.", frame:"하은의 운동 일지 · 작년 대회는 15km에서 포기했다. “다시는 안 뛴다”고 적혀 있다.",
+     plant:"내 화분 · 오늘 아침에 물을 줬다. 새잎이 하나 났다.", trash:"내가 버린 메모지 · 오늘 끝낸 일 세 가지에 줄이 그어져 있다."},
+   q:[{o:[{t:"걱정 하나 없이 탄탄대로다", k:"i"},{t:"석 달째 주말마다 출근했다", k:"f"},{t:"윗사람에게 잘 보였을 뿐이다", k:"d"}]},
+      {o:[{t:"10년 탄 차가 길에서 멈춰 섰다", k:"f"},{t:"돈 걱정이라곤 없는 사람이다", k:"i"},{t:"허세 부리려고 무리했을 것이다", k:"d"}]},
+      {o:[{t:"원래 운동 신경이 타고났다", k:"i"},{t:"한가하니까 달리기나 하는 거다", k:"d"},{t:"작년 대회는 중간에 포기했다", k:"f"}]}],
+   msg:["어제 축하 고마워!","근데 사실 요즘 잠을 잘 못 자. 팀장 되니까 좀 무섭다 ㅠ","너는 요즘 어떻게 지내? 얼굴 본 지 오래됐다"],
+   lesson:"지수의 승진은 진짜였고, 석 달의 주말 출근과 잠 못 드는 밤도 진짜였습니다. 사진은 거짓말을 하지 않았습니다. 다만 한 장면만 보여 줬습니다."},
+  {k:"생활", who:"현우", time:"밤 10:45",
+   posts:[{n:"현우", e:"🌊", bg:"#2a6a7a", c:"제주 한 달 살기 시작. 매일이 바다", like:331},
+          {n:"수아", e:"💍", bg:"#7a3a5a", c:"우리 결혼합니다", like:512},
+          {n:"태민", e:"🏡", bg:"#5a6a3a", c:"새집 집들이 했어요", like:178}],
+   extra:[{n:"동창 예린", e:"👶", bg:"#7a5a4a", c:"우리 아기 백일", like:290},{n:"사촌 준영", e:"🎓", bg:"#3a4a7a", c:"박사 학위 받았습니다", like:143},{n:"옛 동료 소희", e:"🍷", bg:"#6a3a3a", c:"파리에서 보내는 생일", like:356}],
+   scraps:{calendar:"현우의 달력 · 한 달 전 칸에 ‘마지막 출근’이라고 적혀 있다.", drawer:"수아의 청첩장 초안 · 날짜가 두 번 지워지고 다시 적혀 있다.", frame:"태민의 이삿짐 메모 · “계약 만료. 2주 안에 집을 비워야 함.”",
+     plant:"내 화분 · 오늘 아침에 물을 줬다. 새잎이 하나 났다.", trash:"내가 버린 메모지 · 오늘 끝낸 일 세 가지에 줄이 그어져 있다."},
+   q:[{o:[{t:"한 달 전에 일을 그만두게 됐다", k:"f"},{t:"돈도 시간도 넘치는 사람이다", k:"i"},{t:"일하기 싫어 도망간 것이다", k:"d"}]},
+      {o:[{t:"모든 게 순조로운 완벽한 한 쌍이다", k:"i"},{t:"결혼 날짜를 두 번 미뤘다", k:"f"},{t:"보여 주려고 서두르는 것이다", k:"d"}]},
+      {o:[{t:"부모님이 다 해 줬을 것이다", k:"d"},{t:"이제 평생 걱정 없이 산다", k:"i"},{t:"계약이 끝나 급히 집을 옮겼다", k:"f"}]}],
+   msg:["오 오랜만이야!","응, 요즘 정말 좋아. 쉬니까 이제야 살 것 같다","너도 시간 되면 내려와. 바다 보여 줄게"],
+   lesson:"현우는 일을 잃었고, 그리고 지금 정말 잘 지내고 있습니다. 둘 다 사실입니다. 그 사람이 잘 지내는 것과 내가 못난 것은 서로 다른 문장입니다."}
+];
+const TYPES = {
+  true_:{emo:"🪞", nm:"제크기형", one:"남의 사진 앞에서도 내 크기를 잃지 않는 사람", s:"부러움을 느끼되, 그것으로 나를 재지 않습니다.", w:"부럽다는 마음까지 너무 빨리 접어 두지는 않았는지 살펴보세요. 부러움은 내가 원하는 것을 알려 줍니다."},
+  clap:{emo:"👏", nm:"박수형", one:"부러움을 축하로 흘려보낼 줄 아는 사람", s:"오래 넘기지 않고, 상상 대신 찾은 조각으로 문을 열었습니다.", w:"박수 뒤에 남는 쓰린 마음도 잠깐은 그대로 둬도 괜찮습니다."},
+  filt:{emo:"🕶️", nm:"색안경형", one:"남의 가장 빛나는 장면만 골라 보는 사람", s:"좋은 것을 알아보는 눈이 밝습니다.", w:"그 눈으로 내 하루의 괜찮은 장면도 한 번 골라 보세요."},
+  rank:{emo:"📏", nm:"줄자형", one:"사람들을 한 줄로 세워 내 자리를 재는 사람", s:"더 나아지고 싶은 마음이 큽니다.", w:"줄은 하나가 아닙니다. 사람마다 다른 줄에 서 있습니다."},
+  eras:{emo:"🧽", nm:"지우개형", one:"남을 볼 때 내가 가진 것을 지워 버리는 사람", s:"겸손하고, 스스로에게 엄격합니다.", w:"지운 것을 다시 적어 보세요. 오늘 한 일 세 가지면 충분합니다."}
+};
+const SCENE = `
+  <div class="face back">
+    <div class="lampglow" style="left:150px"></div>
+    <svg class="o3" style="left:112px;top:26px;width:62px;height:70px" viewBox="0 0 62 70">
+      <g class="hot" data-obj="calendar" role="button" tabindex="0" aria-label="달력">
+        <rect x="3" y="3" width="56" height="64" rx="2" fill="#efe3c0"/><rect x="3" y="3" width="56" height="14" fill="#2f7a70"/>
+        <g fill="#b9ad8a"><rect x="9" y="24" width="8" height="6"/><rect x="21" y="24" width="8" height="6"/><rect x="33" y="24" width="8" height="6"/><rect x="45" y="24" width="8" height="6"/><rect x="9" y="35" width="8" height="6"/><rect x="21" y="35" width="8" height="6"/><rect x="33" y="35" width="8" height="6"/><rect x="45" y="35" width="8" height="6"/><rect x="9" y="46" width="8" height="6"/><rect x="21" y="46" width="8" height="6"/></g>
+        <rect class="hl" x="1" y="1" width="60" height="68" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+    <svg class="o3" style="left:188px;top:30px;width:60px;height:50px" viewBox="0 0 60 50">
+      <g class="hot" data-obj="frame" role="button" tabindex="0" aria-label="액자">
+        <rect x="3" y="3" width="54" height="44" fill="#2a2418" stroke="#9a7b45" stroke-width="3"/>
+        <rect x="8" y="8" width="26" height="34" fill="#6a8fa8"/><circle cx="21" cy="20" r="6" fill="#f0d9b0"/><path d="M10,42 C12,30 30,30 32,42 Z" fill="#d98a5a"/>
+        <path d="M34,8 l4,5 l-4,5 l4,5 l-4,5 l4,5 l-4,5 l0,4" fill="none" stroke="#efe3c0" stroke-width="1.5"/>
+        <rect class="hl" x="1" y="1" width="58" height="48" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+    <svg class="o3" style="left:258px;top:92px;width:92px;height:148px" viewBox="255 67 84 136">
+      <defs><radialGradient id="exitGlow" cx="50%" cy="60%" r="70%"><stop offset="0" stop-color="#fff2c4"/><stop offset="1" stop-color="#f2d27c" stop-opacity=".2"/></radialGradient></defs>
+      <g class="hot" data-obj="door" role="button" tabindex="0" aria-label="출구 문">
+        <rect x="258" y="70" width="78" height="133" fill="#3a2414"/>
+        <rect id="doorLight" x="261" y="73" width="72" height="130" fill="url(#exitGlow)"/>
+        <g id="doorPanel">
+          <rect x="261" y="73" width="72" height="130" fill="#6b4126" stroke="#8c5a35" stroke-width="1.5"/>
+          <rect x="269" y="140" width="56" height="52" fill="none" stroke="#83532f" stroke-width="1.5"/>
+          <circle cx="322" cy="138" r="4" fill="#f2d27c"/>
+          <g id="locks"><rect x="270" y="86" width="15" height="19" fill="#2a1a0e" stroke="#a37a45" stroke-width="1.5"/><rect x="290" y="86" width="15" height="19" fill="#2a1a0e" stroke="#a37a45" stroke-width="1.5"/><rect x="310" y="86" width="15" height="19" fill="#2a1a0e" stroke="#a37a45" stroke-width="1.5"/></g>
+        </g>
+        <rect class="hl" x="256" y="68" width="82" height="134" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+  </div>
+  <div class="face left"></div><div class="face right"></div><div class="face ceil"></div>
+  <div class="face floor"><div class="doorspill"></div></div>
+  <svg class="o3" style="left:14px;top:84px;width:76px;height:156px;transform:translateZ(-165px) rotateY(18deg)" viewBox="0 0 76 156">
+    <g class="hot" data-obj="mirror" role="button" tabindex="0" aria-label="거울">
+      <rect x="5" y="4" width="66" height="136" rx="33" fill="#8a6a3a"/><rect x="10" y="9" width="56" height="126" rx="28" fill="#a9c4cf"/>
+      <g id="refl4"><circle cx="38" cy="62" r="13" fill="#f0d9b0"/><path d="M14,128 C16,84 60,84 62,128 Z" fill="#4f6f8f"/></g>
+      <rect x="20" y="138" width="36" height="8" rx="2" fill="#6e4625"/><rect x="10" y="146" width="56" height="7" rx="2" fill="#6e4625"/>
+      <rect class="hl" x="2" y="1" width="72" height="154" rx="34" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>
+  <div class="desk-top" style="left:104px;width:150px"><div class="pool" style="left:40px"></div></div>
+  <div class="desk-front" style="left:104px;width:150px">
+    <svg class="o3" style="left:12px;top:10px;width:106px;height:38px" viewBox="47 149 106 38">
+      <g class="hot" data-obj="drawer" role="button" tabindex="0" aria-label="서랍">
+        <rect x="50" y="152" width="100" height="32" rx="3" fill="#9c6a3a" stroke="#c99a5e" stroke-width="1.5"/>
+        <rect x="90" y="166" width="20" height="4" rx="2" fill="#f1e2c2"/>
+        <rect class="hl" x="47" y="149" width="106" height="38" rx="4" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>
+  </div>
+  <svg class="o3" style="left:196px;top:82px;width:46px;height:68px;transform:translateZ(-160px)" viewBox="44 80 42 62">
+    <polygon points="48,104 82,104 74,84 56,84" fill="#f0cd5e"/><rect x="63" y="104" width="4" height="34" fill="#c9a24a"/><rect x="55" y="136" width="20" height="4" rx="1" fill="#c9a24a"/></svg>
+  <svg class="o3 o-phone" style="left:128px;top:96px;width:42px;height:56px;transform:translateZ(-128px)" viewBox="106 98 36 48">
+    <g class="hot phone-g glow" id="phoneG" data-obj="phone" role="button" tabindex="0" aria-label="휴대전화">
+      <rect class="body" x="112" y="104" width="24" height="36" rx="4" fill="#7fbfa7" stroke="#22302b" stroke-width="2"/>
+      <rect x="116" y="110" width="16" height="22" rx="1" fill="#a9e4cc"/>
+      <rect x="118" y="113" width="12" height="10" fill="#d98a5a"/><path d="M119,127 l1.5,-1.5 l1.5,1.5 l-1.5,1.5 z" fill="#b0412f"/><rect x="123" y="126" width="7" height="2" fill="#22302b"/>
+      <circle id="phoneDot" class="pulse" cx="134" cy="106" r="3" fill="#f2d27c"/>
+      <rect class="hl" x="108" y="100" width="32" height="44" rx="5" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>
+  <svg class="o3" style="left:262px;top:190px;width:34px;height:50px;transform:translateZ(-150px)" viewBox="0 0 34 50">
+    <g class="hot" data-obj="plant" role="button" tabindex="0" aria-label="화분">
+      <rect x="8" y="30" width="18" height="18" rx="2" fill="#a0603a"/><circle cx="12" cy="22" r="8" fill="#4f7a52"/><circle cx="22" cy="20" r="8" fill="#5d8a5c"/><circle cx="17" cy="11" r="7" fill="#7ab070"/>
+      <rect class="hl" x="1" y="1" width="32" height="48" rx="4" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>
+  <svg class="o3" style="left:200px;top:190px;width:44px;height:50px;transform:translateZ(-56px)" viewBox="172 162 36 42">
+    <g class="hot" data-obj="trash" role="button" tabindex="0" aria-label="쓰레기통">
+      <polygon points="176,174 204,174 200,202 180,202" fill="#3f5a5a" stroke="#6b8a8a" stroke-width="1.5"/>
+      <circle cx="186" cy="172" r="5" fill="#efe6cf"/><circle cx="195" cy="173" r="4" fill="#e3d6b6"/>
+      <rect class="hl" x="173" y="163" width="34" height="40" rx="3" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+    </g></svg>`;
+const OBJS = [["calendar","달력"],["drawer","서랍"],["frame","액자"],["plant","화분"],["trash","쓰레기통"]];
+const SRC = ["calendar","drawer","frame"];
+
+function fresh4(){ return {room:4, view:"c_enter", step:1, v:0, fi:-1, think:null, first:null, before:null, more:0, moreDone:false,
+  found:[], pk:[null,null,null], tries:0, wi:0, wd:0, opened:false, lastFb:"", good:null, act:null, after:null, album:null, behind:null, flip:false}; }
+const VV = () => VAR[S.v];
+function pick(){ const seen=store("maeum.compare.seen")||[]; let pool=VAR.map((_,i)=>i).filter(i=>!seen.includes(i));
+  if(!pool.length){ pool=VAR.map((_,i)=>i).filter(i=>i!==seen[seen.length-1]); store("maeum.compare.seen",[]); }
+  S.v=pool[Math.floor(Math.random()*pool.length)]; }
+function start(){ S=fresh4(); c_exit.spoken=false; pick(); mount(4); go("c_enter",1); }
+
+function sync(){
+  const st=$("#stage"), v=S.view, morning=["c_next","c_mine","c_exit"].includes(v);
+  st.classList.toggle("lightsoff", v==="c_enter");
+  st.classList.toggle("dooropen", v==="c_exit");
+  st.classList.toggle("morning", morning);
+  st.dataset.view=v;
+  [...$("#locks").children].forEach((c,i)=>c.setAttribute("fill", S.opened||(S.tries>=3&&S.pk[i]!==null&&VV().q[i].o[S.pk[i]].k==="f") ? "#f2d27c" : "#2a1a0e"));
+  $("#phoneDot").style.display = (v==="c_feed"&&S.fi<0) ? "" : "none";
+  const sc = S.opened ? 1 : Math.max(.38, 1-.1*(Math.max(0,S.fi+1)+S.more));
+  $("#refl4").style.transform=`scale(${sc})`;
+}
+const postHTML = p => `<div class="post"><div class="pn">${esc(p.n)}</div><div class="pi" style="background:${p.bg}">${p.e}</div><div class="pc">${esc(p.c)}</div><div class="pl">♥ 좋아요 ${p.like}개</div></div>`;
+const frameHTML = (inner,t) => `<div class="chat" data-t="${t||VV().time}">${inner}</div>`;
+
+function c_enter(){
+  hint("방이 어둡습니다. 거울이 희미하게 빛납니다.");
+  if(!SND.asked){
+    V().innerHTML=`<p class="eyebrow">방 4 · 입구</p><p class="quote">비교는 사실일까, 편집일까.</p>
+      <p class="lede">이 방에는 소리와 나레이션이 있습니다.</p>
+      <div class="choose"><button class="btn" type="button" id="sOn">소리와 함께</button><button class="btn ghost" type="button" id="sOff">조용히</button></div>`;
+    $("#sOn").onclick=()=>{ SND.asked=true; setSound(true); c_enter(); };
+    $("#sOff").onclick=()=>{ SND.asked=true; setSound(false); c_enter(); };
+    return;
+  }
+  const L=["자기 전, 휴대폰을 엽니다.","친구들의 사진이 올라와 있습니다.","한 장 넘길 때마다,","거울 속 내가 조금씩 작아집니다."];
+  V().innerHTML=`<p class="eyebrow">방 4 · 입구</p><p class="quote">비교는 사실일까, 편집일까.</p>
+    <div class="narr">${L.map((l,i)=>`<span style="animation-delay:${.3+i*.8}s">${l}</span>`).join("")}</div>
+    <button class="btn" type="button" id="next">불을 켜고 들어간다</button>`;
+  say("비교는 사실일까, 편집일까. "+L.join(" "));
+  $("#next").onclick=()=>{ hush(); go("c_feed",2); };
+}
+function c_feed(){
+  const v=VV(), started=S.fi>=0, last=S.fi>=v.posts.length-1;
+  hint(started?"거울 속 내가 조금 작아졌습니다.":"빛나는 휴대전화를 눌러 보세요.");
+  V().innerHTML=`<p class="eyebrow">넘기기${started?` · ${S.fi+1} / ${v.posts.length}`:""}</p>
+    <h2>${started?"친구들의 소식이 올라와 있습니다.":"책상 위 휴대전화가 빛납니다."}</h2>
+    ${started?frameHTML(postHTML(v.posts[S.fi])):`<button class="btn" type="button" id="peek">휴대전화 보기</button>`}
+    ${started&&!last?`<button class="btn ghost" type="button" id="swipe">다음 사진으로 넘긴다</button>`:""}
+    ${last?`<div class="whisper" style="border-color:var(--line);box-shadow:none;color:var(--ink)"><small>질문</small>이 사람들의 하루하루는 어떨까요?</div>
+      <div class="chips" id="think">${THINK.map((t,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.think===i}">${t.t}</button>`).join("")}</div>
+      <button class="btn" type="button" id="next" ${S.think===null?"disabled":""}>다음</button>`:""}`;
+  const adv=()=>{ S.fi++; ticks(1); c_feed(); sync(); window.scrollTo(0,0); if(S.fi>=v.posts.length-1) say("이 사람들의 하루하루는 어떨까요?"); };
+  if(!started){ $("#peek").onclick=adv; return; }
+  const sw=$("#swipe"); if(sw) sw.onclick=adv;
+  if(last){ $("#think").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.think=+b.dataset.i; keepY(c_feed); };
+    $("#next").onclick=()=>go("c_first",2); }
+}
+function c_first(){
+  hint("가장 먼저 떠오른 생각을 고르세요.");
+  V().innerHTML=`<p class="eyebrow">넘기기 · 첫 생각</p><h2>화면을 보다가 처음 스친 말은?</h2>
+    <div class="stack" id="opts">${FIRST.map((o,i)=>`<button class="opt" type="button" aria-pressed="${S.first===i}" data-i="${i}"><span class="n">${i+1}</span>${o.t}</button>`).join("")}</div>
+    <p class="eyebrow">지금 내가 얼마나 작게 느껴지나요?</p>
+    ${nums("before",S.before).replace("0 · 아무렇지 않다","0 · 그대로다").replace("10 · 아무것도 손에 안 잡힌다","10 · 한없이 작다")}
+    <button class="btn" type="button" id="next" ${S.first===null||S.before===null?"disabled":""}>거울을 본다</button>`;
+  $("#opts").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.first=+b.dataset.i; keepY(c_first); };
+  $("#before").onclick=e=>{ const b=e.target.closest("[data-n]"); if(!b) return; S.before=+b.dataset.n; keepY(c_first); };
+  $("#next").onclick=()=>{ go("c_more",3); say("거울 속 당신이 아까보다 작습니다. 손가락은 아직 화면 위에 있습니다."); };
+}
+function c_more(){
+  const v=VV(), X=v.extra;
+  if(S.moreDone){
+    hint("휴대전화를 내려놓았습니다.");
+    V().innerHTML=`<p class="eyebrow">거울</p>
+      <h2>${S.more===0?"더 넘기지 않고 휴대전화를 내려놓았습니다.":`${S.more}장을 더 넘겨 봤습니다.`}</h2>
+      <p class="lede">${S.more===0?"손가락이 가려는 걸 알아채고 멈췄습니다. 쉽지 않은 일입니다.":"한 장 넘길 때마다 거울 속 당신이 한 뼘씩 작아졌습니다. 사진 속 사람들은 그대로인데요."}</p>
+      <p class="small">방 안에는 사진에서 잘려 나간 조각들이 흩어져 있습니다. 찾아볼 차례입니다.</p>
+      <button class="btn" type="button" id="next">방을 뒤진다</button>`;
+    $("#next").onclick=()=>go("c_search",4);
+    return;
+  }
+  hint("거울 속 내가 아까보다 작습니다.");
+  V().innerHTML=`<p class="eyebrow">거울</p>
+    <h2>${S.more===0?"거울 속 내가 아까보다 작습니다.":"거울 속 내가 또 작아졌습니다."}</h2>
+    ${S.more?frameHTML(postHTML(X[S.more-1])):`<p class="lede">손가락은 아직 화면 위에 있습니다. 아래로 내리면 다음 사진이 나옵니다.</p>`}
+    ${S.more<X.length?`<p class="small">다음 사진이 반쯤 올라와 있습니다.</p>`:`<p class="small">더 내려도 비슷한 사진이 이어질 뿐입니다.</p>`}
+    <div class="choose">
+      ${S.more<X.length?`<button class="btn ghost" type="button" id="more">한 장 더 넘겨 본다</button>`:""}
+      <button class="btn ghost" type="button" id="stop">휴대전화를 내려놓는다</button>
+    </div>`;
+  const m=$("#more"); if(m) m.onclick=()=>{ S.more++; lowBuzz(); c_more(); sync(); };
+  $("#stop").onclick=()=>{ S.moreDone=true; chime(); hush(); c_more(); window.scrollTo(0,0); };
+}
+function c_search(){
+  const v=VV(), all=OBJS.every(o=>S.found.includes(o[0]));
+  if(S.opened){
+    hint("딸깍. 거울 속 내가 제 크기로 돌아옵니다.");
+    V().innerHTML=`<p class="eyebrow">잘린 사진</p>
+      <h2>${S.tries?`${S.tries+1}번 만에 문이 열렸습니다.`:"한 번에 문이 열렸습니다."}</h2>
+      <p class="lede">사진은 한 장도 바뀌지 않았습니다. 사진 밖이 보였을 뿐인데, 거울 속 당신이 제 크기로 돌아왔습니다.</p>
+      ${S.wi+S.wd?`<p class="small">빈칸을 상상으로 채운 적이 있습니다. ${S.wi?`더 좋게 그린 것이 ${S.wi}번`:""}${S.wi&&S.wd?", ":""}${S.wd?`깎아내린 것이 ${S.wd}번`:""}입니다. 둘 다 사진 밖을 모를 때 생기는 일입니다.</p>`:""}
+      <p class="eyebrow">그리고 방에는 당신의 조각도 두 장 있었습니다</p>
+      <div class="cards"><div class="card"><b>내 화분</b>${esc(v.scraps.plant.split(" · ")[1])}</div><div class="card"><b>내가 버린 메모지</b>${esc(v.scraps.trash.split(" · ")[1])}</div></div>
+      <p class="small">사진으로 올리지 않은 오늘의 장면입니다.</p>
+      <button class="btn" type="button" id="next">내 하루를 돌아본다</button>`;
+    $("#next").onclick=()=>go("c_act",5);
+    return;
+  }
+  hint(all?"문에 새겨진 글: “사진 밖을 본 사람만 이 문을 연다.”":"방 안의 물건을 눌러 잘린 조각을 찾으세요.");
+  V().innerHTML=`<p class="eyebrow">잘린 사진 · ${all?`시도 ${S.tries+1}번째`:`찾은 조각 <span class="count">${S.found.length}</span> / ${OBJS.length}`}</p>
+    <h2>${all?"사진마다 잘려 나간 조각을 맞추세요.":"방을 뒤지세요."}</h2>
+    <p class="small">${all?"문에 빈 액자가 세 개 있습니다. 답은 아래 조각에 적혀 있습니다.":"위 그림의 물건을 누르거나, 아래 이름을 누르세요."}</p>
+    ${all?"":`<div class="chips" id="objs">${OBJS.map(o=>`<button class="chip" type="button" data-o="${o[0]}" aria-pressed="${S.found.includes(o[0])}">${o[1]}</button>`).join("")}</div>`}
+    ${all?`<div class="stack" id="match">${v.posts.map((p,i)=>`<div class="mq ${S.tries>=3&&S.pk[i]!==null&&v.q[i].o[S.pk[i]].k==="f"?"ok":""}"><p><b>${p.e} ${esc(p.n)}</b> “${esc(p.c)}” <br>이 사진 밖에는?</p>
+        ${v.q[i].o.map((o,j)=>`<button class="opt" type="button" data-q="${i}" data-j="${j}" aria-pressed="${S.pk[i]===j}">${o.t}</button>`).join("")}</div>`).join("")}</div>
+      <button class="btn" type="button" id="tryBtn" ${S.pk.includes(null)?"disabled":""}>이 조각들로 문을 연다</button>`:""}
+    <div class="fb ${S.tries?"miss":""}">${S.lastFb||(all?"사진 한 장에 조각 하나씩 고르세요.":"물건마다 조각이 하나씩 있습니다.")}</div>
+    <div class="cards">${OBJS.map(o=>S.found.includes(o[0])?`<div class="card"><b>${esc(v.scraps[o[0]].split(" · ")[0])}</b>${esc(v.scraps[o[0]].split(" · ")[1])}</div>`:`<div class="card unk"><b>?</b>아직 찾지 못함</div>`).join("")}</div>`;
+  const ob=$("#objs"); if(ob) ob.onclick=e=>{ const b=e.target.closest("[data-o]"); if(b) find(b.dataset.o); };
+  if(all){
+    $("#match").onclick=e=>{ const b=e.target.closest("[data-q]"); if(!b) return; S.pk[+b.dataset.q]=+b.dataset.j; ticks(1); keepY(c_search); };
+    $("#tryBtn").onclick=()=>{ const ks=S.pk.map((j,i)=>v.q[i].o[j].k), bad=ks.filter(k=>k!=="f").length;
+      if(!bad){ S.opened=true; chime(); setTimeout(chime,250); c_search(); sync(); window.scrollTo(0,0); return; }
+      S.tries++; S.wi+=ks.filter(k=>k==="i").length; S.wd+=ks.filter(k=>k==="d").length; lowBuzz();
+      S.lastFb=`덜컹. 세 장 중 <b>${bad}장</b>은 방에서 찾은 조각이 아니라 상상으로 채운 것입니다.`+(S.tries>=3?" <br>맞은 사진에 표시해 두었습니다.":"");
+      keepY(c_search); sync(); const s=$("#stage"); s.classList.remove("shake"); void s.offsetWidth; s.classList.add("shake"); };
+  }
+}
+function find(o){
+  if(!OBJS.some(x=>x[0]===o)) return;
+  if(OBJS.every(x=>S.found.includes(x[0]))) return;
+  if(!S.found.includes(o)){ S.found.push(o); chime(); }
+  S.lastFb=esc(VV().scraps[o]);
+  if(OBJS.every(x=>S.found.includes(x[0]))) S.lastFb="조각 다섯 장을 모두 찾았습니다. 이제 사진마다 잘려 나간 조각을 맞추세요.";
+  keepY(c_search); hint("잘린 조각을 찾았습니다.");
+}
+function c_act(){
+  hint("거울 속 내가 제 크기로 서 있습니다.");
+  V().innerHTML=`<p class="eyebrow">내 하루</p><h2>이번에는 화면 밖, 진짜 오늘을 떠올려 보세요.</h2>
+    <div class="whisper" style="border-color:var(--line);box-shadow:none;color:var(--ink)"><small>질문</small>오늘 당신의 하루에, 사진으로 남기지 않은 괜찮은 순간이 있었나요?</div>
+    <div class="chips" id="good">${GOOD.map((g,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.good===i}">${g.t}</button>`).join("")}</div>
+    ${S.good!==null?`<p class="lede">${S.good===0?"그 순간은 아무도 좋아요를 누르지 않았지만, 실제로 있었습니다.":S.good===1?"밥을 먹은 것, 누군가와 한마디 나눈 것, 할 일 하나를 끝낸 것. 사진이 되지 않는 순간이 하루의 대부분입니다.":"정말 힘든 하루였을 수 있습니다. 그런 날에는 남의 가장 좋은 날과 견주는 일이 더 아픕니다."}</p>
+      <p class="eyebrow">다시 휴대전화를 든다면, 어떻게 하겠습니까?</p>
+      <div class="stack" id="opts">${ACTS.map((a,i)=>`<button class="opt" type="button" aria-pressed="${S.act===i}" data-i="${i}"><span class="n">${i+1}</span>${a.t}</button>`).join("")}</div>
+      <button class="btn" type="button" id="next" ${S.act===null?"disabled":""}>그리고 다음 날이 온다</button>`:""}`;
+  $("#good").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.good=+b.dataset.i; keepY(c_act); };
+  const op=$("#opts"); if(op){ op.onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.act=+b.dataset.i; keepY(c_act); };
+    $("#next").onclick=()=>{ go("c_next",6); buzz(); say("다음 날. "+ACTS[S.act].out.join(" ")+" 그리고 "+VV().who+"에게서 메시지가 왔습니다."); }; }
+}
+function c_next(){
+  const v=VV(), a=ACTS[S.act], diff=S.after===null?0:S.before-S.after;
+  hint(`다음 날. ${v.who}에게서 메시지가 왔습니다.`);
+  V().innerHTML=`<p class="eyebrow">다음 날</p><h2>하루가 지났습니다.</h2>
+    <div class="narr" style="font-size:17px">${a.out.map((l,i)=>`<span style="animation-delay:${.2+i*.9}s">${esc(l)}</span>`).join("")}</div>
+    <p class="small">그리고 점심 무렵, ${esc(v.who)}에게서 메시지가 왔습니다.</p>
+    ${frameHTML(`<div class="who">${esc(v.who)}</div>`+v.msg.map(t=>`<div class="bub them">${esc(t)}</div>`).join(""),"오후 12:40")}
+    <p class="eyebrow">지금, 내가 얼마나 작게 느껴지나요?</p>
+    ${nums("after",S.after).replace("0 · 아무렇지 않다","0 · 그대로다").replace("10 · 아무것도 손에 안 잡힌다","10 · 한없이 작다")}
+    ${S.after!==null?`<div class="vs"><div><span class="small">어젯밤</span><span class="big">${S.before}</span></div><div class="small">→</div><div><span class="small">지금</span><span class="big">${S.after}</span></div></div>
+      <p class="lede">${diff>=3?"사진은 그대로인데, 숫자가 이만큼 움직였습니다.":diff<=0?"사진 밖을 알고도 작아진 느낌이 그대로입니다. 그렇다면 이 느낌은 그 사람들 때문만은 아닐 수 있습니다.":"숫자가 조금 움직였습니다."}</p>
+      <div class="callout">${v.lesson}</div>
+      <button class="btn" type="button" id="next">문으로 걸어간다</button>`:""}`;
+  $("#after").onclick=e=>{ const b=e.target.closest("[data-n]"); if(!b) return; S.after=+b.dataset.n; keepY(c_next); };
+  const nx=$("#next"); if(nx) nx.onclick=()=>{ hush(); go("c_mine",7); };
+}
+function c_mine(){
+  hint("문고리를 잡는 순간, 문에 질문이 떠오릅니다.");
+  let h=`<p class="eyebrow">내 사진첩</p><h2>문고리를 잡는 순간, 질문 하나가 문에 떠오릅니다.</h2>
+    <div class="whisper" style="border-color:var(--line);box-shadow:none;color:var(--ink)"><small>문에 새겨진 질문</small>당신의 사진첩에도, 남이 보면 부러워할 사진이 한 장쯤 있나요?</div>
+    <div class="chips" id="al">${ALBUM.map((r,i)=>`<button class="chip" type="button" data-i="${i}" aria-pressed="${S.album===i}">${r}</button>`).join("")}</div>`;
+  if(S.album!==null) h+=`<p class="eyebrow">${S.album===2?"그래도 가장 잘 나온 사진 한 장을 떠올려 보세요. 그날, 사진 밖은 어땠나요?":"그 사진을 찍던 날, 사진 밖은 어땠나요?"}</p>
+    <div class="stack" id="bh">${BEHIND.map((f,i)=>`<button class="opt" type="button" data-i="${i}" aria-pressed="${S.behind===i}">${f}</button>`).join("")}</div>`;
+  if(S.behind!==null) h+=`<div class="callout">${S.behind===0?"좋은 날이 사진에 담겼습니다. 그리고 그 사진을 본 누군가는, 당신이 매일 그렇게 산다고 믿었을지 모릅니다.":"그 사진 밖을 아는 사람은 당신뿐입니다. 누군가는 그 한 장을 넘기며, 어젯밤의 당신처럼 작아졌을지 모릅니다."}</div>
+    <button class="btn" type="button" id="next">문을 연다</button>`;
+  V().innerHTML=h;
+  $("#al").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.album=+b.dataset.i; keepY(c_mine); };
+  const bh=$("#bh"); if(bh) bh.onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.behind=+b.dataset.i; keepY(c_mine); };
+  const nx=$("#next"); if(nx) nx.onclick=()=>{ const seen=store("maeum.compare.seen")||[]; if(!seen.includes(S.v)){ seen.push(S.v); store("maeum.compare.seen",seen); } save(); go("c_exit",8); door(); };
+}
+/* 임시 규칙: 전문가 검토 필요 */
+function score(){
+  let filt=0, rank=0, eras=0;
+  const add=t=>{ filt+=t.filt||0; rank+=t.rank||0; eras+=t.eras||0; };
+  add(THINK[S.think]); add(FIRST[S.first]); add(GOOD[S.good]); add(ACTS[S.act]);
+  filt+=S.more+Math.min(2,S.wi); rank+=Math.min(2,S.wd);
+  if(S.before>=7) eras+=1; if(S.before>=9) rank+=1;
+  const cap=(v,m)=>Math.min(1,v/m);
+  return [["걸러 보기",cap(filt,10)],["줄 세우기",cap(rank,7)],["내 것 지우기",cap(eras,7)]];
+}
+function type(){
+  const sc=score(), top=[...sc].sort((a,b)=>b[1]-a[1])[0];
+  if(top[1]<.36) return "true_";
+  if(S.more<=1 && S.tries===0 && ["congr","off"].includes(ACTS[S.act].r) && top[1]<.8) return "clap";
+  return top[0]==="걸러 보기"?"filt":top[0]==="줄 세우기"?"rank":"eras";
+}
+function save(){
+  const log=store("maeum.compare.log")||[];
+  log.push({at:new Date().toISOString(), story:VV().k, think:THINK[S.think].t, first:FIRST[S.first].t, before:S.before, after:S.after, more:S.more, tries:S.tries, ideal:S.wi, devalue:S.wd,
+    good:GOOD[S.good].t, act:ACTS[S.act].r, album:ALBUM[S.album], behind:BEHIND[S.behind], type:TYPES[type()].nm});
+  store("maeum.compare.log", log.slice(-20));
+}
+function c_exit(){
+  const T=TYPES[type()], sc=score();
+  hint("문이 열렸습니다.");
+  if(!c_exit.spoken){ c_exit.spoken=true; setTimeout(()=>say(`당신의 카드는 ${T.nm}. ${T.one}.`),500); }
+  V().innerHTML=`<p class="eyebrow">탈출 · 방 4</p><h2>비교의 거울방에서 나왔습니다.</h2>
+    <div class="tcard ${S.flip?"flip":""}" id="tc"><div class="in">
+      <div class="f"><span class="emo">${T.emo}</span><span class="small">비교의 거울방에서 받은 카드</span><span class="nm">${T.nm}</span><span class="one">${T.one}</span><span>${T.s}</span><span class="small" style="margin-top:auto">눌러서 뒷면 보기</span></div>
+      <div class="b"><p class="eyebrow">카드 뒷면 · 오늘 이 방에서 보인 반응</p>
+        <div class="meter">${sc.map(([n,x])=>`<div class="row"><span>${n}</span><span class="bar"><i style="width:${Math.max(6,Math.round(x*100))}%"></i></span><span class="lv">${x>=.6?"자주":x>=.3?"가끔":"드묾"}</span></div>`).join("")}</div>
+        <p class="small">${T.w}</p>
+        <p class="small">이 카드는 당신을 정하는 유형이 아니라, 오늘 이 방에서 나타난 반응입니다.</p>
+        <span class="small" style="margin-top:auto">눌러서 앞면 보기</span></div>
+    </div></div>
+    <div class="vs"><div><span class="small">어젯밤 작아진 느낌</span><span class="big">${S.before}</span></div><div class="small">→</div><div><span class="small">다음 날</span><span class="big">${S.after}</span></div></div>
+    <p class="eyebrow">오늘 내 생각 고리</p>
+    <ol class="chain">
+      <li><span>사건</span>자기 전에 친구들의 사진을 봤다</li>
+      <li><span>내 생각</span>“${esc(FIRST[S.first].t)}”</li>
+      <li><span>넘기기</span>${S.more?`${S.more}장 더 넘김 · 거울이 ${S.more}뼘 작아짐`:"더 넘기지 않음"}</li>
+      <li><span>내 행동</span>${esc(ACTS[S.act].t)}</li>
+    </ol>
+    <div class="habit">
+      <p class="eyebrow">생각 습관 카드 · 12장 중 한 장 획득</p>
+      <p class="habit-name">색안경 (걸러 보기)</p>
+      <p>전체 가운데 한 부분만 걸러서 보는 습관입니다. 남에게서는 가장 빛나는 장면만, 나에게서는 가장 초라한 장면만 골라 나란히 놓을 때 나타납니다.</p>
+      <p class="small">오늘의 열쇠: 사진을 볼 때 “이 사진 밖에는 뭐가 있을까?”를 묻고, 내 하루에서 사진이 되지 않은 장면 하나를 떠올리기.</p>
+    </div>
+    <button class="btn" type="button" id="share">카드 문구 복사해서 공유하기</button>
+    <p class="copyok" id="copyok"></p>
+    <button class="btn ghost" type="button" id="again">다른 이야기로 다시 들어가기</button>
+    <button class="btn ghost" type="button" id="map">처음 화면으로</button>
+    <p class="small">기록은 이 기기에만 저장됩니다. 처음 화면 아래에서 언제든 지울 수 있습니다.</p>`;
+  $("#tc").onclick=()=>{ S.flip=!S.flip; $("#tc").classList.toggle("flip",S.flip); };
+  $("#map").onclick=goHome; $("#again").onclick=start;
+  $("#share").onclick=async()=>{
+    const url=/^https?:/.test(location.href)&&!/claude/.test(location.hostname)?`\n${location.href.split("#")[0]}`:"";
+    const text=`[마음의 방탈출 · 비교의 거울방]\n내 카드: ${T.emo} ${T.nm}\n“${T.one}”\n작아진 느낌 ${S.before} → ${S.after}\n너는 무슨 카드가 나올까?${url}`;
+    try{ await navigator.clipboard.writeText(text); $("#copyok").textContent="복사했습니다. 카톡에 붙여 넣으세요."; }
+    catch(e){ $("#copyok").textContent="이 화면에서는 복사가 막혀 있습니다. 카드를 캡처해 주세요."; }
+  };
+}
+function touch(obj){
+  if(S.view==="c_enter"){ hint("먼저 불을 켜야 합니다."); return; }
+  if(S.view==="c_feed" && obj==="phone" && S.fi<0){ $("#peek").click(); return; }
+  if(S.view==="c_search" && !S.opened && obj!=="door" && obj!=="mirror" && obj!=="phone"){ find(obj); return; }
+  if(obj==="door"){ hint(S.view==="c_exit"?"문이 열려 있습니다.":"문에 빈 액자 세 개가 걸려 있습니다. “사진 밖을 본 사람만 이 문을 연다.”"); return; }
+  hint(({mirror:S.opened?"거울 속 내가 제 크기로 서 있습니다.":"거울 속 내가 실제보다 작아 보입니다.",calendar:"남의 달력이 걸려 있습니다.",frame:"한쪽이 찢겨 나간 사진입니다.",plant:"화분에 새잎이 났습니다.",trash:"구겨진 메모지가 있습니다.",drawer:"서랍이 살짝 열려 있습니다.",phone:"휴대전화 화면에 사진이 떠 있습니다."})[obj]||"");
+}
+return {no:4, name:"비교의 거울방", steps:STEPS, scene:SCENE, start, sync, touch, type, VAR, THINK, FIRST, GOOD, ACTS,
+  views:{c_enter, c_feed, c_first, c_more, c_search, c_act, c_next, c_mine, c_exit}};
 })();
 
 SCENE2=$("#room3d").innerHTML;
