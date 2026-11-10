@@ -478,6 +478,37 @@ div.wheel i{display:none}
 #stage[data-view="i_search"] .room3d{--bx:3deg}
 #stage[data-view="i_mine"] .room3d{--cx:-80px;--cy:-30px;--cz:140px;--by:-4deg}
 #stage[data-view="i_exit"] .room3d{--cx:-52px;--cy:-20px;--cz:100px;--by:-3deg}
+
+/* ===== 방 1 · 첫인상의 복도 / 방 10 · 해석의 출구 ===== */
+.runner{position:absolute;left:120px;top:0;width:120px;height:200px;background:linear-gradient(90deg,#7a3038,#9a4048 50%,#7a3038);opacity:.75;pointer-events:none}
+.hgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hcell{display:flex;flex-direction:column;gap:3px;padding:10px 9px;min-height:78px;border-radius:4px;border:1px dashed var(--line);color:var(--dim)}
+.hcell b{font-family:var(--display);font-size:15px;font-weight:800}
+.hcell span{font-size:11.5px;line-height:1.4}
+.hcell.on{background:var(--paper);color:var(--paper-ink);border:0;box-shadow:0 8px 14px -10px #000}
+.hcell.on span{color:#5d5876}
+#stage[data-room="11"] .face.back{background:linear-gradient(180deg,#5c5260,#3f3846);box-shadow:inset 0 -5px 0 #1e1a22}
+#stage[data-room="11"] .face.left{background:linear-gradient(270deg,#50475a,#2a2430)}
+#stage[data-room="11"] .face.right{background:linear-gradient(90deg,#50475a,#2a2430)}
+#stage[data-room="11"] .face.ceil{background:linear-gradient(0deg,#1a161e,#2c2632)}
+#stage[data-room="11"] .face.floor{background:repeating-linear-gradient(90deg,rgba(0,0,0,.22) 0 1px,transparent 1px 45px),linear-gradient(0deg,#55504a,#33302c)}
+#stage[data-view="h_enter"] .room3d{--cz:20px}
+#stage[data-view="h_f0"] .room3d{--cx:70px;--cy:8px;--cz:60px;--by:34deg}
+#stage[data-view="h_f1"] .room3d{--cx:-70px;--cy:8px;--cz:110px;--by:-36deg}
+#stage[data-view="h_f2"] .room3d{--cx:60px;--cy:8px;--cz:150px;--by:34deg}
+#stage[data-view="h_lock"] .room3d{--cy:-24px;--cz:150px}
+#stage[data-view="h_exit"] .room3d{--cy:-24px;--cz:170px}
+#stage[data-room="10"] .face.back{background:linear-gradient(180deg,#7088b0,#566c92);box-shadow:inset 0 -5px 0 #33425e}
+#stage[data-room="10"] .face.left{background:linear-gradient(270deg,#647aa2,#3c4c6c)}
+#stage[data-room="10"] .face.right{background:linear-gradient(90deg,#647aa2,#3c4c6c)}
+#stage[data-room="10"] .face.ceil{background:linear-gradient(0deg,#33425e,#4c5f84)}
+#stage[data-room="10"] .face.floor{background:repeating-linear-gradient(90deg,rgba(0,0,0,.16) 0 1px,transparent 1px 45px),linear-gradient(0deg,#8a7a62,#5c5244)}
+#stage[data-room="10"].morning .face{filter:none}
+#stage[data-room="10"] .runner{left:226px;background:linear-gradient(90deg,#b08a3a,#d8b45a 50%,#b08a3a)}
+#stage[data-view="x_enter"] .room3d,#stage[data-view="x_map"] .room3d{--cx:66px;--cy:34px;--cz:140px;--by:4deg}
+#stage[data-view="x_three"] .room3d{--bx:3deg}
+#stage[data-view="x_key"] .room3d{--cx:-70px;--cy:-26px;--cz:120px;--by:-4deg}
+#stage[data-view="x_exit"] .room3d{--cx:-78px;--cy:-26px;--cz:150px;--by:-4deg}
 </style>
 </head>
 <body>
@@ -841,9 +872,11 @@ function render(){
 /* ---------- 본관 ---------- */
 function home(){
   hint("마우스나 손가락을 움직이면 방을 둘러볼 수 있습니다.");
-  const l2=store("maeum.silence.log")||[], l3=store("maeum.mistake.log")||[], l4=store("maeum.compare.log")||[], l5=store("maeum.left.log")||[], l6=store("maeum.control.log")||[], l7=store("maeum.doom.log")||[], l8=store("maeum.blame.log")||[], l9=store("maeum.critic.log")||[];
-  const got=[...new Set([...l2,...l3,...l4,...l5,...l6,...l7,...l8,...l9].map(l=>l.type))];
+  const l2=store("maeum.silence.log")||[], l3=store("maeum.mistake.log")||[], l4=store("maeum.compare.log")||[], l5=store("maeum.left.log")||[], l6=store("maeum.control.log")||[], l7=store("maeum.doom.log")||[], l8=store("maeum.blame.log")||[], l9=store("maeum.critic.log")||[], l1=store("maeum.hall.log")||[], l10=store("maeum.exit.log")||[];
+  const got=[...new Set([...l1,...l2,...l3,...l4,...l5,...l6,...l7,...l8,...l9].map(l=>l.type))];
+  const hgot=habitsGot().filter(Boolean).length;
   const open=[
+    {i:11, no:1, nm:"첫인상의 복도", hook:"복도에 액자 세 개가 걸려 있습니다. 처음이라면 여기부터 지나가세요.", done:l1.length, tag:"2분 · 액자 세 개"},
     {i:1, no:2, nm:"침묵의 방", hook:"읽음 표시는 떴는데 답이 없습니다. 방 구석에서 누군가 속삭입니다.", n:VARIANTS.length, done:l2.length, habit:"독심술"},
     {i:3, no:3, nm:"실수의 방", hook:"보내기를 누르고 1초 뒤에 알았습니다. 벽시계가 그 순간으로 자꾸 되감깁니다.", n:ROOMDEF[3].VAR3.length, done:l3.length, habit:"돋보기"},
     {i:4, no:4, nm:"비교의 거울방", hook:"자기 전에 친구들의 사진을 넘깁니다. 한 장 넘길 때마다 거울 속 내가 작아집니다.", n:ROOMDEF[4].VAR.length, done:l4.length, habit:"색안경"},
@@ -851,24 +884,25 @@ function home(){
     {i:6, no:6, nm:"통제의 방", hook:"꼼꼼히 준비했는데 일이 내 뜻대로 가지 않습니다. 천장에서 밧줄이 내려옵니다.", n:ROOMDEF[6].VAR.length, done:l6.length, habit:"명령문"},
     {i:7, no:7, nm:"재앙의 방", hook:"작은 신호 하나가 왔습니다. 머릿속이 먼저 달려가고, 방에 물이 차오릅니다.", n:ROOMDEF[7].VAR.length, done:l7.length, habit:"수정 구슬"},
     {i:8, no:8, nm:"책임의 방", hook:"일이 잘못됐습니다. 벽에는 열 조각짜리 둥근 판이, 바닥에는 가방 하나가 있습니다.", n:ROOMDEF[8].VAR.length, done:l8.length, habit:"자석"},
-    {i:9, no:9, nm:"내면비평가의 방", hook:"하루가 끝났습니다. 머릿속에서 내 목소리를 닮은 목소리가 꼬리표를 내밉니다.", n:ROOMDEF[9].VAR.length, done:l9.length, habit:"꼬리표"}
+    {i:9, no:9, nm:"내면비평가의 방", hook:"하루가 끝났습니다. 머릿속에서 내 목소리를 닮은 목소리가 꼬리표를 내밉니다.", n:ROOMDEF[9].VAR.length, done:l9.length, habit:"꼬리표"},
+    {i:10, no:10, nm:"해석의 출구", hook:"지나온 방에서 모은 카드를 한자리에서 봅니다. 마지막 문 세 개가 남아 있습니다.", done:l10.length, tag:`모은 카드 ${hgot} / 12`}
   ];
   V().innerHTML = `
     <h1>마음의 방탈출</h1>
-    <p class="lede">방마다 누구나 겪어 본 순간이 하나씩 갇혀 있습니다. 단서를 모으고 자물쇠를 풀어 빠져나오세요.</p>
+    <p class="lede">방마다 누구나 겪어 본 순간이 하나씩 갇혀 있습니다. 단서를 모으고 자물쇠를 풀어 빠져나오세요. 어느 방부터 들어가도 됩니다.</p>
     <div class="callout">방 하나에 5분쯤 걸립니다. 글을 쓸 필요 없이 누르기만 하면 됩니다.<br>방을 나올 때마다 당신만의 카드 한 장이 나옵니다.</div>
     <div class="stack" id="doors">${open.map(r=>`<button class="doorcard" type="button" data-r="${r.i}">
       <span class="dn">방 ${r.no}</span><span class="dm">${r.nm}</span><span class="dh">${r.hook}</span>
-      <span class="ds">${r.done?`탈출함 · 다시 들어가기`:`들어가기`} · 이야기 ${r.n}가지</span></button>`).join("")}</div>
-    ${got.length?`<p class="small">모은 카드: ${got.join(", ")}</p>`:""}
+      <span class="ds">${r.done?`탈출함 · 다시 들어가기`:`들어가기`} · ${r.tag||`이야기 ${r.n}가지`}</span></button>`).join("")}</div>
+    ${got.length?`<p class="small">받은 카드: ${got.join(", ")} · 생각 습관 카드 ${hgot} / 12</p>`:""}
     <details class="fold">
-      <summary>본관 지도 · 열 개의 방 중 여덟 곳이 열려 있습니다</summary>
+      <summary>본관 지도 · 열 개의 방이 모두 열려 있습니다</summary>
       <div class="map">${ROOMS.map((r,i)=>{ const o=open.find(x=>x.no===i+1);
         return `<button class="room ${o?"open":""}" type="button" ${o?`data-r="${o.i}"`:"disabled"}><span class="no">방 ${i+1}</span><span class="nm">${r}</span><span class="st">${o?"입장 가능":"준비 중"}</span></button>`;}).join("")}</div>
     </details>
-    ${l2.length+l3.length+l4.length+l5.length+l6.length+l7.length+l8.length+l9.length?`<button class="btn ghost" type="button" id="del">내 기록 지우기</button>`:""}`;
+    ${l1.length+l2.length+l3.length+l4.length+l5.length+l6.length+l7.length+l8.length+l9.length+l10.length?`<button class="btn ghost" type="button" id="del">내 기록 지우기</button>`:""}`;
   V().querySelectorAll("[data-r]").forEach(b => b.onclick = () => ROOMDEF[+b.dataset.r].start());
-  const d=$("#del"); if(d){ let armed=false; d.onclick=()=>{ if(!armed){ armed=true; d.textContent="한 번 더 누르면 이 기기의 기록이 모두 지워집니다"; return; } try{ ["maeum.silence.log","maeum.silence.seen","maeum.mistake.log","maeum.mistake.seen","maeum.compare.log","maeum.compare.seen","maeum.left.log","maeum.left.seen","maeum.control.log","maeum.control.seen","maeum.doom.log","maeum.doom.seen","maeum.blame.log","maeum.blame.seen","maeum.critic.log","maeum.critic.seen"].forEach(k=>localStorage.removeItem(k)); }catch(e){} home(); }; }
+  const d=$("#del"); if(d){ let armed=false; d.onclick=()=>{ if(!armed){ armed=true; d.textContent="한 번 더 누르면 이 기기의 기록이 모두 지워집니다"; return; } try{ ["maeum.silence.log","maeum.silence.seen","maeum.mistake.log","maeum.mistake.seen","maeum.compare.log","maeum.compare.seen","maeum.left.log","maeum.left.seen","maeum.control.log","maeum.control.seen","maeum.doom.log","maeum.doom.seen","maeum.blame.log","maeum.blame.seen","maeum.critic.log","maeum.critic.seen","maeum.hall.log","maeum.exit.log"].forEach(k=>localStorage.removeItem(k)); }catch(e){} home(); }; }
 }
 
 /* ---------- 1. 입구 ---------- */
@@ -4155,6 +4189,293 @@ function touch(obj){
 }
 return {no:9, name:"내면비평가의 방", steps:STEPS, scene:SCENE, start, sync, touch, type, VAR, THINK, FIRST,
   views:{i_enter, i_moment, i_first, i_stick, i_search, i_act, i_next, i_mine, i_exit}};
+})();
+
+/* ================= 생각 습관 카드 12장 (공통) ================= */
+const HABITS = [
+  {n:"자동 자막", d:"장면에 저절로 붙는 첫 해석", k:"본 것과 붙인 뜻을 나눠 보기", log:"maeum.hall.log"},
+  {n:"독심술", d:"확인 없이 남의 마음을 안다고 믿기", k:"“지금 확인된 것은 무엇인가?” 하고 묻기", log:"maeum.silence.log"},
+  {n:"돋보기", d:"작은 일을 크게 키워 보기", k:"“실제로 몇 명이, 몇 분 동안?” 하고 세어 보기", log:"maeum.mistake.log"},
+  {n:"색안경", d:"한 부분만 걸러서 보기", k:"“이 사진 밖에는 뭐가 있을까?” 하고 묻기", log:"maeum.compare.log"},
+  {n:"도돌이표", d:"한 번의 일을 ‘늘’로 넓히기", k:"‘늘’을 ‘이번에는’으로 바꿔 읽기", log:"maeum.left.log"},
+  {n:"명령문", d:"바라는 것을 ‘해야 한다’로 바꾸기", k:"‘해야 한다’를 ‘하면 좋겠다’로 바꿔 읽기", log:"maeum.control.log"},
+  {n:"수정 구슬", d:"나쁜 결말부터 점치기", k:"가능성, 가장 그럴듯한 일, 그래도 할 수 있는 일을 묻기", log:"maeum.doom.log"},
+  {n:"자석", d:"탓을 한곳으로 끌어모으기", k:"열 조각 파이에서 내 조각만큼만 들기", log:"maeum.blame.log"},
+  {n:"꼬리표", d:"한 번의 일로 사람 전체를 부르기", k:"사실 한 줄, 다음 걸음 한 줄로 말하기", log:"maeum.critic.log"},
+  {n:"흑백", d:"전부 아니면 전무로 나누기", k:"0과 100 사이의 숫자로 말해 보기", x:0},
+  {n:"감정이 증거", d:"그렇게 느껴지니 사실이라고 믿기", k:"‘그렇게 느낀다’와 ‘그렇다’를 나눠 말하기", x:1},
+  {n:"좋은 것 지우기", d:"잘된 일을 없던 일로 돌리기", k:"칭찬을 들으면 “고맙습니다”까지만 말하기", x:2}
+];
+const ROOMLOGS = [["침묵의 방","maeum.silence.log"],["실수의 방","maeum.mistake.log"],["비교의 거울방","maeum.compare.log"],["버려짐의 방","maeum.left.log"],["통제의 방","maeum.control.log"],["재앙의 방","maeum.doom.log"],["책임의 방","maeum.blame.log"],["내면비평가의 방","maeum.critic.log"]];
+function habitsGot(){ const x=(store("maeum.exit.log")||[]).slice(-1)[0]; const xp=x&&x.three?x.three:[];
+  return HABITS.map(h=> h.log ? (store(h.log)||[]).length>0 : xp[h.x]!==undefined && xp[h.x]!==null); }
+const DOOR_SVG = (lock) => `<svg class="o3" style="LEFT;top:92px;width:92px;height:148px" viewBox="255 67 84 136">
+      <defs><radialGradient id="exitGlow" cx="50%" cy="60%" r="70%"><stop offset="0" stop-color="#fff2c4"/><stop offset="1" stop-color="#f2d27c" stop-opacity=".2"/></radialGradient></defs>
+      <g class="hot" data-obj="door" role="button" tabindex="0" aria-label="문">
+        <rect x="258" y="70" width="78" height="133" fill="#3a2414"/>
+        <rect id="doorLight" x="261" y="73" width="72" height="130" fill="url(#exitGlow)"/>
+        <g id="doorPanel">
+          <rect x="261" y="73" width="72" height="130" fill="#6b4126" stroke="#8c5a35" stroke-width="1.5"/>
+          <rect x="269" y="140" width="56" height="52" fill="none" stroke="#83532f" stroke-width="1.5"/>
+          <circle cx="322" cy="138" r="4" fill="#f2d27c"/>
+          <g id="locks">${lock}</g>
+        </g>
+        <rect class="hl" x="256" y="68" width="82" height="134" fill="none" stroke="#f2d27c" stroke-width="1.5"/>
+      </g></svg>`;
+
+/* ================= 방 1 · 첫인상의 복도 ================= */
+ROOMDEF[11] = (function(){
+const STEPS = ["입구","첫 번째 액자","두 번째 액자","세 번째 액자","복도 끝의 문","탈출"];
+const FR = [
+  {place:"지하철", e:"🚇", scene:"맞은편에 앉은 사람이 당신 쪽을 보며 얼굴을 찡그립니다.",
+   o:[{t:"내 차림이 이상한가 보다", k:"s"},{t:"뭔가를 보고 있나 보다", k:"n"},{t:"나를 못마땅해한다", k:"s"},{t:"무례한 사람이다", k:"o"},{t:"아직 모르겠다", k:"n"}],
+   reveal:"한 걸음 다가가자, 그 사람의 눈길이 당신 어깨 너머에 가 있는 것이 보입니다. 뒤쪽 노선도의 작은 글씨를 읽으려고 눈을 찡그린 것이었습니다.",
+   fact:"맞은편 사람이 얼굴을 찡그렸다", interp:"그 사람은 나를 못마땅해한다"},
+  {place:"회의실", e:"🪑", scene:"당신이 말을 마치자, 옆자리 동료가 길게 한숨을 쉽니다.",
+   o:[{t:"회의 태도가 왜 저래", k:"o"},{t:"내 말이 한심했나 보다", k:"s"},{t:"피곤한가 보다", k:"n"},{t:"나한테 불만이 있다", k:"s"},{t:"아직 모르겠다", k:"n"}],
+   reveal:"한 걸음 다가가자, 책상 아래 동료의 휴대전화 화면이 보입니다. 방금 주차 위반 과태료 문자가 와 있습니다.",
+   fact:"동료가 한숨을 쉬었다", interp:"내 말이 한심해서 한숨을 쉰 것이다"},
+  {place:"가게", e:"🧾", scene:"계산대의 점원이 당신의 질문에 고개도 들지 않고 퉁명스럽게 대답합니다.",
+   o:[{t:"지쳐 있나 보다", k:"n"},{t:"내가 귀찮게 했나 보다", k:"s"},{t:"불친절한 사람이다", k:"o"},{t:"나를 만만하게 본다", k:"s"},{t:"아직 모르겠다", k:"n"}],
+   reveal:"한 걸음 다가가자, 계산대 뒤의 근무표가 보입니다. 점원은 열두 시간째 서 있습니다. 짜증이 난 것은 맞았습니다. 다만 당신 때문은 아니었습니다.",
+   fact:"점원이 퉁명스럽게 대답했다", interp:"점원은 나를 만만하게 본다"}
+];
+const TYPES = {
+  watch:{emo:"👀", nm:"관찰자형", one:"본 것과 붙인 뜻 사이에 틈을 두는 사람", s:"장면을 보고도 결론을 서두르지 않습니다.", w:"다음 방들에서는 그 틈이 훨씬 좁아집니다. 어디서 좁아지는지 지켜보세요."},
+  lead:{emo:"🎬", nm:"주인공형", one:"남의 표정이 모두 나에 관한 것이라고 느끼는 사람", s:"다른 사람의 반응을 세심하게 살핍니다.", w:"사람들 각자에게도 자기만의 장면이 있습니다. 내가 조연인 장면이 더 많습니다."},
+  mark:{emo:"📝", nm:"채점자형", one:"남의 행동에 먼저 점수부터 매기는 사람", s:"옳고 그름에 대한 기준이 분명합니다.", w:"점수를 매기기 전에 한 걸음만 다가가 보세요. 근무표가 보일 수 있습니다."},
+  sub:{emo:"💬", nm:"자막가형", one:"장면마다 재빨리 자막을 달아 주는 사람", s:"상황을 빠르게 읽어 냅니다.", w:"자막은 빠른 대신 자주 틀립니다. 화면과 자막을 따로 보는 연습이 다음 방들의 열쇠입니다."}
+};
+const frameSVG = (i,x) => `<svg class="o3" style="left:${x}px;top:40px;width:70px;height:84px" viewBox="0 0 70 84">
+    <rect x="4" y="4" width="62" height="76" fill="#2a2418" stroke="#9a7b45" stroke-width="4"/>
+    <rect id="fr${i}" x="10" y="10" width="50" height="64" fill="#3d4672"/>
+    <text x="35" y="50" text-anchor="middle" font-size="24">${FR[i].e}</text></svg>`;
+const SCENE = `
+  <div class="face back">
+    <div class="lampglow" style="left:85px;top:20px"></div>
+    ${DOOR_SVG('<rect x="272" y="88" width="50" height="30" rx="3" fill="#2a1a0e" stroke="#a37a45" stroke-width="2"/>').replace("LEFT","left:134px")}
+  </div>
+  <div class="face left">${frameSVG(0,22)}${frameSVG(2,112)}</div>
+  <div class="face right">${frameSVG(1,66)}</div>
+  <div class="face ceil"></div>
+  <div class="face floor"><div class="doorspill" style="left:138px"></div><div class="runner"></div></div>`;
+function fresh(){ return {room:11, view:"h_enter", step:1, fi:0, pk:[null,null,null], shown:[false,false,false],
+  order:[], side:{}, tries:0, fuse:0, opened:false, lastFb:"", flip:false}; }
+function start(){ S=fresh(); h_exit.spoken=false; S.order=shuffle([0,1,2,3,4,5]); mount(11); go("h_enter",1); }
+function sync(){
+  const st=$("#stage"), v=S.view;
+  st.classList.toggle("lightsoff", v==="h_enter");
+  st.classList.toggle("dooropen", v==="h_exit");
+  st.classList.toggle("morning", v==="h_exit");
+  st.dataset.view = v==="h_walk" ? "h_f"+S.fi : v;
+  $("#locks").children[0].setAttribute("fill", S.opened ? "#f2d27c" : "#2a1a0e");
+  [0,1,2].forEach(i=>$("#fr"+i).setAttribute("fill", S.shown[i] ? "#efe3c0" : (v==="h_walk"&&S.fi===i) ? "#6f86c8" : "#3d4672"));
+}
+function h_enter(){
+  hint("긴 복도입니다. 벽에 액자 세 개가 걸려 있습니다.");
+  if(!SND.asked){
+    V().innerHTML=`<p class="eyebrow">방 1 · 입구</p><p class="quote">방금 본 것은 장면일까, 자막일까.</p>
+      <p class="lede">이 방에는 소리와 나레이션이 있습니다.</p>
+      <div class="choose"><button class="btn" type="button" id="sOn">소리와 함께</button><button class="btn ghost" type="button" id="sOff">조용히</button></div>`;
+    $("#sOn").onclick=()=>{ SND.asked=true; setSound(true); h_enter(); };
+    $("#sOff").onclick=()=>{ SND.asked=true; setSound(false); h_enter(); };
+    return;
+  }
+  const L=["긴 복도에 액자 세 개가 걸려 있습니다.","액자마다 짧은 장면이 하나씩 들어 있습니다.","장면을 보면, 머릿속에 저절로 자막이 뜹니다.","가장 먼저 뜬 자막을 고르면 됩니다."];
+  V().innerHTML=`<p class="eyebrow">방 1 · 입구</p><p class="quote">방금 본 것은 장면일까, 자막일까.</p>
+    <div class="narr">${L.map((l,i)=>`<span style="animation-delay:${.3+i*.8}s">${l}</span>`).join("")}</div>
+    <p class="small">2분쯤 걸립니다. 다른 방들의 문을 여는 방법을 여기서 먼저 익힙니다.</p>
+    <button class="btn" type="button" id="next">불을 켜고 걸어 들어간다</button>`;
+  say("방금 본 것은 장면일까, 자막일까. "+L.join(" "));
+  $("#next").onclick=()=>{ hush(); go("h_walk",2); say(FR[0].scene); };
+}
+function h_walk(){
+  const i=S.fi, f=FR[i], picked=S.pk[i]!==null, shown=S.shown[i];
+  hint(shown?"가까이서 보니 장면이 달라 보입니다.":`${["첫","두","세"][i]} 번째 액자 앞에 섰습니다.`);
+  V().innerHTML=`<p class="eyebrow">${["첫","두","세"][i]} 번째 액자 · ${f.place}</p>
+    <h2>${esc(f.scene)}</h2>
+    ${shown?"":`<p class="small">머릿속에 가장 먼저 뜬 자막은?</p>`}
+    <div class="stack" id="opts">${f.o.map((o,j)=>`<button class="opt" type="button" data-j="${j}" aria-pressed="${S.pk[i]===j}" ${shown?"disabled":""}>${o.t}</button>`).join("")}</div>
+    ${picked&&!shown?`<button class="btn" type="button" id="closer">액자에 한 걸음 다가간다</button>`:""}
+    ${shown?`<div class="callout">${esc(f.reveal)}</div>
+      <div class="stack"><div class="mine" style="border-left-color:var(--screen)"><b>본 것</b>${esc(f.fact)}.</div>
+      <div class="mine"><b>내가 단 자막</b>“${esc(f.o[S.pk[i]].t)}”</div></div>
+      <button class="btn" type="button" id="next">${i<2?"다음 액자로 걸어간다":"복도 끝의 문으로 간다"}</button>`:""}`;
+  if(!shown) $("#opts").onclick=e=>{ const b=e.target.closest("[data-j]"); if(!b) return; S.pk[i]=+b.dataset.j; ticks(1); keepY(h_walk); };
+  const c=$("#closer"); if(c) c.onclick=()=>{ S.shown[i]=true; chime(); h_walk(); sync(); say(f.reveal); };
+  const nx=$("#next"); if(nx) nx.onclick=()=>{ hush(); if(i<2){ S.fi++; go("h_walk",3+i); say(FR[S.fi].scene); } else go("h_lock",5); };
+}
+function h_lock(){
+  const L=FR.flatMap((f,i)=>[{t:f.fact, s:"f"},{t:f.interp, s:"i"}]), list=S.order.map(k=>({...L[k], id:k}));
+  if(S.opened){
+    hint("딸깍. 복도 끝의 문이 열립니다.");
+    V().innerHTML=`<p class="eyebrow">복도 끝의 문</p><h2>${S.tries?`${S.tries+1}번 만에 문이 열렸습니다.`:"한 번에 문이 열렸습니다."}</h2>
+      <p class="lede">찡그린 얼굴, 한숨, 퉁명스러운 대답은 누가 봐도 똑같이 볼 수 있는 장면입니다. ‘못마땅해한다, 한심해서다, 만만하게 본다’는 그 장면에 붙은 자막입니다.</p>
+      <p class="small">이 뒤의 방들은 모두 같은 방식으로 열립니다. 장면과 자막을 나눠 보는 사람에게 문이 열립니다.</p>
+      <button class="btn" type="button" id="next">문을 연다</button>`;
+    $("#next").onclick=()=>{ save(); go("h_exit",6); door(); };
+    return;
+  }
+  const all=list.every(x=>S.side[x.id]);
+  hint("문에 새겨진 글: “장면과 자막을 나눠 본 사람에게 열린다.”");
+  V().innerHTML=`<p class="eyebrow">복도 끝의 문 · 시도 ${S.tries+1}번째</p><h2>문장 여섯 개를 둘로 나누세요.</h2>
+    <p class="small">누가 봐도 똑같이 볼 수 있으면 ‘본 것’, 머릿속에서 붙였으면 ‘붙인 뜻’입니다.</p>
+    <div class="fb ${S.tries?"miss":""}">${S.lastFb||"여섯 개를 모두 나누면 문을 열 수 있습니다."}</div>
+    <div class="stack" id="evs">${list.map(x=>`<div class="mq ${S.tries>=2&&S.side[x.id]===x.s?"ok":""}"><p>${esc(x.t)}</p>
+      <div class="choose"><button class="btn ghost sd" type="button" data-id="${x.id}" data-s="f" aria-pressed="${S.side[x.id]==="f"}">본 것</button><button class="btn ghost sd" type="button" data-id="${x.id}" data-s="i" aria-pressed="${S.side[x.id]==="i"}">붙인 뜻</button></div></div>`).join("")}</div>
+    <button class="btn" type="button" id="tryBtn" ${all?"":"disabled"}>이렇게 나눠 문을 연다</button>`;
+  $("#evs").onclick=e=>{ const b=e.target.closest(".sd"); if(!b) return; S.side[b.dataset.id]=b.dataset.s; ticks(1); keepY(h_lock); };
+  $("#tryBtn").onclick=()=>{ const bad=list.filter(x=>S.side[x.id]!==x.s);
+    if(!bad.length){ S.opened=true; chime(); setTimeout(chime,250); h_lock(); sync(); window.scrollTo(0,0); return; }
+    S.tries++; S.fuse+=bad.filter(x=>x.s==="i").length; lowBuzz();
+    S.lastFb=`덜컹. 여섯 개 중 <b>${bad.length}개</b>가 맞지 않는 쪽에 있습니다.`+(S.tries>=2?" <br>제자리에 놓인 문장에 표시해 두었습니다.":"");
+    h_lock(); window.scrollTo(0,0); const s=$("#stage"); s.classList.remove("shake"); void s.offsetWidth; s.classList.add("shake"); };
+}
+function type(){ const ks=S.pk.map((j,i)=>FR[i].o[j].k), c=k=>ks.filter(x=>x===k).length;
+  return c("n")>=2?"watch":c("s")>=2?"lead":c("o")>=2?"mark":"sub"; }
+function save(){ const log=store("maeum.hall.log")||[];
+  log.push({at:new Date().toISOString(), picks:S.pk.map((j,i)=>FR[i].o[j].t), tries:S.tries, fuse:S.fuse, type:TYPES[type()].nm});
+  store("maeum.hall.log", log.slice(-20)); }
+function h_exit(){
+  const T=TYPES[type()];
+  hint("문이 열렸습니다. 방들이 이어집니다.");
+  if(!h_exit.spoken){ h_exit.spoken=true; setTimeout(()=>say(`당신의 카드는 ${T.nm}. ${T.one}.`),500); }
+  V().innerHTML=`<p class="eyebrow">탈출 · 방 1</p><h2>첫인상의 복도를 지났습니다.</h2>
+    <div class="tcard ${S.flip?"flip":""}" id="tc"><div class="in">
+      <div class="f"><span class="emo">${T.emo}</span><span class="small">첫인상의 복도에서 받은 카드</span><span class="nm">${T.nm}</span><span class="one">${T.one}</span><span>${T.s}</span><span class="small" style="margin-top:auto">눌러서 뒷면 보기</span></div>
+      <div class="b"><p class="eyebrow">카드 뒷면 · 내가 단 자막 세 개</p>
+        ${FR.map((f,i)=>`<p class="small"><b style="color:var(--ink)">${f.place}</b> · “${esc(f.o[S.pk[i]].t)}”</p>`).join("")}
+        <p class="small">${T.w}</p>
+        <span class="small" style="margin-top:auto">눌러서 앞면 보기</span></div>
+    </div></div>
+    <div class="habit">
+      <p class="eyebrow">생각 습관 카드 · 12장 중 한 장 획득</p>
+      <p class="habit-name">자동 자막 (저절로 뜨는 첫 해석)</p>
+      <p>장면을 보는 순간 머릿속에 저절로 붙는 첫 해석입니다. 너무 빨리 떠서 장면의 일부처럼 느껴집니다. 나머지 열한 장은 모두 이 자막의 종류입니다.</p>
+      <p class="small">오늘의 열쇠: 마음이 흔들릴 때 “본 것은 무엇이고, 내가 붙인 뜻은 무엇인가?” 하고 나눠 보기.</p>
+    </div>
+    <button class="btn" type="button" id="go2">방 2 · 침묵의 방으로 간다</button>
+    <button class="btn ghost" type="button" id="map">처음 화면으로</button>`;
+  $("#tc").onclick=()=>{ S.flip=!S.flip; $("#tc").classList.toggle("flip",S.flip); };
+  $("#map").onclick=goHome; $("#go2").onclick=()=>ROOMDEF[1].start();
+}
+function touch(obj){ if(obj==="door") hint(S.view==="h_exit"?"문이 열려 있습니다.":"복도 끝에 문이 있습니다. “장면과 자막을 나눠 본 사람에게 열린다.”"); }
+return {no:1, name:"첫인상의 복도", steps:STEPS, scene:SCENE, start, sync, touch,
+  views:{h_enter, h_walk, h_lock, h_exit}};
+})();
+
+/* ================= 방 10 · 해석의 출구 ================= */
+ROOMDEF[10] = (function(){
+const STEPS = ["입구","마지막 세 문","나의 지도","열쇠 고르기","출구"];
+const THREE = [
+  {h:9, scene:"이번 주에 운동을 다섯 번 하기로 했습니다. 일요일 밤에 세어 보니 세 번 했습니다.",
+   o:[{t:"다섯 번을 못 채웠으니 이번 주는 실패다", k:"h"},{t:"세 번 했다. 지난주보다 두 번 많다", k:"b"},{t:"계획 같은 건 어차피 의미 없다", k:"x"}],
+   note:"다섯 번이 아니면 실패라는 것이 ‘흑백’입니다. 계획이 의미 없다는 것도 반대쪽 끝의 흑백입니다. 세 번은 0도 5도 아닌 3입니다."},
+  {h:10, scene:"중요한 발표를 10분 앞두고 심장이 빠르게 뜁니다. 준비는 어제 다 마쳤습니다.",
+   o:[{t:"불안을 느끼면 안 된다. 당장 없애야 한다", k:"x"},{t:"이렇게 불안한 걸 보니 분명히 망칠 것이다", k:"h"},{t:"불안한 건 불안한 것이고, 준비는 준비대로 해 뒀다", k:"b"}],
+   note:"불안하니까 망칠 것이라는 것이 ‘감정이 증거’입니다. 느낌은 실제로 있지만, 결과를 알려 주는 증거는 아닙니다. 불안을 없애야만 한다는 것도 느낌을 사실처럼 다루는 일입니다."},
+  {h:11, scene:"상사가 지나가며 말합니다. “어제 보고서 좋았어요.”",
+   o:[{t:"좋았다니 다행이다. 어느 부분이 좋았는지 물어보자", k:"b"},{t:"예의상 한 말이다. 진짜로 좋았을 리 없다", k:"h"},{t:"역시 난 완벽하다. 이제 고칠 게 없다", k:"x"}],
+   note:"예의상 한 말이라고 넘기는 것이 ‘좋은 것 지우기’입니다. 잘된 일이 기억에 남지 않으면, 저울 한쪽 접시는 늘 비어 있게 됩니다."}
+];
+const slots = Array.from({length:12},(_,i)=>`<rect id="sl${i}" x="${8+(i%4)*38}" y="${6+Math.floor(i/4)*30}" width="32" height="24" rx="2" fill="#2a3350" stroke="#9a7b45" stroke-width="1.5"/>`).join("");
+const SCENE = `
+  <div class="face back">
+    <div class="lampglow" style="left:40px;top:0;width:260px;height:200px"></div>
+    <svg class="o3" style="left:26px;top:22px;width:168px;height:102px" viewBox="0 0 168 102">${slots}</svg>
+    ${DOOR_SVG('<circle cx="297" cy="104" r="13" fill="#2a1a0e" stroke="#f2d27c" stroke-width="2"/>').replace("LEFT","left:238px")}
+  </div>
+  <div class="face left"></div><div class="face right"></div><div class="face ceil"></div>
+  <div class="face floor"><div class="doorspill" style="left:242px"></div><div class="runner"></div></div>`;
+function fresh(){ return {room:10, view:"x_enter", step:1, ti:0, three:[null,null,null], key:null, flip:false}; }
+function start(){ S=fresh(); mount(10); go("x_enter",1); }
+function gotNow(){ const g=habitsGot(); S.three.forEach((p,i)=>{ if(p!==null) g[9+i]=true; }); return g; }
+function sync(){
+  const st=$("#stage"), v=S.view;
+  st.classList.toggle("lightsoff", false);
+  st.classList.toggle("dooropen", v==="x_exit");
+  st.classList.toggle("morning", true);
+  st.dataset.view=v;
+  $("#locks").children[0].setAttribute("fill", v==="x_exit" ? "#f2d27c" : "#2a1a0e");
+  gotNow().forEach((g,i)=>$("#sl"+i).setAttribute("fill", g ? "#efe3c0" : "#2a3350"));
+}
+const rooms = () => ROOMLOGS.map(([nm,k])=>({nm, l:(store(k)||[]).slice(-1)[0]})).filter(r=>r.l);
+function x_enter(){
+  const g=habitsGot(), n=g.filter(Boolean).length, r=rooms().length;
+  hint("환한 방입니다. 벽에 카드 자리가 열두 칸 있습니다.");
+  V().innerHTML=`<p class="eyebrow">방 10 · 입구</p><p class="quote">문을 연 것은 열쇠가 아니라, 다르게 읽는 눈이었습니다.</p>
+    <p class="lede">${r===0?"아직 지나온 방이 없습니다. 지금 들어와도 되지만, 다른 방을 먼저 돌고 오면 이 방의 벽이 채워집니다.":`지금까지 방 ${r}곳을 지나왔습니다. 벽의 열두 칸 가운데 ${n}칸에 카드가 걸려 있습니다.`}</p>
+    <div class="hgrid">${HABITS.map((h,i)=>`<div class="hcell ${g[i]?"on":""}"><b>${g[i]?h.n:"?"}</b><span>${g[i]?h.d:(h.log?"다른 방에 있습니다":"이 방에 있습니다")}</span></div>`).join("")}</div>
+    <p class="small">마지막 세 장은 이 방의 작은 문 세 개 뒤에 있습니다.</p>
+    <button class="btn" type="button" id="next">마지막 세 문으로 간다</button>`;
+  say("문을 연 것은 열쇠가 아니라, 다르게 읽는 눈이었습니다.");
+  $("#next").onclick=()=>{ hush(); go("x_three",2); say(THREE[0].scene); };
+}
+function x_three(){
+  const i=S.ti, q=THREE[i], p=S.three[i], h=HABITS[q.h];
+  hint(`${["첫","두","세"][i]} 번째 작은 문 앞입니다.`);
+  V().innerHTML=`<p class="eyebrow">마지막 세 문 · ${i+1} / 3</p>
+    <h2>${esc(q.scene)}</h2>
+    ${p===null?`<p class="small">가장 먼저 떠오르는 말은?</p>`:""}
+    <div class="stack" id="opts">${q.o.map((o,j)=>`<button class="opt" type="button" data-j="${j}" aria-pressed="${p===j}" ${p!==null?"disabled":""}>${o.t}</button>`).join("")}</div>
+    ${p!==null?`<div class="habit"><p class="eyebrow">생각 습관 카드 · 획득</p><p class="habit-name">${h.n}</p><p>${esc(q.note)}</p><p class="small">열쇠: ${h.k}.</p></div>
+      <button class="btn" type="button" id="next">${i<2?"다음 문으로":"벽 앞으로 돌아간다"}</button>`:""}`;
+  if(p===null) $("#opts").onclick=e=>{ const b=e.target.closest("[data-j]"); if(!b) return; S.three[i]=+b.dataset.j; chime(); x_three(); sync(); };
+  const nx=$("#next"); if(nx) nx.onclick=()=>{ if(i<2){ S.ti++; x_three(); window.scrollTo(0,0); say(THREE[S.ti].scene); } else go("x_map",3); };
+}
+function x_map(){
+  const R=rooms(), hall=(store("maeum.hall.log")||[]).slice(-1)[0];
+  const avg=a=>a.length?(a.reduce((x,y)=>x+y,0)/a.length):0;
+  const B=R.filter(r=>typeof r.l.before==="number"&&typeof r.l.after==="number");
+  const stay=B.filter(r=>r.l.after>=r.l.before);
+  hint("지나온 방들이 한 장의 지도로 펼쳐집니다.");
+  V().innerHTML=`<p class="eyebrow">나의 지도</p><h2>${R.length?`지나온 방 ${R.length}곳을 한 장에 펼쳤습니다.`:"아직 지도에 그릴 방이 없습니다."}</h2>
+    ${hall?`<div class="mine"><b>첫인상의 복도</b>${hall.type}</div>`:""}
+    <div class="stack">${R.map(r=>`<div class="mine"><b>${r.nm} · ${r.l.type}</b>${typeof r.l.before==="number"?`마음의 숫자 ${r.l.before} → ${r.l.after}`:""}${r.l.first?`<br><span class="small">처음 스친 말: “${esc(r.l.first)}”</span>`:""}</div>`).join("")}</div>
+    ${B.length?`<div class="vs"><div><span class="small">방에 들어설 때 평균</span><span class="big">${avg(B.map(r=>r.l.before)).toFixed(1)}</span></div><div class="small">→</div><div><span class="small">방을 나설 때 평균</span><span class="big">${avg(B.map(r=>r.l.after)).toFixed(1)}</span></div></div>
+      <p class="lede">방마다 사건은 하나도 바뀌지 않았습니다. 바뀐 것은 읽는 방법이었습니다.</p>`:`<p class="lede">다른 방을 돌고 오면 여기에 방마다 받은 카드와 숫자가 나란히 놓입니다.</p>`}
+    ${R.length>=2?`<p class="small">‘처음 스친 말’들을 위에서 아래로 읽어 보세요. 방은 달랐지만 말투가 닮은 줄이 있다면, 그것이 당신에게 가장 자주 뜨는 자막입니다.</p>`:""}
+    ${stay.length?`<p class="small">숫자가 내려가지 않은 방: ${stay.map(r=>r.nm).join(", ")}. 그 방이 건드린 것은 그날의 장면보다 오래된 것일 수 있습니다. 다른 이야기로 한 번 더 들어가 볼 만합니다.</p>`:""}
+    <button class="btn" type="button" id="next">들고 나갈 열쇠를 고른다</button>`;
+  $("#next").onclick=()=>go("x_key",4);
+}
+function x_key(){
+  const g=gotNow(), have=HABITS.map((h,i)=>({...h,i})).filter(h=>g[h.i]);
+  hint("출구 앞에 열쇠들이 걸려 있습니다.");
+  V().innerHTML=`<p class="eyebrow">열쇠 고르기</p><h2>문밖으로 열쇠 하나만 들고 나간다면?</h2>
+    <p class="small">모은 카드마다 열쇠가 하나씩 달려 있습니다. 이번 주에 한 번 써 볼 것을 하나만 고르세요.</p>
+    <div class="stack" id="keys">${have.map(h=>`<button class="opt" type="button" data-i="${h.i}" aria-pressed="${S.key===h.i}"><b style="color:var(--gold)">${h.n}</b><br>${h.k}</button>`).join("")}</div>
+    <button class="btn" type="button" id="next" ${S.key===null?"disabled":""}>열쇠를 들고 출구로 간다</button>`;
+  $("#keys").onclick=e=>{ const b=e.target.closest("[data-i]"); if(!b) return; S.key=+b.dataset.i; ticks(1); keepY(x_key); };
+  $("#next").onclick=()=>{ const log=store("maeum.exit.log")||[]; log.push({at:new Date().toISOString(), three:S.three.slice(), threePicks:S.three.map((j,i)=>THREE[i].o[j].k), key:HABITS[S.key].n}); store("maeum.exit.log",log.slice(-20)); go("x_exit",5); door(); };
+}
+function x_exit(){
+  const g=habitsGot(), n=g.filter(Boolean).length, h=HABITS[S.key];
+  hint("출구가 열렸습니다. 바깥이 환합니다.");
+  setTimeout(()=>say("출구가 열렸습니다. 바깥의 장면들은 그대로입니다. 달라진 것은 읽는 눈입니다."),400);
+  V().innerHTML=`<p class="eyebrow">출구</p><h2>해석의 출구로 나왔습니다.</h2>
+    <p class="lede">바깥의 장면들은 그대로입니다. 읽음 표시도, 빈자리도, 실수도 여전히 일어납니다. 달라진 것은 그 장면에 자막을 다는 사람이 누구인지 알게 되었다는 점입니다.</p>
+    <div class="tcard" id="tc"><div class="in">
+      <div class="f"><span class="emo">🗝️</span><span class="small">문밖으로 들고 나가는 열쇠</span><span class="nm" style="font-size:28px">${h.n}</span><span class="one">${h.k}</span><span class="small" style="margin-top:auto">모은 생각 습관 카드 ${n} / 12</span></div>
+      <div class="b"></div>
+    </div></div>
+    <div class="hgrid">${HABITS.map((x,i)=>`<div class="hcell ${g[i]?"on":""}"><b>${g[i]?x.n:"?"}</b><span>${g[i]?x.d:"아직 못 만난 카드"}</span></div>`).join("")}</div>
+    ${n<12?`<p class="small">아직 열지 않은 방에 카드 ${12-n}장이 남아 있습니다.</p>`:`<p class="small">열두 장을 모두 모았습니다. 방마다 이야기가 여러 개이니, 다시 들어가면 다른 장면과 다른 카드를 만날 수 있습니다.</p>`}
+    <button class="btn" type="button" id="share">열쇠 문구 복사해서 공유하기</button>
+    <p class="copyok" id="copyok"></p>
+    <button class="btn ghost" type="button" id="map">처음 화면으로</button>
+    <p class="small">이곳은 진단이나 치료가 아닌 자기이해 놀이입니다. 마음이 오래 힘들다면 가까운 사람이나 전문가와 이야기해 보세요.</p>`;
+  $("#map").onclick=goHome;
+  $("#share").onclick=async()=>{
+    const url=/^https?:/.test(location.href)&&!/claude/.test(location.hostname)?`\n${location.href.split("#")[0]}`:"";
+    const text=`[마음의 방탈출 · 해석의 출구]\n내가 들고 나온 열쇠: 🗝️ ${h.n}\n“${h.k}”\n모은 카드 ${n} / 12\n너는 어떤 열쇠를 고를까?${url}`;
+    try{ await navigator.clipboard.writeText(text); $("#copyok").textContent="복사했습니다. 카톡에 붙여 넣으세요."; }
+    catch(e){ $("#copyok").textContent="이 화면에서는 복사가 막혀 있습니다. 화면을 캡처해 주세요."; }
+  };
+}
+function touch(obj){ if(obj==="door") hint(S.view==="x_exit"?"출구가 열려 있습니다.":"출구입니다. 열쇠 하나를 골라야 열립니다."); }
+return {no:10, name:"해석의 출구", steps:STEPS, scene:SCENE, start, sync, touch, THREE,
+  views:{x_enter, x_three, x_map, x_key, x_exit}};
 })();
 
 SCENE2=$("#room3d").innerHTML;
