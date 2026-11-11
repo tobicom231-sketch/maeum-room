@@ -51,6 +51,21 @@ p{margin:10px 0}
   font-family:"Nanum Myeongjo","AppleMyungjo","Batang",serif;box-shadow:0 6px 18px #0007;margin:14px 0}
 .todo{background:#9fd0a018;border:1.5px solid #9fd0a066;border-radius:12px;padding:12px 14px;margin:12px 0;font-size:17px}
 .todo b{display:inline-block;background:var(--leaf);color:#12301a;border-radius:6px;padding:0 8px;margin-right:6px;font-size:14px}
+.where{font-size:13px;font-weight:700;border-radius:8px;padding:4px 10px;display:inline-block;margin-bottom:6px}
+.where.real{background:#f2b14a22;color:var(--glow2);border:1px solid var(--glow)}
+.where.tab{background:#7fb6e622;color:#a9d2f5;border:1px solid #7fb6e6}
+.zone{border-left:4px solid;padding:4px 0 4px 12px;margin:16px 0}
+.zone.real{border-color:var(--glow)}.zone.tab{border-color:#7fb6e6}
+.zone.tab .btn{background:#7fb6e6;color:#0c2233;box-shadow:0 0 24px #7fb6e644}
+.legend{border:1px dashed var(--line);border-radius:12px;padding:10px 14px;margin:14px 0}
+.legend p{margin:4px 0 10px}
+.slips{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.slip{background:#e9dcb6;color:var(--paperink);border:0;border-radius:3px;padding:16px 10px;font-size:17px;font-family:"Nanum Myeongjo","AppleMyungjo","Batang",serif;box-shadow:0 5px 14px #0007}
+.slip.pinned{display:block;width:70%;margin:0 auto 8px;text-align:center}
+.envs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+.env{aspect-ratio:.75;border-radius:6px;border:1.5px solid #8a6a3c;background:#cbb686;color:#3b2f1e;font-size:15px;font-weight:700}
+.env.took{opacity:.25;transform:translateY(-8px);border-style:dashed}
+#fl .flower{transition:transform .9s ease}#fl.bloom .flower{transform:scale(1.25)}
 .hint{border-left:3px solid var(--leaf);padding:8px 12px;margin:10px 0;color:var(--leaf);font-size:16px;background:#9fd0a011;border-radius:0 8px 8px 0}
 /* 꽃 카드 */
 .cards{display:grid;gap:12px;margin:14px 0}
@@ -97,7 +112,7 @@ const KEY="gardener.seed.log";
 let S, voiceOn=true, toastT;
 function fresh(){return {step:0,t0:Date.now(),
   riddle:{start:0,ms:0,wrong:0,hintSelf:false,hintShown:0,help:0},
-  pick:{start:0,ms:0,opened:[],reopen:0,changes:0,flower:null,first:null},
+  pick:{start:0,ms:0,opened:[],reopen:0,changes:0,flower:null,first:null,view:{},cur:0,curT:0},
   reason:null,voice:null,avoid:null,seed:null,help:0};}
 const $=s=>document.querySelector(s);
 const app=$("#app");
@@ -153,105 +168,121 @@ function shell(inner,season){
   $("#vBtn").onclick=()=>{voiceOn=!voiceOn;if(!voiceOn)hush();$("#vBtn").textContent=voiceOn?"음성 켜짐":"음성 꺼짐";};
   $("#rBtn").onclick=()=>{voiceOn=true;$("#vBtn").textContent="음성 켜짐";warned=false;if(lastSay)say(lastSay);};
   lastSay="";window.scrollTo(0,0);
-  $("#helpBtn").hidden=!(S.step>=2&&S.step<=7);
+  $("#helpBtn").hidden=!([2,3,31,4,5,7].includes(S.step));
 }
 function go(n){hush();S.step=n;VIEWS[n]();}
 function opts(list,cb){return list.map((t,i)=>`<button class="opt" data-i="${i}">${esc(t)}</button>`).join("");}
 function bindOpts(cb){app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{sndTap();cb(+b.dataset.i);});}
 
 /* ===== 화면 ===== */
+const REAL=`<div class="where real">손으로 · 실제 온실에서는 진짜 물건으로 합니다</div>`;
+const TAB=`<div class="where tab">태블릿 · 화면에서 합니다</div>`;
+const zr=h=>`<div class="zone real">${REAL}${h}</div>`, zt=h=>`<div class="zone tab">${TAB}${h}</div>`;
 const DIARY=["이른 봄. 올해 심을 꽃을 고르는 날이다.","창고에는 다섯 포기가 겨울을 났다. 저마다 다르게 났다.",
  "나는 해마다 여기서 오래 서 있는다. 무엇을 고르든, 고르고 나면 그 꽃이 내 한 해가 되기 때문이다.","서랍 열쇠 번호는 쪽지에 적어 두었다. 나만 알아보게."];
+const ACTS=[{k:"물을 준다",p:"물을 주었다",r:"꽃이 물을 머금고 잎을 폅니다."},{k:"잎을 닦아 준다",p:"잎을 닦아 주었다",r:"먼지가 걷히자 잎이 반짝입니다."},
+ {k:"볕 드는 곳으로 옮긴다",p:"볕 드는 곳으로 옮겨 주었다",r:"꽃이 볕 쪽으로 고개를 돌립니다."},{k:"흙을 만져 본다",p:"흙을 만져 보았다",r:"흙이 손끝에 조금 묻습니다. 꽃은 가만히 있습니다."},
+ {k:"그대로 둔다",p:"아무것도 하지 않고 그대로 두었다",r:"꽃은 있던 대로 서 있습니다."}];
+function closeCard(){const P=S.pick;if(P.cur){P.view[P.cur]=(P.view[P.cur]||0)+(Date.now()-P.curT);P.cur=0;}}
 const VIEWS={
 0(){ shell(`<span class="tag">시험판</span><h1>사라진 정원사</h1><p class="dim">첫 번째 방 · 씨앗 창고</p>
   <p>온실의 정원사가 사라졌습니다. 남은 것은 일지 한 권입니다.<br>일지를 따라 정원사의 한 해를 걸어 봅니다.</p>
-  <p class="dim">이 온실은 당신의 선택을 기억했다가 마지막에 돌려줍니다. 맞는 답은 없습니다. 끌리는 대로 고르시면 됩니다.</p>
-  <button class="btn" id="start">손목 띠를 댑니다</button>
+  <p class="dim">이 온실은 당신의 선택을 기억했다가 마지막에 돌려줍니다. 맞는 답은 없습니다.</p>
+  <div class="legend"><p><b>화면의 두 가지 색</b></p>
+  ${REAL}<p class="dim">서랍을 열고, 꽃을 들고, 쪽지를 꽂는 일입니다. 실제 온실에서는 진짜 물건을 손으로 만집니다. 이 시험판에서는 그림을 눌러 대신합니다.</p>
+  ${TAB}<p class="dim">이야기를 듣고, 손목 띠나 물건의 표식을 대는 일입니다. 실제 온실에서도 화면에서 합니다.</p></div>
+  ${zt(`<button class="btn" id="start">손목 띠를 댑니다</button>`)}
   <button class="btn ghost small" id="vtest">소리 시험해 보기</button>
   <button class="btn ghost small" id="logs">시험 기록 보기</button>`,"해 질 녘의 온실");
-  lastSay="사라진 정원사. 첫 번째 방, 씨앗 창고. 온실의 정원사가 사라졌습니다. 남은 것은 일지 한 권입니다. 일지를 따라 정원사의 한 해를 걸어 봅니다. 이 온실은 당신의 선택을 기억했다가 마지막에 돌려줍니다. 맞는 답은 없습니다. 끌리는 대로 고르시면 됩니다. 준비되면 손목 띠를 댑니다 단추를 누르세요.";
+  lastSay="사라진 정원사. 첫 번째 방, 씨앗 창고. 온실의 정원사가 사라졌습니다. 남은 것은 일지 한 권입니다. 일지를 따라 정원사의 한 해를 걸어 봅니다. 화면에는 두 가지 색이 있습니다. 노란 칸은 실제 온실에서 손으로 하는 일이고, 파란 칸은 태블릿 화면에서 하는 일입니다. 준비되면 손목 띠를 댑니다 단추를 누르세요.";
   $("#vtest").onclick=()=>{sndYes();warned=false;voiceOn=true;$("#vBtn").textContent="음성 켜짐";say("소리가 들리면 음성이 나오는 기기입니다.");};
   $("#start").onclick=()=>{sndYes();go(1);}; $("#logs").onclick=()=>go(99);
 },
-1(){ shell(`<h2>정원사의 일지</h2><div class="diary">${DIARY.map(l=>`<p>${l}</p>`).join("")}</div>
-  <button class="btn" id="n">창고로 들어간다</button><button class="btn ghost small" id="again">다시 듣기</button>`);
-  say(DIARY.join(" ")); $("#again").onclick=()=>say(DIARY.join(" "));
-  $("#n").onclick=()=>{sndTap();go(2);};
+1(){ shell(`<h2>정원사의 일지</h2>${zt(`<p class="dim">태블릿이 일지를 읽어 줍니다.</p><div class="diary">${DIARY.map(l=>`<p>${l}</p>`).join("")}</div>
+  <button class="btn" id="n">다 들었다</button>`)}`);
+  say(DIARY.join(" ")); $("#n").onclick=()=>{sndTap();go(2);};
 },
 2(){ const R=S.riddle; if(!R.start)R.start=Date.now();
   shell(`<h2>꽃이 든 서랍을 찾으세요</h2>
-  <div class="todo"><b>할 일</b> 아래 쪽지의 수수께끼를 풀어 서랍 번호를 알아내고, 그 번호의 서랍을 누르세요.</div>
-  <p class="dim">정원사가 남긴 쪽지</p>
+  ${zr(`<p>서랍장에 정원사의 쪽지가 붙어 있습니다. 수수께끼를 풀어 맞는 번호의 서랍을 여세요.</p>
   <div class="note">꽃을 넣어 둔 서랍 번호를 잊을까 봐 적어 둔다.<br>나는 한 주에 두 번, 월요일과 목요일에 물을 준다.<br><b>삼 주 동안 물을 준 횟수가 서랍 번호다.</b></div>
-  <div id="hints"></div>
-  <div class="cab">${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="drawer" data-n="${n}">${n}</button>`).join("")}</div>
-  <button class="btn ghost small" id="hint">귀띔 보기</button>`);
+  <div class="cab">${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="drawer" data-n="${n}">${n}</button>`).join("")}</div>`)}
+  ${zt(`<div id="hints"></div><button class="btn ghost small" id="hint">귀띔 보기</button>`)}`);
   const H=["한 주에 물을 몇 번 주었을까요?","두 번씩 삼 주입니다."];
   const draw=()=>{$("#hints").innerHTML=H.slice(0,R.hintShown).map(h=>`<div class="hint">${h}</div>`).join("");
     if(R.hintShown>=2)$("#hint").hidden=true;};
-  draw(); say("꽃이 든 서랍을 찾으세요. 아래 쪽지의 수수께끼를 풀어 서랍 번호를 알아내고, 그 번호의 서랍을 누르세요. 정원사가 남긴 쪽지입니다. 꽃을 넣어 둔 서랍 번호를 잊을까 봐 적어 둔다. 나는 한 주에 두 번, 월요일과 목요일에 물을 준다. 삼 주 동안 물을 준 횟수가 서랍 번호다.");
+  draw(); say("꽃이 든 서랍을 찾으세요. 서랍장에 정원사의 쪽지가 붙어 있습니다. 꽃을 넣어 둔 서랍 번호를 잊을까 봐 적어 둔다. 나는 한 주에 두 번, 월요일과 목요일에 물을 준다. 삼 주 동안 물을 준 횟수가 서랍 번호다. 맞는 번호의 서랍을 여세요.");
   $("#hint").onclick=()=>{sndTap();R.hintSelf=true;if(R.hintShown<2)R.hintShown++;draw();say("귀띔입니다. "+H[R.hintShown-1]);};
   app.querySelectorAll(".drawer").forEach(d=>d.onclick=()=>{
     if(+d.dataset.n===6){d.classList.add("yes");sndYes();R.ms=Date.now()-R.start;setTimeout(()=>go(3),800);}
-    else{R.wrong++;sndNo();toast(d.dataset.n+"번 서랍은 비어 있습니다. 쪽지를 다시 읽어 보세요.");d.classList.remove("no");void d.offsetWidth;d.classList.add("no");
+    else{R.wrong++;sndNo();toast(d.dataset.n+"번 서랍은 비어 있습니다.");d.classList.remove("no");void d.offsetWidth;d.classList.add("no");
       if(R.wrong>=3&&R.hintShown<1){R.hintShown=1;draw();say("귀띔입니다. "+H[0]);}
       else if(R.wrong>=6&&R.hintShown<2){R.hintShown=2;draw();say("귀띔입니다. "+H[1]);}
-      else say(d.dataset.n+"번 서랍은 비어 있습니다. 쪽지를 다시 읽어 보세요.");}
+      else say(d.dataset.n+"번 서랍은 비어 있습니다.");}
   });
 },
 3(){ const P=S.pick; if(!P.start)P.start=Date.now();
-  shell(`<h2>서랍 속의 다섯 포기</h2><div class="todo"><b>할 일</b> 번호를 눌러 다섯 포기의 사연을 읽고, 마음이 가는 한 포기에서 '이 꽃으로'를 누르세요. 꽃은 모두 같은 종류입니다.</div>
+  shell(`<h2>서랍 속의 다섯 포기</h2>
+  ${zr(`<p>서랍 안에 꽃 다섯 포기와 사연 카드가 있습니다. 카드를 읽어 보고, 마음이 가는 한 포기를 드세요. 꽃은 모두 같은 종류입니다.</p>
   <div class="cards">${FLOWERS.map(f=>`<div class="card" data-n="${f.n}">
-    <button class="chead"><span class="n">${f.n}</span><span>${f.n}번 꽃</span><span class="seen">${P.opened.includes(f.n)?"읽음":""}</span></button>
+    <button class="chead"><span class="n">${f.n}</span><span>${f.n}번 꽃의 카드</span><span class="seen">${P.opened.includes(f.n)?"읽음":""}</span></button>
     <div class="cbody">${flowerSVG(f)}<div class="txt">${f.txt}</div>
-    <div class="row"><button class="btn ghost small listen">다시 듣기</button><button class="btn small choose">이 꽃으로</button></div></div></div>`).join("")}</div>`);
-  say("서랍 속의 다섯 포기입니다. 번호를 눌러 다섯 포기의 사연을 들어 보고, 마음이 가는 한 포기에서 이 꽃으로 단추를 누르세요. 꽃은 모두 같은 종류입니다.");
+    <button class="btn small choose">이 꽃을 든다</button></div></div>`).join("")}</div>`)}`);
+  say("서랍 속의 다섯 포기입니다. 카드를 눌러 사연을 들어 보고, 마음이 가는 한 포기를 드세요. 꽃은 모두 같은 종류입니다.");
   app.querySelectorAll(".card").forEach(c=>{const n=+c.dataset.n,f=FLOWERS[n-1];
-    c.querySelector(".chead").onclick=()=>{sndTap();const was=c.classList.contains("open");
+    c.querySelector(".chead").onclick=()=>{sndTap();const was=c.classList.contains("open");closeCard();
       app.querySelectorAll(".card").forEach(x=>x.classList.remove("open"));
-      if(!was){c.classList.add("open");if(P.opened.includes(n))P.reopen++;else P.opened.push(n);
+      if(!was){c.classList.add("open");if(P.opened.includes(n))P.reopen++;else P.opened.push(n);P.cur=n;P.curT=Date.now();
         c.querySelector(".seen").textContent="읽음";say(n+"번 꽃. "+f.txt);c.scrollIntoView({block:"nearest",behavior:"smooth"});}else hush();};
-    c.querySelector(".listen").onclick=()=>say(f.txt);
-    c.querySelector(".choose").onclick=()=>{sndYes();if(P.flower===null)P.first=n;P.flower=n;go(31);};
+    c.querySelector(".choose").onclick=()=>{sndYes();closeCard();if(P.flower===null)P.first=n;P.flower=n;go(31);};
   });
 },
 31(){ const P=S.pick,f=FLOWERS[P.flower-1];
   shell(`<h2>${f.n}번 꽃을 들었습니다</h2>${flowerSVG(f)}<div class="diary"><p>${f.txt}</p></div>
-  <button class="btn" id="ok">이 꽃으로 정한다</button>
-  ${P.changes<1?`<button class="btn ghost small" id="back">다시 고른다</button>`:`<p class="dim">바꾸기는 한 번까지입니다.</p>`}`);
-  say(f.n+"번 꽃을 들었습니다. "+f.txt+" 이 꽃으로 정하려면 정한다 단추를, "+(P.changes<1?"다시 고르려면 다시 고른다 단추를 누르세요.":"누르세요. 바꾸기는 한 번까지입니다."));
-  $("#ok").onclick=()=>{sndTap();P.ms=Date.now()-P.start;go(4);};
+  ${zt(`<p>이 꽃으로 정했다면 화분의 표식을 태블릿에 대세요.</p><button class="btn" id="ok">표식을 댑니다</button>`)}
+  ${P.changes<1?zr(`<button class="btn ghost small" id="back">내려놓고 다시 고른다</button>`):`<p class="dim">바꾸기는 한 번까지입니다.</p>`}`);
+  say(f.n+"번 꽃을 들었습니다. 이 꽃으로 정했다면 화분의 표식을 태블릿에 대세요."+(P.changes<1?" 다시 고르려면 내려놓고 다시 고른다를 누르세요.":""));
+  $("#ok").onclick=()=>{sndYes();P.ms=Date.now()-P.start;go(4);};
   const b=$("#back"); if(b)b.onclick=()=>{sndTap();P.changes++;go(3);};
 },
-4(){ shell(`<h2>이 꽃에 손이 간 까닭은 무엇인가요?</h2>${opts(REASONS)}`);
-  say("이 꽃에 손이 간 까닭은 무엇인가요? 하나를 고르세요. "+REASONS.join(". ")+"."); bindOpts(i=>{S.reason=REASONS[i];go(5);});
+4(){ const f=FLOWERS[S.pick.flower-1]; const t="작업대에 물뿌리개와 헝겊이 있고, 창가에는 볕이 듭니다. 이 꽃에게 가장 먼저 무엇을 해 주시겠습니까?";
+  shell(`<h2>꽃에게 가장 먼저 해 줄 일</h2>${zr(`<p>${t}</p><div id="fl">${flowerSVG(f)}</div><div id="react"></div>
+  <div id="acts">${opts(ACTS.map(a=>a.k))}</div>`)}<div id="nx"></div>`);
+  say(t+" "+ACTS.map(a=>a.k).join(". ")+".");
+  bindOpts(i=>{S.reason=ACTS[i].k;$("#acts").remove();$("#fl").classList.add("bloom");sndYes();
+    $("#react").innerHTML=`<p class="fade"><b>${ACTS[i].k}.</b> ${ACTS[i].r}</p>`;say(ACTS[i].r);
+    $("#nx").innerHTML=`<button class="btn fade" id="go5">다음</button>`;$("#go5").onclick=()=>{sndTap();go(5);};});
 },
-5(){ shell(`<h2>이 꽃이 지금 가장 듣고 싶은 말은 무엇일까요?</h2>${opts(VOICES)}`);
-  say("이 꽃이 지금 가장 듣고 싶은 말은 무엇일까요? 하나를 고르세요. "+VOICES.join(". ")+"."); bindOpts(i=>{S.voice=VOICES[i];go(6);});
+5(){ const f=FLOWERS[S.pick.flower-1]; const t="서랍 바닥에 정원사가 써 둔 쪽지 다섯 장이 있습니다. 한 장을 골라 이 꽃의 화분에 꽂아 주세요.";
+  shell(`<h2>화분에 꽂아 줄 쪽지</h2>${zr(`<p>${t}</p><div id="fl">${flowerSVG(f)}</div><div id="react"></div>
+  <div class="slips" id="slips">${VOICES.map((v,i)=>`<button class="slip" data-i="${i}" style="transform:rotate(${[-2,1.5,-1,2,-1.5][i]}deg)">${v}</button>`).join("")}</div>`)}<div id="nx"></div>`);
+  say(t+" 쪽지에는 이렇게 적혀 있습니다. "+VOICES.join(". ")+".");
+  app.querySelectorAll(".slip").forEach(b=>b.onclick=()=>{S.voice=VOICES[+b.dataset.i];sndYes();$("#slips").remove();$("#fl").classList.add("bloom");
+    $("#react").innerHTML=`<div class="slip pinned fade">${S.voice}</div><p class="fade">쪽지를 꽂자 꽃잎이 조금 벌어집니다.</p>`;say("쪽지를 꽂자 꽃잎이 조금 벌어집니다.");
+    $("#nx").innerHTML=`<button class="btn fade" id="go7">다음</button>`;$("#go7").onclick=()=>{sndTap();go(7);};});
 },
-6(){ const rest=FLOWERS.filter(f=>f.n!==S.pick.flower);
-  shell(`<h2>남은 꽃 가운데 가장 오래 보고 싶지 않았던 꽃이 있었나요?</h2>
-  ${rest.map(f=>`<button class="opt" data-v="${f.n}">${f.n}번 · ${f.short}</button>`).join("")}
-  <button class="opt" data-v="0">없었다</button>`);
-  say("남은 꽃 가운데 가장 오래 보고 싶지 않았던 꽃이 있었나요? "+rest.map(f=>f.n+"번, "+f.short).join(". ")+". 또는, 없었다.");
-  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{sndTap();S.avoid=+b.dataset.v;go(7);});
-},
-7(){ const t="서랍 안쪽에 씨앗 봉투가 몇 개 남아 있습니다. 정원사는 필요한 사람이 가져가라고 적어 두었습니다.";
-  shell(`<h2>남은 씨앗</h2><p>${t}</p><div class="todo"><b>할 일</b> 어떻게 할지 하나를 고르세요.</div>${opts(SEEDS)}`); say(t+" 어떻게 할지 하나를 고르세요. "+SEEDS.join(". ")+".");
-  bindOpts(i=>{S.seed=SEEDS[i];save();go(8);});
+7(){ const t="서랍 안쪽에 씨앗 봉투 네 개가 남아 있습니다. 정원사는 필요한 사람이 가져가라고 적어 두었습니다. 가져가고 싶은 만큼 집으세요. 집지 않아도 됩니다.";
+  let n=0;
+  shell(`<h2>남은 씨앗</h2>${zr(`<p>${t}</p><div class="envs">${[1,2,3,4].map(i=>`<button class="env" data-i="${i}">씨앗</button>`).join("")}</div>
+  <p class="dim" id="cnt">집은 봉투 없음</p>`)}${zt(`<button class="btn" id="out">꽃을 들고 문으로 간다</button>`)}`); say(t);
+  app.querySelectorAll(".env").forEach(e=>e.onclick=()=>{sndTap();e.classList.toggle("took");n=app.querySelectorAll(".env.took").length;
+    $("#cnt").textContent=n?`집은 봉투 ${n}개`:"집은 봉투 없음";});
+  $("#out").onclick=()=>{sndYes();S.seed=n?`${n}봉투 가져감`:"가져가지 않음";S.avoid=calcAvoid();save();go(8);};
 },
 8(){ const P=S.pick,f=FLOWERS[P.flower-1],R=S.riddle;
-  const lines=[`봄. 나는 다섯 포기 가운데 '${f.short}'을 골랐다.`,`까닭은 '${S.reason}'였다.`,
-   `나는 그 꽃이 '${S.voice}'라는 말을 듣고 싶어 한다고 여겼다.`,
+  const lines=[`봄. 나는 다섯 포기 가운데 '${f.short}'을 골랐다.`,`그 꽃에게 나는 가장 먼저 ${(ACTS.find(a=>a.k===S.reason)||{p:S.reason}).p}.`,
+   `화분에는 '${S.voice}'라고 적힌 쪽지를 꽂아 주었다.`,
    `고르기까지 ${dur(P.ms)}가 걸렸고, 다섯 장 가운데 ${P.opened.length}장을 읽었다.`];
   if(P.changes>0&&P.first!==P.flower)lines.push("한 번 골랐다가 바꾸었다.");
   else if(P.changes>0)lines.push("한 번 내려놓았다가 같은 꽃을 다시 들었다.");
-  if(S.avoid)lines.push(`${S.avoid}번 꽃은 오래 보지 않았다.`);
-  shell(`<h2>일지에 적힌 오늘</h2><p class="dim">실제 온실에서는 마지막 방에서 한 해의 일지로 돌려받습니다. 시험판에서는 이 방의 몫만 먼저 보여 드립니다.</p>
-  <div class="diary">${lines.map(l=>`<p>${esc(l)}</p>`).join("")}</div>
+  if(S.avoid)lines.push(S.avoid+".");
+  lines.push(S.seed==="가져가지 않음"?"남은 씨앗은 가져가지 않았다.":`남은 씨앗은 봉투 ${parseInt(S.seed)}개를 가져왔다.`);
+  shell(`<h2>일지에 적힌 오늘</h2>${zt(`<p class="dim">실제 온실에서는 마지막 방에서 한 해의 일지로 돌려받습니다. 시험판에서는 이 방의 몫만 먼저 보여 드립니다.</p>
+  <div class="diary">${lines.map(l=>`<p>${esc(l)}</p>`).join("")}</div>`)}
   <h2>이 방이 기억한 것</h2>
   <table><tr><th>서랍 수수께끼</th><td>${dur(R.ms)}, 틀린 횟수 ${R.wrong}번, 귀띔 ${R.hintSelf?"스스로 봄":(R.hintShown?"저절로 뜸":"보지 않음")}</td></tr>
   <tr><th>꽃 고르기</th><td>${dur(P.ms)}, 읽은 카드 ${P.opened.length}장, 다시 펼침 ${P.reopen}번, 바꾸기 ${P.changes}번</td></tr>
+  <tr><th>카드별 읽은 시간</th><td>${FLOWERS.map(x=>`${x.n}번 ${P.view[x.n]?dur(P.view[x.n]):"안 봄"}`).join(", ")}</td></tr>
   <tr><th>남은 씨앗</th><td>${esc(S.seed)}</td></tr><tr><th>도움 부르기</th><td>${S.help}번</td></tr></table>
   <button class="btn" id="re">처음으로 (다음 사람)</button><button class="btn ghost small" id="logs">시험 기록 보기</button>`,"그림자가 길어진 온실");
   say("일지에 적힌 오늘입니다. "+lines.join(" ")+" 고른 꽃을 들고 다음 문으로 가세요. 온실에 그림자가 길어졌습니다.");
@@ -260,9 +291,9 @@ const VIEWS={
 99(){ const L=load();
   const cnt=k=>{const m={};L.forEach(r=>{const v=r[k];m[v]=(m[v]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1]).map(([v,c])=>`${esc(v)} ${c}명`).join(", ")||"없음";};
   shell(`<h2>시험 기록 (이 기기)</h2><p class="dim">이 기기에서 끝까지 한 사람 ${L.length}명. 한 꽃에 절반 넘게 몰리면 설명서 글을 고쳐야 합니다.</p>
-  <table><tr><th>고른 꽃</th><td>${cnt("flower")}</td></tr><tr><th>까닭</th><td>${cnt("reason")}</td></tr>
-  <tr><th>듣고 싶은 말</th><td>${cnt("voice")}</td></tr><tr><th>피한 꽃</th><td>${cnt("avoid")}</td></tr><tr><th>남은 씨앗</th><td>${cnt("seed")}</td></tr></table>
-  <table><tr><th>#</th><th>꽃</th><th>까닭</th><th>고른 시간</th><th>읽음</th><th>바꿈</th></tr>
+  <table><tr><th>고른 꽃</th><td>${cnt("flower")}</td></tr><tr><th>먼저 해 준 일</th><td>${cnt("reason")}</td></tr>
+  <tr><th>꽂아 준 쪽지</th><td>${cnt("voice")}</td></tr><tr><th>덜 본 꽃</th><td>${cnt("avoid")}</td></tr><tr><th>남은 씨앗</th><td>${cnt("seed")}</td></tr></table>
+  <table><tr><th>#</th><th>꽃</th><th>먼저 한 일</th><th>고른 시간</th><th>읽음</th><th>바꿈</th></tr>
   ${L.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.flower)}</td><td>${esc(r.reason)}</td><td>${dur(r.pickMs)}</td><td>${r.opened}장</td><td>${r.changes}</td></tr>`).join("")}</table>
   <button class="btn ghost small" id="copy">기록 복사하기</button><button class="btn ghost small" id="clr">기록 모두 지우기</button><button class="btn" id="home">돌아가기</button>`,"시험 기록");
   $("#home").onclick=()=>go(S.seed?8:0);
@@ -270,10 +301,14 @@ const VIEWS={
   let armed=false; $("#clr").onclick=e=>{if(!armed){armed=true;e.target.textContent="한 번 더 누르면 지워집니다";return;}
     try{localStorage.removeItem(KEY)}catch(x){} go(99);};
 }};
+function calcAvoid(){const P=S.pick,rest=FLOWERS.filter(f=>f.n!==P.flower);
+  const un=rest.filter(f=>!P.view[f.n]); if(un.length)return un.map(f=>f.n+"번").join(", ")+" 꽃의 카드는 펼쳐 보지 않았다";
+  const m=rest.slice().sort((a,b)=>P.view[a.n]-P.view[b.n]); 
+  if(m.length>1&&P.view[m[0].n]<P.view[m[1].n]*0.6)return m[0].n+"번 꽃의 카드는 가장 짧게 보고 덮었다"; return "";}
 function dur(ms){const s=Math.round((ms||0)/1000);return s<60?`${s}초`:`${Math.floor(s/60)}분 ${s%60}초`;}
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return []}}
 function save(){const P=S.pick,R=S.riddle;const rec={at:new Date().toISOString(),flower:P.flower+"번",first:P.first,reason:S.reason,voice:S.voice,
-  avoid:S.avoid?S.avoid+"번":"없었다",seed:S.seed,pickMs:P.ms,opened:P.opened.length,reopen:P.reopen,changes:P.changes,
+  avoid:S.avoid||"고르게 봄",view:P.view,seed:S.seed,pickMs:P.ms,opened:P.opened.length,reopen:P.reopen,changes:P.changes,
   riddleMs:R.ms,wrong:R.wrong,hintSelf:R.hintSelf,hintShown:R.hintShown,help:S.help};
   try{const L=load();L.push(rec);localStorage.setItem(KEY,JSON.stringify(L));}catch(e){}}
 
